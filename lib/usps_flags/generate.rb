@@ -203,6 +203,7 @@ class USPSFlags::Generate
     final_svg
   end
 
+  private
   def self.flag(rank: nil, width: USPSFlags::Config::BASE_FLY, outfile: nil, scale: nil, field: true)
     raise "Error: No rank specified." if rank.nil?
     final_svg = ""
