@@ -108,7 +108,7 @@ f.png # Generate PNG file
 ```
 
 - Calling any DSL method without argument, or with `nil` as argument will return the current value.
-- You can explicitly set `svg_file` to `""` to suppress printing the SVG content when only generating a PNG.
+- You can explicitly set `svg_file` to `""` to suppress printing the SVG content to console/log.
 - Calling `.png` requires `png_file` to be set.
 
 ## Security
