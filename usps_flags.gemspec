@@ -23,4 +23,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake',      '~> 12.1', '>= 12.1.0'
   s.add_development_dependency 'rspec',     '~> 3.7',  '>= 3.7.0'
+  s.add_development_dependency 'coveralls', '~> 0.8',  '>= 0.8.21'
 end
