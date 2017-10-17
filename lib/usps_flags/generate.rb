@@ -1,4 +1,4 @@
-# Controller class for generating files
+# Controller class for generating files.
 class USPSFlags::Generate
   # The primary controller method. Generates an SVG file or SVG data.
   #

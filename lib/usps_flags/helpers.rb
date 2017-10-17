@@ -92,6 +92,8 @@ class USPSFlags::Helpers
   end
 
   # Displays an overlay grid with regularly spaced locator markers.
+  #
+  # This is useful for adjusting or creating new SVG data generators, but should not otherwise need to be called.
   # @private
   def self.grid(width: USPSFlags::Config::BASE_FLY, height: USPSFlags::Config::BASE_HOIST)
     <<~SVG
@@ -132,6 +134,8 @@ class USPSFlags::Helpers
   end
 
   # Displays an overlay indicator of concentric circles and radiating lines.
+  #
+  # This is useful for adjusting or creating new SVG data generators, but should not otherwise need to be called.
   # @private
   def self.locator
     <<~SVG
@@ -152,6 +156,8 @@ class USPSFlags::Helpers
   end
 
   # Creates a vertical arrow for the trident spec sheet.
+  #
+  # This is used USPSFlags::Core.trident_spec, and should never need to be called directly.
   # @private
   def self.v_arrow(x, top, bottom, pointer_top = nil, pointer_bottom = nil, label: nil, label_offset: (USPSFlags::Config::BASE_FLY/120), label_offset_y: 0, label_align: "left", color: "#CCCCCC", stroke_width: (USPSFlags::Config::BASE_FLY/600), stroke_dash: "10, 10", font_size: (USPSFlags::Config::BASE_FLY/60), arrow_size: (USPSFlags::Config::BASE_FLY/120), fly: USPSFlags::Config::BASE_FLY, unit: nil)
     label = bottom - top if label.nil?
@@ -187,6 +193,8 @@ class USPSFlags::Helpers
   end
 
   # Creates a horizontal arrow for the trident spec sheet.
+  #
+  # This is used USPSFlags::Core.trident_spec, and should never need to be called directly.
   # @private
   def self.h_arrow(y, left, right, pointer_left = nil, pointer_right = nil, label: nil, label_offset: (USPSFlags::Config::BASE_FLY/45), label_offset_x: 0, label_align: "middle", color: "#CCCCCC", stroke_width: (USPSFlags::Config::BASE_FLY/600), stroke_dash: "10, 10", font_size: (USPSFlags::Config::BASE_FLY/60), arrow_size: (USPSFlags::Config::BASE_FLY/120), fly: USPSFlags::Config::BASE_FLY, unit: nil)
     label = right - left if label.nil?
@@ -222,6 +230,8 @@ class USPSFlags::Helpers
   end
 
   # Prints message(s) to the console and logs them.
+  #
+  # This should never need to be called directly.
   # @private
   def self.log(*messages)
     ::FileUtils.mkdir_p(USPSFlags::Config.log_path)

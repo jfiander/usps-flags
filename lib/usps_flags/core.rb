@@ -1,3 +1,6 @@
+# Container class for the core SVG data.
+#
+# These methods should never need to be called directly.
 # @private
 class USPSFlags::Core
   def self.trident_spec(fly: nil, unit: nil)
