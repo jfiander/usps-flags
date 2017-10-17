@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'usps_flags'
-  s.version       = '0.1.13'
+  s.version       = '0.1.14'
   s.date          = '2017-10-17'
   s.summary       = 'Flag generator for United States Power Squadrons'
   s.description   = 'A flag image (PNG, SVG) generator for United States Power Squadrons.'
@@ -17,9 +17,10 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '~> 2.4'
 
-  s.add_runtime_dependency 'file_utils',    '~> 1.1', '>= 1.1.2'
-  s.add_runtime_dependency 'mini_magick',   '~> 4.8', '>= 4.8.0'
-  s.add_runtime_dependency 'rubyzip',       '~> 1.2', '>= 1.2.1'
+  s.add_runtime_dependency 'file_utils',    '~> 1.1',  '>= 1.1.2'
+  s.add_runtime_dependency 'mini_magick',   '~> 4.8',  '>= 4.8.0'
+  s.add_runtime_dependency 'rubyzip',       '~> 1.2',  '>= 1.2.1'
 
-  s.add_development_dependency 'rspec',     '~> 3.7', '>= 3.7.0'
+  s.add_development_dependency 'rake',      '~> 12.1', '>= 12.1.0'
+  s.add_development_dependency 'rspec',     '~> 3.7',  '>= 3.7.0'
 end
