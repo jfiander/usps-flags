@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name          = 'usps_flags'
-  s.version       = '0.1.12'
+  s.version       = '0.1.13'
   s.date          = '2017-10-17'
   s.summary       = 'Flag generator for United States Power Squadrons'
   s.description   = 'A flag image (PNG, SVG) generator for United States Power Squadrons.'
@@ -11,6 +11,9 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib', 'spec', 'doc']
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
+
+  s.cert_chain    = ['certs/jfiander.pem']
+  s.signing_key   = File.expand_path("~/.ssh/usps_flags-private_key.pem") if $0 =~ /gem\z/
 
   s.required_ruby_version = '~> 2.4'
 
