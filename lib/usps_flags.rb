@@ -6,6 +6,7 @@ class USPSFlags
   require 'fileutils'
   require 'zip'
   require 'mini_magick'
+  require 'rational'
   require 'usps_flags/config'
   require 'usps_flags/helpers'
   require 'usps_flags/core'
