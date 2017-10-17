@@ -1,5 +1,7 @@
 # United States Power Squadrons® Flag Generator
 
+[![Gem Version](https://badge.fury.io/rb/usps_flags.svg)](https://badge.fury.io/rb/usps_flags)
+
 This gem allows you to generate precise SVG and PNG flag images based on official specifications.
 
 ## Installation
