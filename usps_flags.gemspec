@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description   = 'A flag image (PNG, SVG) generator for United States Power Squadrons.'
   s.authors       = ['Julian Fiander']
   s.email         = 'julian@fiander.one'
-  s.require_paths = ['lib', 'spec']
+  s.require_paths = ['lib', 'spec', 'doc']
   s.files         = [
                       'lib/usps_flags.rb',
                       'lib/usps_flags/config.rb',
