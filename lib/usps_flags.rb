@@ -72,12 +72,16 @@ class USPSFlags
   end
 
   def svg
-    USPSFlags::Generate.get(self.type, outfile: self.svg_file, scale: self.scale, field: self.field)
+    svg = USPSFlags::Generate.get(self.type, outfile: self.svg_file, scale: self.scale, field: self.field)
+    (self.svg_file.nil? || self.svg_file == "") ? svg : self.svg_file
   end
 
   def png
     raise "Error: png_file must be set." if self.png_file.nil?
+    svg_file_storage = self.svg_file
+    self.svg_file ""
     USPSFlags::Generate.png(self.svg, outfile: self.png_file, trim: self.trim)
+    self.svg_file svg_file_storage
     self.png_file
   end
 end
