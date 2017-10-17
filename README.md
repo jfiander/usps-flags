@@ -40,6 +40,8 @@ To generate all static files, run:
 USPSFlags::Generate.all svg: true, png: true, zips: true
 ```
 
+- Boolean arguments specify whether to process that set of files.
+
 ### Zip archives
 
 To re-generate zip files from current static files, run:
@@ -78,10 +80,11 @@ To convert SVG data to a PNG image, run:
 ```ruby
 USPSFlags::Generate.png svg_data, outfile: nil, trim: false
 
-# e.g. USPSFlags::Generate.png File.read("path/to/svg_image.svg"), outfile: "path/to/output.png", trim: false
+# USPSFlags::Generate.png File.read("path/to/svg_image.svg"), outfile: "path/to/output.png", trim: false
+# USPSFlags::Generate.png USPSFlags::Generate.get("LtC"), outfile: "path/to/output.png", trim: true
 ```
 
-- `outfile` specifies where to save the file. If left as `nil`, this method will `puts` the generated PNG.
+- `outfile` is required, and specifies where to save the file.
 - `trim` specifies whether to trim blank space from around the image. (This is ideal for generating insignia.)
 
 ## Building
