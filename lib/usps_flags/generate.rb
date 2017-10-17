@@ -1,4 +1,12 @@
+# Controller class for generating files
 class USPSFlags::Generate
+  # The primary controller method. Generates an SVG file or SVG data.
+  #
+  # @param [String] flag The flag type to generate.
+  # @param [String] outfile The path to save the SVG file to. If not set, prints to console.
+  # @param [Boolean] field Whether to generate the flag field (including any border).
+  # @param [String] scale The image scale divisor factor.
+  # @return [String] Returns the SVG data.
   def self.get(flag, outfile: nil, scale: nil, field: true)
     flag = flag.upcase
     if ["CRUISE", "OIC"].include?(flag)
@@ -14,6 +22,11 @@ class USPSFlags::Generate
     end
   end
 
+  # Convert SVG data into a PNG file.
+  #
+  # @param [String] svg The SVG data.
+  # @param [String] outfile The path to save the PNG file to. (File is not accessible if this is left blank.)
+  # @param [Boolean] trim Whether to trim the generated PNG file of excess transparency.
   def self.png(svg, outfile: nil, trim: false)
     outfile = "temp.png" if outfile.nil?
     temp_svg = ::File.new("temp.svg", "w+")
@@ -32,6 +45,12 @@ class USPSFlags::Generate
     ::File.delete("temp.png") if ::File.exists?("temp.png")
   end
 
+  # Generate all static SVG and PNG files, and automaticall generates zip archives for download.
+  #
+  # @param [Boolean] svg Whether to generate SVG images.
+  # @param [Boolean] png Whether to generate PNG images.
+  # @param [Boolean] zips Whether to create zip archives for all images created. Does not create a zip for skipped formats.
+  # @param [Boolean] reset Whether to delete all previous files before generating new files.
   def self.all(svg: true, png: true, zips: true, reset: true)
     if reset
       ::FileUtils.rm_rf(Dir.glob("#{USPSFlags::Config.flags_dir}/SVG/*"))
@@ -166,6 +185,10 @@ class USPSFlags::Generate
     nil
   end
 
+  # Generate zip archives of current static image files.
+  #
+  # @param [Boolean] svg Generate zip archive of SVG images.
+  # @param [Boolean] png Generate zip archive of PNG images.
   def self.zips(svg: true, png: true)
     ["svg", "png"].each do |format|
       if eval(format)
@@ -186,6 +209,13 @@ class USPSFlags::Generate
     end
   end
 
+  # Generate trident spec sheet as an SVG image.
+  #
+  # @param [String] outfile The path to save the SVG file to. If not set, prints to console.
+  # @param [Integer] fly The nominal fly length of an appropriate flag field for the generated tridents. Size labels scale to this size.
+  # @param [String] outfile The unit to append to all trident measurements.
+  # @param [String] scale The image scale divisor factor.
+  # @return [String] Returns the SVG data.
   def self.spec(outfile: nil, fly: nil, unit: nil, scale: nil)
     fly = fly.nil? ? USPSFlags::Config::BASE_FLY : fly
     final_svg = ""

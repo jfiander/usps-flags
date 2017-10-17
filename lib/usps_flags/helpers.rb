@@ -1,4 +1,17 @@
+# Container class for helper methods.
 class USPSFlags::Helpers
+  # Valid options for flag generation.
+  #
+  # @param [Symbol] type Specify subset of flags.
+  # @option type [Symbol] :all All flags
+  # @option type [Symbol] :officer Officer flags
+  # @option type [Symbol] :insignia Insignia-eligible officer flags (no past officers)
+  # @option type [Symbol] :squadron Squadron-level officer flags
+  # @option type [Symbol] :district District-level officer flags
+  # @option type [Symbol] :national National-level officer flags
+  # @option type [Symbol] :special Special flags
+  # @option type [Symbol] :us US flag
+  # @return [Array] Valid options for flag generation (based on the provided type).
   def self.valid_flags(type = :all)
     squadron = %w[
       PLTC
@@ -78,6 +91,8 @@ class USPSFlags::Helpers
     end
   end
 
+  # Displays an overlay grid with regularly spaced locator markers.
+  # @private
   def self.grid(width: USPSFlags::Config::BASE_FLY, height: USPSFlags::Config::BASE_HOIST)
     <<~SVG
       <circle cx="0" cy="0" r="#{width/60}" fill="#000000" fill-opacity="0.4" />
@@ -116,6 +131,8 @@ class USPSFlags::Helpers
     SVG
   end
 
+  # Displays an overlay indicator of concentric circles and radiating lines.
+  # @private
   def self.locator
     <<~SVG
       <circle cx="0" cy="0" r="#{USPSFlags::Config::BASE_FLY*2}" fill="#000000" fill-opacity="0.4" />
@@ -134,6 +151,8 @@ class USPSFlags::Helpers
     SVG
   end
 
+  # Creates a vertical arrow for the trident spec sheet.
+  # @private
   def self.v_arrow(x, top, bottom, pointer_top = nil, pointer_bottom = nil, label: nil, label_offset: (USPSFlags::Config::BASE_FLY/120), label_offset_y: 0, label_align: "left", color: "#CCCCCC", stroke_width: (USPSFlags::Config::BASE_FLY/600), stroke_dash: "10, 10", font_size: (USPSFlags::Config::BASE_FLY/60), arrow_size: (USPSFlags::Config::BASE_FLY/120), fly: USPSFlags::Config::BASE_FLY, unit: nil)
     label = bottom - top if label.nil?
     label = label.to_i if label - label.to_i == 0
@@ -167,6 +186,8 @@ class USPSFlags::Helpers
     svg
   end
 
+  # Creates a horizontal arrow for the trident spec sheet.
+  # @private
   def self.h_arrow(y, left, right, pointer_left = nil, pointer_right = nil, label: nil, label_offset: (USPSFlags::Config::BASE_FLY/45), label_offset_x: 0, label_align: "middle", color: "#CCCCCC", stroke_width: (USPSFlags::Config::BASE_FLY/600), stroke_dash: "10, 10", font_size: (USPSFlags::Config::BASE_FLY/60), arrow_size: (USPSFlags::Config::BASE_FLY/120), fly: USPSFlags::Config::BASE_FLY, unit: nil)
     label = right - left if label.nil?
     label = label.to_i if label - label.to_i == 0
@@ -200,6 +221,8 @@ class USPSFlags::Helpers
     svg
   end
 
+  # Prints message(s) to the console and logs them.
+  # @private
   def self.log(*messages)
     ::FileUtils.mkdir_p(USPSFlags::Config.log_path)
     log_file = File.open("#{USPSFlags::Config.log_path}/flag.log", 'a')

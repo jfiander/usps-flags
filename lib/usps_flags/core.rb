@@ -1,3 +1,4 @@
+# @private
 class USPSFlags::Core
   def self.trident_spec(fly: nil, unit: nil)
     trident_config = USPSFlags::Config.trident
@@ -279,7 +280,6 @@ class USPSFlags::Core
 
     trident_config = USPSFlags::Config.trident
 
-    ### Calculated Configuration ###
     main_spike_overhang = trident_config[:bar_width] / 2
 
     side_spike_overhang = trident_config[:bar_width] / 2
@@ -433,7 +433,6 @@ class USPSFlags::Core
     svg
   end
 
-  # Special Flags
   def self.anchor(color = :red)
     case color
     when :red
