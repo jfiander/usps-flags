@@ -20,7 +20,7 @@ USPSFlags::Config.flags_dir "#{Rails.root}/app/assets/images/flags"
 
 Run `gem install usps_flags`.
 
-Run `USPSFlags::Config.flags_dir "path/to/flags/dir"` to specify where to output all generated files and logs. (Otherwise, will default to `/output` in the gem directory.)
+Run `require 'usps_flags'` then `USPSFlags::Config.flags_dir "path/to/flags/dir"` to specify where to output all generated files and logs. (Otherwise, will default to `/output` in the gem directory.)
 
 ## Available flags
 
@@ -83,6 +83,27 @@ USPSFlags::Generate.png svg_data, outfile: nil, trim: false
 
 - `outfile` specifies where to save the file. If left as `nil`, this method will `puts` the generated PNG.
 - `trim` specifies whether to trim blank space from around the image. (This is ideal for generating insignia.)
+
+## Building
+
+You can also build individual flags using the following DSL:
+
+```ruby
+f = USPSFlags.new do
+  type "LtC"
+  scale 3
+  field false
+  trim true
+  svg_file "/path/to/svg/output.svg"
+  png_file "/path/to/png/output.png"
+end
+
+f.svg # Generate SVG file
+f.png # Generate PNG file
+```
+
+- You can explicitly set `svg_file` to `""` to suppress printing the SVG content when only generating a PNG.
+- Calling `.png` requires `png_file` to be set.
 
 ## License
 
