@@ -16,7 +16,7 @@ class USPSFlags::Generate
 
   def self.png(svg, outfile: nil, trim: false)
     outfile = "temp.png" if outfile.nil?
-    temp_svg = File.new("temp.svg", "w+")
+    temp_svg = ::File.new("temp.svg", "w+")
     temp_svg.write(svg)
     temp_svg.flush
 
@@ -28,8 +28,8 @@ class USPSFlags::Generate
       convert << outfile
     end
   ensure
-    ::File.delete(temp_svg) if File.exists?(temp_svg)
-    ::File.delete("temp.png") if File.exists?("temp.png")
+    ::File.delete(temp_svg) if ::File.exists?(temp_svg)
+    ::File.delete("temp.png") if ::File.exists?("temp.png")
   end
 
   def self.all(svg: true, png: true, zips: true, reset: true)
@@ -91,18 +91,18 @@ class USPSFlags::Generate
         USPSFlags::Helpers.log "  | "
         begin
           USPSFlags::Helpers.log "…\b"
-          USPSFlags::Generate.png(File.read(svg_file), outfile: png_file) unless File.exists?(png_file)
+          USPSFlags::Generate.png(File.read(svg_file), outfile: png_file) unless ::File.exists?(png_file)
           USPSFlags::Helpers.log "F"
           if past || !insignia_flags.include?(flag)
             USPSFlags::Helpers.log "-"
           else
             USPSFlags::Helpers.log "…\b"
-            USPSFlags::Generate.png(File.read(svg_ins_file), outfile: png_ins_file, trim: true) unless File.exists?(png_ins_file)
+            USPSFlags::Generate.png(File.read(svg_ins_file), outfile: png_ins_file, trim: true) unless ::File.exists?(png_ins_file)
             USPSFlags::Helpers.log "I"
           end
           sizes = {1500 => "H", 1000 => "K", 500 => "D", "thumb" => "T"}
           sizes.keys.each do |size|
-            if File.exists?("#{USPSFlags::Config.flags_dir}/PNG/#{flag}.#{size}.png")
+            if ::File.exists?("#{USPSFlags::Config.flags_dir}/PNG/#{flag}.#{size}.png")
               USPSFlags::Helpers.log "."
             else
               USPSFlags::Helpers.log "…\b"
@@ -128,8 +128,8 @@ class USPSFlags::Generate
               end
               USPSFlags::Helpers.log sizes[size_key]
 
-              if File.exists?(png_ins_file)
-                if File.exists?("#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size}.png")
+              if ::File.exists?(png_ins_file)
+                if ::File.exists?("#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size}.png")
                   USPSFlags::Helpers.log "."
                 elsif MiniMagick::Image.open(png_ins_file)[:width] > size
                   USPSFlags::Helpers.log "…\b"
@@ -170,7 +170,7 @@ class USPSFlags::Generate
     ["svg", "png"].each do |format|
       if eval(format)
         zip = "#{USPSFlags::Config.flags_dir}/ZIP/USPS_Flags.#{format}.zip"
-        File.delete(zip) if File.exists?(zip)
+        ::File.delete(zip) if ::File.exists?(zip)
         Zip::File.open(zip, Zip::File::CREATE) do |z|
           Dir.glob("#{USPSFlags::Config.flags_dir}/#{format.upcase}/**/*").each do |f|
             if f.split("/").last(2).first == "insignia"
@@ -196,7 +196,7 @@ class USPSFlags::Generate
     if outfile.nil?
       puts final_svg, "\n"
     else
-      f = File.new(outfile, "w+")
+      f = ::File.new(outfile, "w+")
       f.write(final_svg)
       f.close
     end
@@ -435,8 +435,8 @@ class USPSFlags::Generate
 
     if outfile.nil?
       puts final_svg, "\n"
-    else
-      f = File.new(outfile, "w+")
+    elsif outfile != ""
+      f = ::File.new(outfile, "w+")
       f.write(final_svg)
       f.close
     end
@@ -451,8 +451,8 @@ class USPSFlags::Generate
 
     if outfile.nil?
       puts final_svg, "\n"
-    else
-      f = File.new(outfile, "w+")
+    elsif outfile != ""
+      f = ::File.new(outfile, "w+")
       f.write(final_svg)
       f.close
     end
@@ -467,8 +467,8 @@ class USPSFlags::Generate
 
     if outfile.nil?
       puts final_svg, "\n"
-    else
-      f = File.new(outfile, "w+")
+    elsif outfile != ""
+      f = ::File.new(outfile, "w+")
       f.write(final_svg)
       f.close
     end
@@ -485,8 +485,8 @@ class USPSFlags::Generate
 
     if outfile.nil?
       puts final_svg, "\n"
-    else
-      f = File.new(outfile, "w+")
+    elsif outfile != ""
+      f = ::File.new(outfile, "w+")
       f.write(final_svg)
       f.close
     end
@@ -505,8 +505,8 @@ class USPSFlags::Generate
 
     if outfile.nil?
       puts final_svg, "\n"
-    else
-      f = File.new(outfile, "w+")
+    elsif outfile != ""
+      f = ::File.new(outfile, "w+")
       f.write(final_svg)
       f.close
     end
