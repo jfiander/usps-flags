@@ -3,7 +3,7 @@
 # These methods should never need to be called directly.
 # @private
 class USPSFlags::Core
-  def self.trident_spec(fly: nil, unit: nil)
+  def self.trident_spec(fly: 24, unit: "in")
     trident_config = USPSFlags::Config.trident
 
     hoist = (fly*Rational(2,3))
