@@ -1,0 +1,5 @@
+lib/usps_flags.rb 86c6eebef7eea763af4b6dceb8d1d3994dbcbe74
+lib/usps_flags/core.rb 38d8a1eab0372ddfe7b0dd423e7383a346a14d8c
+lib/usps_flags/config.rb 9b11afcdd8d3dd5951491647e7898540efb68cff
+lib/usps_flags/helpers.rb 13444e114123242790ea4ca50f924c19f7ebcad6
+lib/usps_flags/generate.rb 44bfd236560a471ac818297148198ee6015c1b74
