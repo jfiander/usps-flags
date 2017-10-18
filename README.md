@@ -35,6 +35,10 @@ Run `require 'usps_flags'` then `USPSFlags::Config.flags_dir "path/to/flags/dir"
 - Officer insignia
 - Official pennants
 
+## Testing
+
+Tests are written in Rspec. To run all specs in a cloned repo, run 'rake'.
+
 ## Generation
 
 ### All files
@@ -91,9 +95,9 @@ USPSFlags::Generate.png svg_data, outfile: nil, trim: false
 - `outfile` is required, and specifies where to save the file.
 - `trim` specifies whether to trim blank space from around the image. (This is ideal for generating insignia.)
 
-## Building
+## Constructing
 
-You can also build individual flags using the following DSL:
+You can also construct individual flags using the following syntax:
 
 ```ruby
 f = USPSFlags.new do
@@ -131,6 +135,6 @@ gem install usps_flags -P HighSecurity
 
 ## License
 
-Actual images generated (other than the US Ensign) are Copyright © United States Power Squadrons.
+Actual images generated (other than the US Ensign) are [registered trademarks](http://www.usps.org/national/itcom/trademark.html) of United States Power Squadrons.
 
-This gem is released under the [GPLv3](https://raw.github.com/jfiander/usps-flags/master/LICENSE).
+This project is released under the [GPLv3](https://raw.github.com/jfiander/usps-flags/master/LICENSE).
