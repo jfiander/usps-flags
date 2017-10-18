@@ -41,12 +41,24 @@ describe USPSFlags do
       @flag.scale 5
       @flag.svg_file ""
 
-      expect(@flag.svg).to eql(
+      svg = @flag.svg
+
+      expect(svg).to include(
         <<~SVG
           <?xml version="1.0" standalone="no"?>
           <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
           <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="614pt" height="409pt" viewBox="0 0 3072 2048" preserveAspectRatio="xMidYMid meet">
-          <metadata>Created by Julian Fiander (2017)</metadata>
+          <title>CDR</title>
+          <metadata>
+          <desc id="created-by">Julian Fiander</desc>
+        SVG
+      )
+
+      expect(svg).to include(
+        <<~SVG
+          <desc id="trademark-desc">This image is a registered trademark of United States Power Squadrons.</desc>
+          <desc id="trademark-link">http://www.usps.org/national/itcom/trademark.html</desc>
+          </metadata>
           <g transform="translate(-768, 192)">
           <path d="M 1536 512
           l 80 136
