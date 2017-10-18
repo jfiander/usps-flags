@@ -8,7 +8,7 @@ class USPSFlags::Generate
   # @param [String] scale The image scale divisor factor.
   # @return [String] Returns the SVG data.
   def self.get(flag, outfile: nil, scale: nil, field: true)
-    flag = flag.upcase
+    flag = flag.upcase.gsub("/", "").gsub("_", "").gsub("PENNANT", "")
     if ["CRUISE", "OIC"].include?(flag)
       self.pennant(type: flag, outfile: outfile, scale: scale)
     elsif flag.upcase == "ENSIGN"
@@ -219,7 +219,7 @@ class USPSFlags::Generate
   def self.spec(outfile: nil, fly: nil, unit: nil, scale: nil)
     fly = fly.nil? ? USPSFlags::Config::BASE_FLY : fly
     final_svg = ""
-    final_svg << USPSFlags::Core.headers(scale: scale)
+    final_svg << USPSFlags::Core.headers(scale: scale, title: "USPS Trident Specifications")
     final_svg << USPSFlags::Core.trident_spec(fly: fly, unit: unit)
     final_svg << USPSFlags::Core.footer
 
@@ -238,7 +238,7 @@ class USPSFlags::Generate
     raise "Error: No rank specified." if rank.nil?
     final_svg = ""
 
-    final_svg << USPSFlags::Core.headers(scale: scale)
+    final_svg << USPSFlags::Core.headers(scale: scale, title: rank)
 
     rank.slice!(0) if !field && rank[0].upcase == "P" && rank != "PORTCAP"
     rank = "CDR" if rank == "C"
@@ -475,7 +475,13 @@ class USPSFlags::Generate
 
   def self.pennant(type: "cruise", outfile: nil, scale: nil)
     final_svg = ""
-    final_svg << USPSFlags::Core.headers(pennant: true, scale: scale)
+    title = case type.upcase
+    when "CRUISE"
+      "Cruise Pennant"
+    when "OIC"
+      "Officer-in-Charge Pennant"
+    end
+    final_svg << USPSFlags::Core.headers(pennant: true, scale: scale, title: title)
     final_svg << USPSFlags::Core.pennant(type)
     final_svg << USPSFlags::Core.footer
 
@@ -491,7 +497,7 @@ class USPSFlags::Generate
 
   def self.ensign(outfile: nil, scale: nil)
     final_svg = ""
-    final_svg << USPSFlags::Core.headers(scale: scale)
+    final_svg << USPSFlags::Core.headers(scale: scale, title: "USPS Ensign")
     final_svg << USPSFlags::Core.ensign
     final_svg << USPSFlags::Core.footer
 
@@ -509,7 +515,7 @@ class USPSFlags::Generate
     width = 4327.4667
     height = 4286.9333
     final_svg = ""
-    final_svg << USPSFlags::Core.headers(width: width, height: height, scale: scale)
+    final_svg << USPSFlags::Core.headers(width: width, height: height, scale: scale, title: "USPS Ensign Wheel")
     final_svg << USPSFlags::Core.wheel
     final_svg << USPSFlags::Core.footer
 
@@ -529,7 +535,7 @@ class USPSFlags::Generate
     hoist = scale.nil? ? base_hoist : (base_hoist / scale)
     fly = hoist * 1.91
     final_svg = ""
-    final_svg << USPSFlags::Core.headers(width: fly, height: hoist, scale: scale)
+    final_svg << USPSFlags::Core.headers(width: fly, height: hoist, scale: scale, title: "US Ensign")
     final_svg << USPSFlags::Core.us
     final_svg << USPSFlags::Core.footer
 
