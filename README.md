@@ -133,4 +133,4 @@ gem install usps_flags -P HighSecurity
 
 Actual images generated (other than the US Ensign) are Copyright © United States Power Squadrons.
 
-This gem is released under the [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
+This gem is released under the [GPLv3](https://raw.github.com/jfiander/usps-flags/master/LICENSE).
