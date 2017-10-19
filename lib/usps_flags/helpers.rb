@@ -235,14 +235,21 @@ class USPSFlags::Helpers
   # @private
   def self.log(*messages)
     ::FileUtils.mkdir_p(USPSFlags::Config.log_path)
-    log_file = File.open("#{USPSFlags::Config.log_path}/flag.log", 'a')
-    messages.each do |message|
-      [STDOUT, log_file].each do |f|
-        f.write(message)
-      end
+    outputs = [STDOUT]
+
+    begin
+      log_file = File.open("#{USPSFlags::Config.log_path}/flag.log", 'a')
+      outputs << log_file
+    rescue Errno::EACCES => e
+      puts " Error accessing log file."
     end
-    log_file.close
+
+    messages.each do |message|
+      outputs.each { |f| f.write(message) }
+    end
 
     messages
+  ensure
+    log_file.close if log_file.is_a?(File)
   end
 end
