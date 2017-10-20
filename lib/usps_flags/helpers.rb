@@ -241,7 +241,7 @@ class USPSFlags::Helpers
       log_file = File.open("#{USPSFlags::Config.log_path}/flag.log", 'a')
       outputs << log_file
     rescue Errno::EACCES => e
-      puts " Error accessing log file."
+      puts "\nError accessing log file." unless USPSFlags::Config.log_fail_quietly
     end
 
     messages.each do |message|

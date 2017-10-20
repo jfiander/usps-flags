@@ -10,6 +10,7 @@ class USPSFlags::Config
 
   @@flags_dir ||= "#{File.dirname(__dir__)}/output"
   @@use_larger_tridents ||= true
+  @@log_fail_quietly ||= true
 
   # Accessor for the directory for storing generated flags.
   #
@@ -65,6 +66,15 @@ class USPSFlags::Config
     # Larger:  5/8 in width on 24in x 16in field
     @@use_larger_tridents = bool unless bool.nil? || !([true, false].include?(bool))
     @@use_larger_tridents 
+  end
+
+  # Accessor for the boolean of whether to print an error message if the log file is inaccessible.
+  #
+  # @param [Boolean] bool If set to a Boolean, specify whether to print the error message.
+  # @return [Boolean] Returns the current (or updated) setting.
+  def self.log_fail_quietly(bool = nil)
+    @@log_fail_quietly = bool if [true, false].include?(bool)
+    @@log_fail_quietly
   end
 
   # Base configuration values for trident insignia.
