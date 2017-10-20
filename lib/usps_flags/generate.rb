@@ -191,20 +191,24 @@ class USPSFlags::Generate
   # @param [Boolean] png Generate zip archive of PNG images.
   def self.zips(svg: true, png: true)
     ["svg", "png"].each do |format|
-      if eval(format)
-        zip = "#{USPSFlags::Config.flags_dir}/ZIP/USPS_Flags.#{format}.zip"
-        ::File.delete(zip) if ::File.exists?(zip)
-        Zip::File.open(zip, Zip::File::CREATE) do |z|
-          Dir.glob("#{USPSFlags::Config.flags_dir}/#{format.upcase}/**/*").each do |f|
-            if f.split("/").last(2).first == "insignia"
-              filename = "insignia/#{f.split("/").last}"
-              z.add(filename, f)
-            else
-              z.add(f.split("/").last, f)
+      begin
+        if eval(format)
+          zip = "#{USPSFlags::Config.flags_dir}/ZIP/USPS_Flags.#{format}.zip"
+          ::File.delete(zip) if ::File.exists?(zip)
+          Zip::File.open(zip, Zip::File::CREATE) do |z|
+            Dir.glob("#{USPSFlags::Config.flags_dir}/#{format.upcase}/**/*").each do |f|
+              if f.split("/").last(2).first == "insignia"
+                filename = "insignia/#{f.split("/").last}"
+                z.add(filename, f)
+              else
+                z.add(f.split("/").last, f)
+              end
             end
           end
+          puts "Generated #{format.upcase} Zip"
         end
-        puts "Generated #{format.upcase} Zip"
+      rescue Errno::EACCES => e
+        puts "Error: Failed to generate #{format.upcase} Zip -> #{e.message}"
       end
     end
   end
