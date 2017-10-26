@@ -3,6 +3,7 @@
 [![Gem Version](https://img.shields.io/gem/v/usps_flags.svg)](https://rubygems.org/gems/usps_flags)
 [![Build Status](https://travis-ci.org/jfiander/usps-flags.svg)](https://travis-ci.org/jfiander/usps-flags)
 [![Coverage Status](https://coveralls.io/repos/github/jfiander/usps-flags/badge.svg?branch=master)](https://coveralls.io/github/jfiander/usps-flags?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/760b824f0edac3316a11/maintainability)](https://codeclimate.com/github/jfiander/usps-flags/maintainability)
 
 This gem allows you to generate precise SVG and PNG flag images based on official specifications.
 
