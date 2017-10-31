@@ -13,51 +13,55 @@ class USPSFlags::Helpers
   # @option type [Symbol] :us US flag
   # @return [Array] Valid options for flag generation (based on the provided type).
   def self.valid_flags(type = :all)
-    squadron = %w[
+    squadron_past = %w[
       PLTC
       PC
-      PORTCAP
-      FLEETCAP
-      LT
-      FLT
+    ]
+
+    squadron_elected = %w[
       1LT
       LTC
       CDR
     ]
 
-    district = %w[
+    squadron_swallowtail = %w[
+      PORTCAP
+      FLEETCAP
+      LT
+      FLT
+    ]
+
+    district_past = %w[
       PDLTC
       PDC
-      DLT
-      DAIDE
-      DFLT
+    ]
+
+    district_elected = %w[
       D1LT
       DLTC
       DC
     ]
 
-    national = %w[
+    district_swallowtail = %w[
+      DLT
+      DAIDE
+      DFLT
+    ]
+
+    national_past = %w[
       PSTFC
       PRC
       PVC
       PCC
+    ]
+
+    national_elected = %w[
       NAIDE
       NFLT
       STFC
       RC
       VC
       CC
-    ]
-
-    past = %w[
-      PLTC
-      PC
-      PDLTC
-      PDC
-      PSTFC
-      PRC
-      PVC
-      PCC
     ]
 
     special = %w[
@@ -70,6 +74,11 @@ class USPSFlags::Helpers
     us = %w[
       US
     ]
+
+    squadron = squadron_past + squadron_elected + squadron_swallowtail
+    district = district_past + district_elected + district_swallowtail
+    national = national_past + national_elected
+    past = squadron_past + district_past + national_past
 
     case type
     when :all
@@ -88,6 +97,18 @@ class USPSFlags::Helpers
       special
     when :us
       us
+    when :past
+      past
+    when :swallowtail
+      past + squadron_swallowtail + district_swallowtail
+    when :bridge
+      squadron_elected.last(2) + squadron_past.last(2) + 
+      district_elected.last(2) + district_past.last(2) + 
+      national_elected.last(2) + national_past.last(2)
+    when :command
+      [squadron_elected.last, squadron_past.last,
+      district_elected.last, district_past.last,
+      national_elected.last, national_past.last]
     end
   end
 
