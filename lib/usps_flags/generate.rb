@@ -52,19 +52,9 @@ class USPSFlags::Generate
   # @param [Boolean] zips Whether to create zip archives for all images created. Does not create a zip for skipped formats.
   # @param [Boolean] reset Whether to delete all previous files before generating new files.
   def self.all(svg: true, png: true, zips: true, reset: true)
-    if reset
-      ::FileUtils.rm_rf(Dir.glob("#{USPSFlags::Config.flags_dir}/SVG/*"))
-      ::FileUtils.rm_rf(Dir.glob("#{USPSFlags::Config.flags_dir}/PNG/*"))
-      ::FileUtils.rm_rf(Dir.glob("#{USPSFlags::Config.flags_dir}/ZIP/*"))
-      ::FileUtils.mkdir_p("#{USPSFlags::Config.flags_dir}/SVG/insignia")
-      ::FileUtils.mkdir_p("#{USPSFlags::Config.flags_dir}/PNG/insignia")
-      puts "Cleared previous files."
-    end
+    self.remove_static_files if reset
 
-    flags = USPSFlags::Helpers.valid_flags(:all)
-    insignia_flags = USPSFlags::Helpers.valid_flags(:insignia)
-
-    max_length = flags.map(&:length).max
+    max_length = USPSFlags::Helpers.valid_flags(:all).map(&:length).max
     puts "\nSVGs generate a single file.",
       "PNGs generate full-res, 1500w, 1000w, 500w, and thumbnail files.",
       "Corresponding rank insignia (including smaller sizes) are also generated, as appropriate."
@@ -74,108 +64,8 @@ class USPSFlags::Generate
 
     overall_start_time = Time.now
 
-    flags.each do |flag|
-      start_time = Time.now
-      USPSFlags::Helpers.log " |     |  _ _ _ _ _  |         \r".rjust(max_length+31, " ")
-      flag = flag.upcase
-      USPSFlags::Helpers.log "#{flag.rjust(max_length)} |"
-
-      svg_file = "#{USPSFlags::Config.flags_dir}/SVG/#{flag}.svg"
-      png_file = "#{USPSFlags::Config.flags_dir}/PNG/#{flag}.png"
-
-      svg_ins_file = "#{USPSFlags::Config.flags_dir}/SVG/insignia/#{flag}.svg"
-      png_ins_file = "#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.png"
-
-      past = (flag[0] == "P" && flag != "PORTCAP")
-
-      if svg
-        begin
-          USPSFlags::Helpers.log " "
-          self.get flag, outfile: svg_file, scale: 1
-          USPSFlags::Helpers.log "S"
-          if past || !insignia_flags.include?(flag)
-            USPSFlags::Helpers.log "-"
-          else
-            self.get flag, field: false, outfile: svg_ins_file, scale: 1
-            USPSFlags::Helpers.log "I"
-          end
-        rescue => e
-          USPSFlags::Helpers.log "x -> #{e.message}"
-        end
-      else
-        USPSFlags::Helpers.log "-"
-      end
-
-      if png
-        USPSFlags::Helpers.log "  | "
-        begin
-          USPSFlags::Helpers.log "…\b"
-          USPSFlags::Generate.png(File.read(svg_file), outfile: png_file) unless ::File.exists?(png_file)
-          USPSFlags::Helpers.log "F"
-          if past || !insignia_flags.include?(flag)
-            USPSFlags::Helpers.log "-"
-          else
-            USPSFlags::Helpers.log "…\b"
-            USPSFlags::Generate.png(File.read(svg_ins_file), outfile: png_ins_file, trim: true) unless ::File.exists?(png_ins_file)
-            USPSFlags::Helpers.log "I"
-          end
-          sizes = {1500 => "H", 1000 => "K", 500 => "D", "thumb" => "T"}
-          sizes.keys.each do |size|
-            if ::File.exists?("#{USPSFlags::Config.flags_dir}/PNG/#{flag}.#{size}.png")
-              USPSFlags::Helpers.log "."
-            else
-              USPSFlags::Helpers.log "…\b"
-              if size == "thumb"
-                size_key = size
-                size = case flag
-                when "ENSIGN"
-                  200
-                when "US"
-                  300
-                else
-                  150
-                end
-              else
-                size_key = size
-              end
-              MiniMagick::Tool::Convert.new do |convert|
-                convert << "-background" << "none"
-                convert << "-format" << "png"
-                convert << "-resize" << "#{size}"
-                convert << png_file
-                convert << "#{USPSFlags::Config.flags_dir}/PNG/#{flag}.#{size_key}.png"
-              end
-              USPSFlags::Helpers.log sizes[size_key]
-
-              if ::File.exists?(png_ins_file)
-                if ::File.exists?("#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size}.png")
-                  USPSFlags::Helpers.log "."
-                elsif MiniMagick::Image.open(png_ins_file)[:width] > size
-                  USPSFlags::Helpers.log "…\b"
-                  MiniMagick::Tool::Convert.new do |convert|
-                    convert << "-background" << "none"
-                    convert << "-format" << "png"
-                    convert << "-resize" << "#{size}"
-                    convert << png_ins_file
-                    convert << "#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size_key}.png"
-                  end
-                  USPSFlags::Helpers.log "i"
-                else
-                  USPSFlags::Helpers.log "+"
-                end
-              else
-                USPSFlags::Helpers.log "-"
-              end
-            end
-          end
-        rescue => e
-          USPSFlags::Helpers.log "x -> #{e.message}"
-        end
-      else
-        USPSFlags::Helpers.log "- "
-      end
-      run_time = (Time.now - start_time).round(4).to_s[(0..5)].ljust(6, "0")
-      USPSFlags::Helpers.log " | #{run_time} s\n"
+    USPSFlags::Helpers.valid_flags(:all).each do |flag|
+      self.generate_static_images_for(flag, svg: svg, png: png)
     end
 
     self.zips(svg: svg, png: png) if zips
@@ -241,10 +131,10 @@ class USPSFlags::Generate
   def self.flag(rank: nil, width: USPSFlags::Config::BASE_FLY, outfile: nil, scale: nil, field: true)
     raise "Error: No rank specified." if rank.nil?
     final_svg = ""
-
     final_svg << USPSFlags::Core.headers(scale: scale, title: rank)
 
-    rank.slice!(0) if !field && rank[0].upcase == "P" && rank != "PORTCAP"
+    rank = rank.to_s.upcase
+    rank.slice!(0) if !field && USPSFlags::Helpers.valid_flags(:past).include?(rank)
     rank = "CDR" if rank == "C"
 
     case rank.upcase
@@ -551,5 +441,127 @@ class USPSFlags::Generate
       f.close
     end
     final_svg
+  end
+
+  private
+  def self.remove_static_files
+    ::FileUtils.rm_rf(Dir.glob("#{USPSFlags::Config.flags_dir}/SVG/*"))
+    ::FileUtils.rm_rf(Dir.glob("#{USPSFlags::Config.flags_dir}/PNG/*"))
+    ::FileUtils.rm_rf(Dir.glob("#{USPSFlags::Config.flags_dir}/ZIP/*"))
+    ::FileUtils.mkdir_p("#{USPSFlags::Config.flags_dir}/SVG/insignia")
+    ::FileUtils.mkdir_p("#{USPSFlags::Config.flags_dir}/PNG/insignia")
+    puts "Cleared previous files."
+  end
+
+  def self.generate_static_images_for(flag, svg: true, png: true)
+    start_time = Time.now
+    USPSFlags::Helpers.log " |     |  _ _ _ _ _  |         \r".rjust(max_length+31, " ")
+    flag = flag.upcase
+    USPSFlags::Helpers.log "#{flag.rjust(max_length)} |"
+
+    svg_file = "#{USPSFlags::Config.flags_dir}/SVG/#{flag}.svg"
+    png_file = "#{USPSFlags::Config.flags_dir}/PNG/#{flag}.png"
+
+    svg_ins_file = "#{USPSFlags::Config.flags_dir}/SVG/insignia/#{flag}.svg"
+    png_ins_file = "#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.png"
+
+    past = (flag[0] == "P" && flag != "PORTCAP")
+
+    if svg
+      self.generate_static_svg(flag, svg_file)
+    else
+      USPSFlags::Helpers.log "-"
+    end
+
+    if png
+      self.generate_static_png(flag, png_file)
+    else
+      USPSFlags::Helpers.log "- "
+    end
+    run_time = (Time.now - start_time).round(4).to_s[(0..5)].ljust(6, "0")
+    USPSFlags::Helpers.log " | #{run_time} s\n"
+  end
+
+  def self.generate_static_svg(flag, svg_file)
+    begin
+      USPSFlags::Helpers.log " "
+      self.get flag, outfile: svg_file, scale: 1
+      USPSFlags::Helpers.log "S"
+      if past || !USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
+        USPSFlags::Helpers.log "-"
+      else
+        self.get flag, field: false, outfile: svg_ins_file, scale: 1
+        USPSFlags::Helpers.log "I"
+      end
+    rescue => e
+      USPSFlags::Helpers.log "x -> #{e.message}"
+    end
+  end
+
+  def self.generate_static_png(flag, png_file)
+    USPSFlags::Helpers.log "  | "
+    begin
+      USPSFlags::Helpers.log "…\b"
+      USPSFlags::Generate.png(File.read(svg_file), outfile: png_file) unless ::File.exists?(png_file)
+      USPSFlags::Helpers.log "F"
+      if past || !insignia_flags.include?(flag)
+        USPSFlags::Helpers.log "-"
+      else
+        USPSFlags::Helpers.log "…\b"
+        USPSFlags::Generate.png(File.read(svg_ins_file), outfile: png_ins_file, trim: true) unless ::File.exists?(png_ins_file)
+        USPSFlags::Helpers.log "I"
+      end
+      sizes = {1500 => "H", 1000 => "K", 500 => "D", "thumb" => "T"}
+      sizes.keys.each do |size|
+        if ::File.exists?("#{USPSFlags::Config.flags_dir}/PNG/#{flag}.#{size}.png")
+          USPSFlags::Helpers.log "."
+        else
+          USPSFlags::Helpers.log "…\b"
+          if size == "thumb"
+            size_key = size
+            size = case flag
+            when "ENSIGN"
+              200
+            when "US"
+              300
+            else
+              150
+            end
+          else
+            size_key = size
+          end
+          MiniMagick::Tool::Convert.new do |convert|
+            convert << "-background" << "none"
+            convert << "-format" << "png"
+            convert << "-resize" << "#{size}"
+            convert << png_file
+            convert << "#{USPSFlags::Config.flags_dir}/PNG/#{flag}.#{size_key}.png"
+          end
+          USPSFlags::Helpers.log sizes[size_key]
+
+          if ::File.exists?(png_ins_file)
+            if ::File.exists?("#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size}.png")
+              USPSFlags::Helpers.log "."
+            elsif MiniMagick::Image.open(png_ins_file)[:width] > size
+              USPSFlags::Helpers.log "…\b"
+              MiniMagick::Tool::Convert.new do |convert|
+                convert << "-background" << "none"
+                convert << "-format" << "png"
+                convert << "-resize" << "#{size}"
+                convert << png_ins_file
+                convert << "#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size_key}.png"
+              end
+              USPSFlags::Helpers.log "i"
+            else
+              USPSFlags::Helpers.log "+"
+            end
+          else
+            USPSFlags::Helpers.log "-"
+          end
+        end
+      end
+    rescue => e
+      USPSFlags::Helpers.log "x -> #{e.message}"
+    end
   end
 end
