@@ -7,24 +7,16 @@ class USPSFlags
   require 'zip'
   require 'mini_magick'
   require 'rational'
+
   require 'usps_flags/config'
   require 'usps_flags/helpers'
   require 'usps_flags/core'
-  require 'usps_flags/core/anchor'
-  require 'usps_flags/core/binoculars'
-  require 'usps_flags/core/ensign'
-  require 'usps_flags/core/field'
-  require 'usps_flags/core/footer'
-  require 'usps_flags/core/headers'
-  require 'usps_flags/core/lighthouse'
-  require 'usps_flags/core/pennant'
-  require 'usps_flags/core/star'
-  require 'usps_flags/core/trident'
-  require 'usps_flags/core/trident_spec'
-  require 'usps_flags/core/trumpet'
-  require 'usps_flags/core/us'
-  require 'usps_flags/core/wheel'
   require 'usps_flags/generate'
+
+  # Dir['./lib/usps_flags/core/**'].map { |d| d.split("/").last.split(".rb").first }
+  %w[anchor binoculars ensign field footer headers lighthouse pennant star trident trident_spec trumpet us wheel].each do |d|
+    require "usps_flags/core/#{d}"
+  end
 
   # Constructor for individual flags.
   #
