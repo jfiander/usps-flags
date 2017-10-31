@@ -1,4 +1,4 @@
-# Welcome!
+# Contributing to USPSFlags
 
 Thank you for your interest in improving the USPSFlags generator!
 
@@ -10,7 +10,7 @@ If you would like to submit a pull request, please use atomic (rather than squas
 
 You can contact me via GitHub, Twitter, or email.
 
-# License
+## License
 
 This project is released under the [GPLv3](https://raw.github.com/jfiander/usps-flags/master/LICENSE). All images generated (other than the US Ensign) are [registered trademarks](http://www.usps.org/national/itcom/trademark.html) of United States Power Squadrons.
 
