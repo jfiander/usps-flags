@@ -137,145 +137,60 @@ class USPSFlags::Generate
     rank.slice!(0) if !field && USPSFlags::Helpers.valid_flags(:past).include?(rank)
     rank = "CDR" if rank == "C"
 
-    case rank.upcase
-    when "PLTC"
-      style = :past
-      color = :red
-      type = :s
-      count = 2
-    when "PC"
-      style = :past
-      color = :blue
-      type = :s
-      count = 3
-    when "PORTCAP"
-      style = :swallowtail
-      color = :white
-      type = :pc
-      count = 1
-    when "FLEETCAP"
-      style = :swallowtail
-      color = :white
-      type = :fc
-      count = 1
-    when "LT"
-      style = :swallowtail
-      color = :white
-      type = :s
-      count = 1
-    when "FLT"
-      style = :swallowtail
-      color = :white
-      type = :f
-      count = 1
-    when "1LT"
-      style = :regular
-      color = :white
-      type = :s
-      count = 1
-    when "LTC"
-      style = :regular
-      color = :red
-      type = :s
-      count = 2
-    when "CDR"
-      style = :regular
-      color = :blue
-      type = :s
-      count = 3
-
-    when "PDLTC"
-      style = :past
-      color = :red
-      type = :d
-      count = 2
-    when "PDC"
-      style = :past
-      color = :blue
-      type = :d
-      count = 3
-    when "DLT"
-      style = :swallowtail
-      color = :white
-      type = :d
-      count = 1
-    when "DAIDE"
-      style = :swallowtail
-      color = :white
-      type = :a
-      count = 1
-    when "DFLT"
-      style = :swallowtail
-      color = :white
-      type = :f
-      count = 2
-    when "D1LT"
-      style = :regular
-      color = :white
-      type = :d
-      count = 1
-    when "DLTC"
-      style = :regular
-      color = :red
-      type = :d
-      count = 2
-    when "DC"
-      style = :regular
-      color = :blue
-      type = :d
-      count = 3
-
-    when "PSTFC"
-      style = :past
-      color = :white
-      type = :stf
-      count = 1
-    when "PRC"
-      style = :past
-      color = :white
-      type = :n
-      count = 1
-    when "PVC"
-      style = :past
-      color = :red
-      type = :n
-      count = 2
-    when "PCC"
-      style = :past
-      color = :blue
-      type = :n
-      count = 3
-    when "NAIDE"
-      style = :swallowtail
-      color = :white
-      type = :a
-      count = 2
-    when "NFLT"
-      style = :swallowtail
-      color = :white
-      type = :f
-      count = 3
-    when "STFC"
-      style = :regular
-      color = :white
-      type = :stf
-      count = 1
-    when "RC"
-      style = :regular
-      color = :white
-      type = :n
-      count = 1
-    when "VC"
-      style = :regular
-      color = :red
-      type = :n
-      count = 2
-    when "CC"
-      style = :regular
-      color = :blue
-      type = :n
-      count = 3
+    style = if USPSFlags::Helpers.valid_flags(:past).include?(rank)
+      :past
+    elsif USPSFlags::Helpers.valid_flags(:swallowtail).include?(rank)
+      :swallowtail
+    else
+      :regular
     end
+
+    color = if USPSFlags::Helpers.valid_flags(:command).include?(rank)
+      count = 3
+      :blue
+    elsif USPSFlags::Helpers.valid_flags(:bridge).include?(rank)
+      count = 2
+      :red
+    else
+      :white
+    end
+
+    trident_color = field ? :white : color
+
+    type = if USPSFlags::Helpers.valid_flags(:squadron).include?(rank)
+      :s
+    elsif USPSFlags::Helpers.valid_flags(:district).include?(rank)
+      :d
+    elsif rank == "STFC"
+      :stf
+    elsif USPSFlags::Helpers.valid_flags(:national).include?(rank)
+      :n
+    elsif rank == "PORTCAP"
+      :pc
+    elsif rank == "FLEETCAP"
+      :fc
+    elsif rank == "DAIDE"
+      count = 1
+      level = :d
+      :a
+    elsif rank == "NAIDE"
+      count = 2
+      level = :n
+      :a
+    elsif rank == "FLT"
+      count = 1
+      level = :s
+      :f
+    elsif rank == "DFLT"
+      count = 2
+      level = :d
+      :f
+    elsif rank == "NFLT"
+      count = 3
+      level = :n
+      :f
+    end
+    count ||= 1
 
     final_svg << USPSFlags::Core.field(style: style, color: color) if field
 
@@ -283,7 +198,7 @@ class USPSFlags::Generate
 
     if type == :n && count == 3
       # The side C/C tridents are angled 45 degrees, and intersect the central one at 1/3 up from the bottom
-      trident = USPSFlags::Core.trident(type, color: (field ? :white : :blue))
+      trident = USPSFlags::Core.trident(type, color: trident_color)
       x_distance = USPSFlags::Config::BASE_FLY*4/39
       y_distance = USPSFlags::Config::BASE_FLY*5/78
       final_svg << "<g transform=\"translate(-#{x_distance}, #{y_distance})\"><g transform=\"rotate(-45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})\">\n#{trident}</g></g>"
@@ -291,13 +206,13 @@ class USPSFlags::Generate
       final_svg << "<g transform=\"translate(#{x_distance}, #{y_distance})\"><g transform=\"rotate(45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})\">\n#{trident}</g></g>"
     elsif type == :n && count == 2
       # V/C tridents are angled 45 degrees, and intersect at 15/32 up from the bottom
-      trident = USPSFlags::Core.trident(type, color: (field ? :white : :red))
+      trident = USPSFlags::Core.trident(type, color: trident_color)
       x_distance = USPSFlags::Config::BASE_FLY*4/55
       final_svg << "<g transform=\"translate(-#{x_distance})\"><g transform=\"rotate(-45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})\">\n#{trident}</g></g>"
       final_svg << "<g transform=\"translate(#{x_distance})\"><g transform=\"rotate(45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})\">\n#{trident}</g></g>"
     elsif [:s, :d].include?(type) && count == 3
       # Cdr and D/C tridents are spaced 1/2 the fly apart with the central one 1/4 the fly above the sides
-      trident = USPSFlags::Core.trident(type, color: (field ? :white : :blue), field_color: color)
+      trident = USPSFlags::Core.trident(type, color: trident_color, field_color: color)
       x_distance = USPSFlags::Config::BASE_FLY/4
       y_distance = USPSFlags::Config::BASE_FLY/16
       final_svg << "<g transform=\"translate(-#{x_distance}, #{y_distance})\">\n#{trident}</g>"
@@ -305,7 +220,7 @@ class USPSFlags::Generate
       final_svg << "<g transform=\"translate(#{x_distance}, #{y_distance})\">\n#{trident}</g>"
     elsif [:s, :d].include?(type) && count == 2
       # Lt/C and D/Lt/C tridents are spaced 1/3 the fly apart
-      trident = USPSFlags::Core.trident(type, color: (field ? :white : :red), field_color: color)
+      trident = USPSFlags::Core.trident(type, color: trident_color, field_color: color)
       x_distance = USPSFlags::Config::BASE_FLY/6
       final_svg << "<g transform=\"translate(-#{x_distance})\">\n#{trident}</g>"
       final_svg << "<g transform=\"translate(#{x_distance})\">\n#{trident}</g>"
@@ -327,22 +242,8 @@ class USPSFlags::Generate
       final_svg << "<g transform=\"scale(#{Rational(USPSFlags::Config::BASE_FLY/3000).to_f})\">"
       case type
       when :a
-        level = case count
-        when 1
-          :d
-        when 2
-          :n
-        end
         final_svg << USPSFlags::Core.binoculars(level)
       when :f
-        level = case count
-        when 1
-          :s
-        when 2
-          :d
-        when 3
-          :n
-        end
         final_svg << USPSFlags::Core.trumpet(level)
       when :fc
         final_svg << USPSFlags::Core.anchor
