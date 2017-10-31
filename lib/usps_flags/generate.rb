@@ -192,7 +192,7 @@ class USPSFlags::Generate
   def self.zips(svg: true, png: true)
     ["svg", "png"].each do |format|
       begin
-        if eval(format)
+        if binding.local_variable_get(format)
           zip = "#{USPSFlags::Config.flags_dir}/ZIP/USPS_Flags.#{format}.zip"
           ::File.delete(zip) if ::File.exists?(zip)
           Zip::File.open(zip, Zip::File::CREATE) do |z|
