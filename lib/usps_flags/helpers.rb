@@ -13,67 +13,16 @@ class USPSFlags::Helpers
   # @option type [Symbol] :us US flag
   # @return [Array] Valid options for flag generation (based on the provided type).
   def self.valid_flags(type = :all)
-    squadron_past = %w[
-      PLTC
-      PC
-    ]
-
-    squadron_elected = %w[
-      1LT
-      LTC
-      CDR
-    ]
-
-    squadron_swallowtail = %w[
-      PORTCAP
-      FLEETCAP
-      LT
-      FLT
-    ]
-
-    district_past = %w[
-      PDLTC
-      PDC
-    ]
-
-    district_elected = %w[
-      D1LT
-      DLTC
-      DC
-    ]
-
-    district_swallowtail = %w[
-      DLT
-      DAIDE
-      DFLT
-    ]
-
-    national_past = %w[
-      PSTFC
-      PRC
-      PVC
-      PCC
-    ]
-
-    national_elected = %w[
-      NAIDE
-      NFLT
-      STFC
-      RC
-      VC
-      CC
-    ]
-
-    special = %w[
-      CRUISE
-      OIC
-      ENSIGN
-      WHEEL
-    ]
-
-    us = %w[
-      US
-    ]
+    squadron_past = %w[PLTC PC]
+    squadron_elected = %w[1LT LTC CDR]
+    squadron_swallowtail = %w[PORTCAP FLEETCAP LT FLT]
+    district_past = %w[PDLTC PDC]
+    district_elected = %w[D1LT DLTC DC]
+    district_swallowtail = %w[DLT DAIDE DFLT]
+    national_past = %w[PSTFC PRC PVC PCC]
+    national_elected = %w[NAIDE NFLT STFC RC VC CC]
+    special = %w[CRUISE OIC ENSIGN WHEEL]
+    us = %w[US]
 
     squadron = squadron_past + squadron_elected + squadron_swallowtail
     district = district_past + district_elected + district_swallowtail
