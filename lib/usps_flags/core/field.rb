@@ -31,25 +31,25 @@ class USPSFlags::Core::Field
   def svg
     case @style
     when :regular
-      <<~FIELD
+      <<~SVG
         <path d="M 0 0
           l #{@fly} 0
           l 0 #{@hoist}
           l -#{@fly} 0
           l 0 -#{@hoist}
         " fill="#{@color_code}" #{@border_svg}/>
-      FIELD
+      SVG
     when :swallowtail
-      <<~FIELD
+      <<~SVG
         <path d="M 0 0
           l #{@fly} #{@hoist/6}
           l -#{@fly/5} #{@hoist/3}
           l #{@fly/5} #{@hoist/3}
           l -#{@fly} #{@hoist/6}
         " fill="#FFFFFF" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" />
-      FIELD
+      SVG
     when :past
-      <<~FIELD
+      <<~SVG
         <path d="M 0 0
           l #{@fly/2} #{@hoist*1/12}
           l 0 #{@hoist*10/12}
@@ -72,7 +72,7 @@ class USPSFlags::Core::Field
           l #{@fly/5} #{@hoist/3}
           l -#{@fly} #{@hoist/6}
         " fill="none" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" />
-      FIELD
+      SVG
     end
   end
 end

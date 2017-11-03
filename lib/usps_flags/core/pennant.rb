@@ -15,7 +15,7 @@ class USPSFlags::Core::Pennant
         <polyline fill="#{USPSFlags::Config::BLUE}" points="0 0 #{USPSFlags::Config::BASE_FLY} #{USPSFlags::Config::BASE_HOIST/8} 0 #{USPSFlags::Config::BASE_HOIST/4}" />
       SVG
     elsif @type == "CRUISE"
-      svg = <<~FIELD
+      svg = <<~SVG
         <path d="M 0 0
           l #{@fly*10/36} #{@hoist*5/36}
           l 0 #{@hoist*26/36}
@@ -34,7 +34,7 @@ class USPSFlags::Core::Pennant
           l #{@fly} #{@hoist/2}
           l -#{@fly} #{@hoist/2}
         " fill="none" stroke="#000000" stroke-width="2" />
-      FIELD
+      SVG
 
       svg << "<g transform=\"translate(385, 340)\">"
       svg << USPSFlags::Core::Star.new.svg

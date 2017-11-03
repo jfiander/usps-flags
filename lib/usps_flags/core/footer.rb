@@ -4,8 +4,8 @@
 # @private
 class USPSFlags::Core::Footer
   def svg
-    <<~FOOTER
+    <<~SVG
       </svg>
-    FOOTER
+    SVG
   end
 end
