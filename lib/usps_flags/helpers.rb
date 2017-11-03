@@ -214,15 +214,7 @@ class USPSFlags::Helpers
     end
 
     def flag_type(rank)
-      if valid_flags(:squadron).include?(rank)
-        :s
-      elsif valid_flags(:district).include?(rank)
-        :d
-      elsif rank == "STFC"
-        :stf
-      elsif valid_flags(:national).include?(rank)
-        :n
-      elsif rank == "PORTCAP"
+      if rank == "PORTCAP"
         :pc
       elsif rank == "FLEETCAP"
         :fc
@@ -236,6 +228,14 @@ class USPSFlags::Helpers
         :f
       elsif rank == "NFLT"
         :f
+      elsif rank == "STFC"
+        :stf
+      elsif valid_flags(:squadron).include?(rank)
+        :s
+      elsif valid_flags(:district).include?(rank)
+        :d
+      elsif valid_flags(:national).include?(rank)
+        :n
       end
     end
   end

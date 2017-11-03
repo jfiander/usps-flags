@@ -30,10 +30,10 @@ class USPSFlags::Generate::Flag
         svg << USPSFlags::Core::Tridents.two(flag_details[:type], trident_color: trident_color, field_color: flag_details[:color])
       elsif [:s, :d, :stf, :n].include?(flag_details[:type]) && %w[LT DLT].include?(rank)
         svg << USPSFlags::Core::Tridents.offset(flag_details[:type], field_color: flag_details[:color], field: field)
-      elsif [:s, :d, :stf, :n].include?(flag_details[:type])
-        svg << USPSFlags::Core.trident(flag_details[:type], field_color: flag_details[:color])
-      else
+      elsif [:a, :f, :fc, :pc].include?(flag_details[:type])
         svg << special(flag_details[:type], level: flag_details[:level], field: field)
+      else
+        svg << USPSFlags::Core.trident(flag_details[:type], field_color: flag_details[:color])
       end
 
       svg << "</g></g>" if flag_details[:style] == :past
