@@ -14,8 +14,13 @@ class USPSFlags
   require 'usps_flags/generate'
 
   # Dir['./lib/usps_flags/core/**'].map { |d| d.split("/").last.split(".rb").first }
-  %w[anchor binoculars ensign field footer headers lighthouse pennant star trident trident_spec trumpet us wheel].each do |d|
+  %w[anchor binoculars ensign field footer headers lighthouse pennant star trident tridents trident_spec trumpet us wheel].each do |d|
     require "usps_flags/core/#{d}"
+  end
+
+  # Dir['./lib/usps_flags/generate/**'].map { |d| d.split("/").last.split(".rb").first }
+  %w[flag].each do |d|
+    require "usps_flags/generate/#{d}"
   end
 
   # Constructor for individual flags.

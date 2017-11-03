@@ -11,15 +11,15 @@ class USPSFlags::Generate
     def get(flag, outfile: nil, scale: nil, field: true)
       flag = flag.upcase.delete("/", "_", "PENNANT")
       if ["CRUISE", "OIC"].include?(flag)
-        pennant(type: flag, outfile: outfile, scale: scale)
+        USPSFlags::Generate::Flag.pennant(type: flag, outfile: outfile, scale: scale)
       elsif flag == "ENSIGN"
-        ensign(outfile: outfile, scale: scale)
+        USPSFlags::Generate::Flag.ensign(outfile: outfile, scale: scale)
       elsif flag == "US"
-        us(outfile: outfile, scale: scale)
+        USPSFlags::Generate::Flag.us(outfile: outfile, scale: scale)
       elsif flag == "WHEEL"
-        wheel(outfile: outfile, scale: scale)
+        USPSFlags::Generate::Flag.wheel(outfile: outfile, scale: scale)
       else
-        flag(rank: flag, outfile: outfile, scale: scale, field: field)
+        USPSFlags::Generate::Flag.officer(rank: flag, outfile: outfile, scale: scale, field: field)
       end
     end
 
@@ -118,170 +118,10 @@ class USPSFlags::Generate
       final_svg << USPSFlags::Core.trident_spec(fly: fly, unit: unit)
       final_svg << USPSFlags::Core.footer
 
-      output(final_svg, outfile: outfile)
+      USPSFlags::Helpers.output(final_svg, outfile: outfile)
     end
 
     private
-    def flag(rank: nil, width: USPSFlags::Config::BASE_FLY, outfile: nil, scale: nil, field: true)
-      raise "Error: No rank specified." if rank.nil?
-      rank = rank.to_s.upcase
-
-      final_svg = ""
-      final_svg << USPSFlags::Core.headers(scale: scale, title: rank)
-
-      rank.slice!(0) if !field && USPSFlags::Helpers.valid_flags(:past).include?(rank)
-      rank = "CDR" if rank == "C"
-
-      flag_details = USPSFlags::Helpers.flag_details(rank)
-      trident_color = field ? :white : flag_details[:color]
-
-      final_svg << USPSFlags::Core.field(style: flag_details[:style], color: flag_details[:color]) if field
-      final_svg << "<g transform=\"translate(-150, 400)\"><g transform=\"scale(0.58333)\">" if flag_details[:style] == :past
-
-      if flag_details[:type] == :n && flag_details[:count] == 3
-        final_svg << cc_tridents(flag_details[:type], trident_color: trident_color)
-      elsif flag_details[:type] == :n && flag_details[:count] == 2
-        final_svg << vc_tridents(flag_details[:type], trident_color: trident_color)
-      elsif [:s, :d].include?(flag_details[:type]) && flag_details[:count] == 3
-        final_svg << three_tridents(flag_details[:type], trident_color: trident_color, field_color: flag_details[:color])
-      elsif [:s, :d].include?(flag_details[:type]) && flag_details[:count] == 2
-        final_svg << two_tridents(flag_details[:type], trident_color: trident_color, field_color: flag_details[:color])
-      elsif [:s, :d, :stf, :n].include?(flag_details[:type]) && %w[LT DLT].include?(rank)
-        final_svg << offset_trident(flag_details[:type], field_color: flag_details[:color], field: field)
-      elsif [:s, :d, :stf, :n].include?(flag_details[:type])
-        final_svg << USPSFlags::Core.trident(flag_details[:type], field_color: flag_details[:color])
-      else
-        final_svg << special_flag(flag_details[:type], level: flag_details[:level], field: field)
-      end
-
-      final_svg << "</g></g>" if flag_details[:style] == :past
-      final_svg << USPSFlags::Core.footer
-
-      output(final_svg, outfile: outfile)
-    end
-
-    def cc_tridents(type, trident_color:)
-      # The side C/C tridents are angled 45 degrees, and intersect the central one at 1/3 up from the bottom
-      trident = USPSFlags::Core.trident(type, color: trident_color)
-      x_distance = USPSFlags::Config::BASE_FLY*4/39
-      y_distance = USPSFlags::Config::BASE_FLY*5/78
-      <<~SVG
-        <g transform="translate(-#{x_distance}, #{y_distance})"><g transform="rotate(-45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})">\n#{trident}</g></g>
-        \n#{trident}
-        <g transform="translate(#{x_distance}, #{y_distance})"><g transform="rotate(45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})">\n#{trident}</g></g>
-      SVG
-    end
-
-    def vc_tridents(type, trident_color:)
-      # V/C tridents are angled 45 degrees, and intersect at 15/32 up from the bottom
-      trident = USPSFlags::Core.trident(type, color: trident_color)
-      x_distance = USPSFlags::Config::BASE_FLY*4/55
-      <<~SVG
-        <g transform="translate(-#{x_distance})"><g transform="rotate(-45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})">\n#{trident}</g></g>
-        <g transform="translate(#{x_distance})"><g transform="rotate(45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})">\n#{trident}</g></g>
-      SVG
-    end
-
-    def three_tridents(type, trident_color:, field_color:)
-      # Cdr and D/C tridents are spaced 1/2 the fly apart with the central one 1/4 the fly above the sides
-      trident = USPSFlags::Core.trident(type, color: trident_color, field_color: field_color)
-      x_distance = USPSFlags::Config::BASE_FLY/4
-      y_distance = USPSFlags::Config::BASE_FLY/16
-      <<~SVG
-        <g transform="translate(-#{x_distance}, #{y_distance})">\n#{trident}</g>
-        <g transform="translate(0, -#{y_distance+1})">\n#{trident}</g>
-        <g transform="translate(#{x_distance}, #{y_distance})">\n#{trident}</g>
-      SVG
-    end
-
-    def two_tridents(type, trident_color:, field_color:)
-      # Lt/C and D/Lt/C tridents are spaced 1/3 the fly apart
-      trident = USPSFlags::Core.trident(type, color: trident_color, field_color: field_color)
-      x_distance = USPSFlags::Config::BASE_FLY/6
-      <<~SVG
-        <g transform="translate(-#{x_distance})">\n#{trident}</g>
-        <g transform="translate(#{x_distance})">\n#{trident}</g>
-      SVG
-    end
-
-    def offset_trident(type, field_color:, field: true)
-      # Swallowtail tridents need to move towards the hoist due to the tails
-      x_distance = USPSFlags::Config::BASE_FLY/10 if field
-      final_svg << "<g transform=\"translate(-#{x_distance})\">" if field
-      final_svg << USPSFlags::Core.trident(type, field_color: field_color, color: :red)
-      final_svg << "</g>" if field
-    end
-
-    def special_flag(type, level:, field: true)
-      # Paths were designed for a base fly of 3000 pixels, but the base was changed for more useful fractions.
-      svg = ""
-      svg << "<g transform=\"translate(#{USPSFlags::Config::BASE_FLY/10})\">" unless field
-      svg << "<g transform=\"scale(#{Rational(USPSFlags::Config::BASE_FLY,3000).to_f})\">"
-      svg << case type
-      when :a
-        USPSFlags::Core.binoculars(level)
-      when :f
-        USPSFlags::Core.trumpet(level)
-      when :fc
-        USPSFlags::Core.anchor
-      when :pc
-        USPSFlags::Core.lighthouse
-      end
-      svg << "</g>"
-      svg << "</g>" unless field
-
-      svg
-    end
-
-    def pennant(type: "CRUISE", outfile: nil, scale: nil)
-      type = type.upcase
-      final_svg = ""
-      title = case type
-      when "CRUISE"
-        "Cruise Pennant"
-      when "OIC"
-        "Officer-in-Charge Pennant"
-      end
-      final_svg << USPSFlags::Core.headers(pennant: true, scale: scale, title: title)
-      final_svg << USPSFlags::Core.pennant(type)
-      final_svg << USPSFlags::Core.footer
-
-      output(final_svg, outfile: outfile)
-    end
-
-    def ensign(outfile: nil, scale: nil)
-      final_svg = ""
-      final_svg << USPSFlags::Core.headers(scale: scale, title: "USPS Ensign")
-      final_svg << USPSFlags::Core.ensign
-      final_svg << USPSFlags::Core.footer
-
-      output(final_svg, outfile: outfile)
-    end
-
-    def wheel(outfile: nil, scale: nil)
-      width = 4327.4667
-      height = 4286.9333
-      final_svg = ""
-      final_svg << USPSFlags::Core.headers(width: width, height: height, scale: scale, title: "USPS Ensign Wheel")
-      final_svg << USPSFlags::Core.wheel
-      final_svg << USPSFlags::Core.footer
-
-      output(final_svg, outfile: outfile)
-    end
-
-    def us(outfile: nil, scale: nil)
-      base_hoist = 2000.to_f
-      base_fly = base_hoist * 1.91
-      hoist = scale.nil? ? base_hoist : (base_hoist / scale)
-      fly = hoist * 1.91
-      final_svg = ""
-      final_svg << USPSFlags::Core.headers(width: fly, height: hoist, scale: scale, title: "US Ensign")
-      final_svg << USPSFlags::Core.us
-      final_svg << USPSFlags::Core.footer
-
-      output(final_svg, outfile: outfile)
-    end
-
     def remove_static_files
       ["SVG", "PNG", "ZIP"].each { |dir| ::FileUtils.rm_rf(Dir.glob("#{USPSFlags::Config.flags_dir}/#{dir}/*")) }
       ["SVG/insignia", "PNG/insignia"].each { |dir| ::FileUtils.mkdir_p("#{USPSFlags::Config.flags_dir}/#{dir}") }
@@ -372,17 +212,6 @@ class USPSFlags::Generate
       rescue => e
         USPSFlags::Helpers.log "x -> #{e.message}"
       end
-    end
-
-    def output(final_svg, outfile: nil)
-      if outfile.nil?
-        puts final_svg, "\n"
-      elsif outfile != ""
-        f = ::File.new(outfile, "w+")
-        f.write(final_svg)
-        f.close
-      end
-      final_svg
     end
   end
 end

@@ -279,6 +279,21 @@ class USPSFlags::Helpers
       log_file.close if log_file.is_a?(File)
     end
 
+    # Prints output to the console or saves to a file, then returns the generated data.
+    #
+    # This should never need to be called directly.
+    # @private
+    def output(final_svg, outfile: nil)
+      if outfile.nil?
+        puts final_svg, "\n"
+      elsif outfile != ""
+        f = ::File.new(outfile, "w+")
+        f.write(final_svg)
+        f.close
+      end
+      final_svg
+    end
+
     private
     def flag_style(rank)
       if valid_flags(:past).include?(rank)
