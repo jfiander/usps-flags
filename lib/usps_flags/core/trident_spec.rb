@@ -5,6 +5,34 @@
 class USPSFlags::Core::TridentSpec
   def initialize(fly: 24, unit: "in")
     @trident_config = USPSFlags::Config.trident
+    configure_sizes(fly)
+    configure_labels(unit)
+  end
+
+  def svg
+    svg = spec_header
+
+    box_width  = USPSFlags::Config::BASE_FLY*5/32
+    box_left   = (USPSFlags::Config::BASE_FLY*27/32)/2
+    box_right  = (USPSFlags::Config::BASE_FLY*37/32)/2
+    box_top    = USPSFlags::Config::BASE_HOIST/4
+    box_bottom = USPSFlags::Config::BASE_HOIST*3/4
+    svg << short_trident(box_top, box_bottom, box_left, box_right, box_width)
+
+    box_top    = USPSFlags::Config::BASE_HOIST*3/16
+    box_bottom = USPSFlags::Config::BASE_HOIST*13/16
+    svg << delta_trident(box_top, box_bottom, box_left, box_right, box_width)
+
+    box_top    = USPSFlags::Config::BASE_HOIST/8
+    box_bottom = USPSFlags::Config::BASE_HOIST*7/8
+    svg << circle_trident(box_top, box_bottom, box_left, box_right, box_width)
+    svg << long_trident(box_top, box_bottom, box_left, box_right, box_width)
+
+    svg
+  end
+
+  private
+  def configure_sizes(fly)
     hoist = (fly*Rational(2,3))
     @hoist = hoist == hoist.to_i ? hoist.to_i : hoist
 
@@ -15,12 +43,15 @@ class USPSFlags::Core::TridentSpec
     else
       @fly, @fly_fraction = fly.to_simplified_a
     end
+
     if hoist == hoist.to_i
       @hoist = hoist.to_i
     else
       @hoist, @hoist_fraction = hoist.to_simplified_a
     end
+  end
 
+  def configure_labels(unit)
     @label_font_size = if Math.sqrt(@fly) > 24
       USPSFlags::Config::BASE_FLY * Math.log(24, Math.sqrt(@fly)) / 60
     else
@@ -35,10 +66,8 @@ class USPSFlags::Core::TridentSpec
     @barb_label = "#{barb_label}#{@unit_text}"
   end
 
-  def svg
-    svg = ""
-
-    svg << <<~SVG
+  def spec_header
+    <<~SVG
       <!-- Field -->
       #{USPSFlags::Core.field}
 
@@ -55,14 +84,10 @@ class USPSFlags::Core::TridentSpec
       </g>
       <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST/4}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/40}px" fill="#041E42" text-anchor="middle">Measurements not specified are the same as on the short trident.</text>
     SVG
+  end
 
-    box_width  = USPSFlags::Config::BASE_FLY*5/32
-    box_left   = (USPSFlags::Config::BASE_FLY*27/32)/2
-    box_right  = (USPSFlags::Config::BASE_FLY*37/32)/2
-    box_top    = USPSFlags::Config::BASE_HOIST/4
-    box_bottom = USPSFlags::Config::BASE_HOIST*3/4
-
-    svg << <<~SVG
+  def short_trident(box_top, box_bottom, box_left, box_right, box_width)
+    <<~SVG
       <!-- Short Trident -->
       <g transform="translate(-#{USPSFlags::Config::BASE_FLY*14/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
         <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*1/40}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/30}px" font-weight="bold" fill="#BF0D3E" text-anchor="middle">Short</text>
@@ -102,11 +127,10 @@ class USPSFlags::Core::TridentSpec
           <text x="#{@trident_config[:center_point]+@trident_config[:bar_width]*5/4}" y="#{box_top+@trident_config[:point_height]-@trident_config[:main_point_barb]}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_FLY/100}px" fill="#041E42" text-anchor="left">#{@barb_label}</text>
       </g></g>
     SVG
+  end
 
-    box_top    = USPSFlags::Config::BASE_HOIST*3/16
-    box_bottom = USPSFlags::Config::BASE_HOIST*13/16
-
-    svg << <<~SVG
+  def delta_trident(box_top, box_bottom, box_left, box_right, box_width)
+    <<~SVG
       <!-- Delta Trident -->
       <g transform="translate(#{USPSFlags::Config::BASE_FLY*5/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
         <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*1/40}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/30}px" font-weight="bold" fill="#BF0D3E" text-anchor="middle">Delta</text>
@@ -126,11 +150,10 @@ class USPSFlags::Core::TridentSpec
           #{USPSFlags::Helpers.v_arrow(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY*2/11, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
       </g></g>
     SVG
+  end
 
-    box_top    = USPSFlags::Config::BASE_HOIST/8
-    box_bottom = USPSFlags::Config::BASE_HOIST*7/8
-
-    svg << <<~SVG
+  def circle_trident(box_top, box_bottom, box_left, box_right, box_width)
+    <<~SVG
       <!-- Circle Trident -->
       <g transform="translate(#{USPSFlags::Config::BASE_FLY*23/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
         <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*1/40}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/30}px" font-weight="bold" fill="#BF0D3E" text-anchor="middle">Circle</text>
@@ -150,8 +173,10 @@ class USPSFlags::Core::TridentSpec
           #{USPSFlags::Helpers.v_arrow(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY/4.5, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
       </g></g>
     SVG
+  end
 
-    svg << <<~SVG
+  def long_trident(box_top, box_bottom, box_left, box_right, box_width)
+    <<~SVG
       <!-- Long Trident -->
       <g transform="translate(#{USPSFlags::Config::BASE_FLY*40/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
         <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*1/40}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/30}px" font-weight="bold" fill="#BF0D3E" text-anchor="middle">Long</text>
@@ -169,7 +194,5 @@ class USPSFlags::Core::TridentSpec
           #{USPSFlags::Helpers.v_arrow(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY/4.5, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
       </g></g>
     SVG
-
-    svg
   end
 end
