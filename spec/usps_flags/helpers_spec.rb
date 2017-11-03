@@ -7,7 +7,10 @@ describe USPSFlags::Helpers do
     end
 
     it "should return all officer flags but nothing else when given type :officer" do
-      expect(USPSFlags::Helpers.valid_flags(:officer).sort).to eql(%w[PLTC PC PORTCAP FLEETCAP LT FLT 1LT LTC CDR PDLTC PDC DLT DAIDE DFLT D1LT DLTC DC PSTFC PRC PVC PCC NAIDE NFLT STFC RC VC CC].sort)
+      expect(USPSFlags::Helpers.valid_flags(:officer).sort).to eql(%w[
+        PLTC PC PORTCAP FLEETCAP LT FLT 1LT LTC CDR PDLTC PDC DLT DAIDE
+        DFLT D1LT DLTC DC PSTFC PRC PVC PCC NAIDE NFLT STFC RC VC CC
+      ].sort)
     end
   end
 end
