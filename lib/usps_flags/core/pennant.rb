@@ -17,22 +17,22 @@ class USPSFlags::Core::Pennant
     elsif @type == "CRUISE"
       svg = <<~FIELD
         <path d="M 0 0
-          l #{fly*10/36} #{hoist*5/36}
-          l 0 #{hoist*26/36}
-          l -#{fly*10/36} #{hoist*5/36}
+          l #{@fly*10/36} #{@hoist*5/36}
+          l 0 #{@hoist*26/36}
+          l -#{@fly*10/36} #{@hoist*5/36}
         " fill="#{USPSFlags::Config::RED}" />
-        <path d="M #{fly*10/36} #{hoist*5/36}
-          l #{fly*11/36} #{hoist*5.5/36}
-          l 0 #{hoist*15/36}
-          l -#{fly*11/36} #{hoist*5.5/36}
+        <path d="M #{@fly*10/36} #{@hoist*5/36}
+          l #{@fly*11/36} #{@hoist*5.5/36}
+          l 0 #{@hoist*15/36}
+          l -#{@fly*11/36} #{@hoist*5.5/36}
         " fill="#FFFFFF" />
-        <path d="M #{fly*21/36} #{hoist*10.5/36}
-          l #{fly*15/36} #{hoist*7.5/36}
-          l -#{fly*15/36} #{hoist*7.5/36}
+        <path d="M #{@fly*21/36} #{@hoist*10.5/36}
+          l #{@fly*15/36} #{@hoist*7.5/36}
+          l -#{@fly*15/36} #{@hoist*7.5/36}
         " fill="#{USPSFlags::Config::BLUE}" />
         <path d="M 0 0
-          l #{fly} #{hoist/2}
-          l -#{fly} #{hoist/2}
+          l #{@fly} #{@hoist/2}
+          l -#{@fly} #{@hoist/2}
         " fill="none" stroke="#000000" stroke-width="2" />
       FIELD
 
