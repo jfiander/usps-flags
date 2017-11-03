@@ -8,7 +8,7 @@ class USPSFlags::Generate
     # @param [Boolean] field Whether to generate the flag field (including any border).
     # @param [String] scale The image scale divisor factor.
     # @return [String] Returns the SVG data.
-    def get(flag, outfile: nil, scale: nil, field: true)
+    def svg(flag, outfile: nil, scale: nil, field: true)
       flag = flag.upcase.delete("/", "_", "PENNANT")
       if ["CRUISE", "OIC"].include?(flag)
         USPSFlags::Generate::Flag.pennant(type: flag, outfile: outfile, scale: scale)

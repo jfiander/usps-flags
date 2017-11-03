@@ -74,7 +74,7 @@ USPSFlags::Generate.zips svg: true, png: true
 To generate an individual SVG file, run:
 
 ```ruby
-USPSFlags::Generate.get "flag", outfile: nil, scale: nil, field: true
+USPSFlags::Generate.svg "flag", outfile: nil, scale: nil, field: true
 ```
 
 - `outfile` specifies where to save the file. If left as `nil`, this method will

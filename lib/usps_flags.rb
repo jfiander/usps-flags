@@ -131,7 +131,7 @@ class USPSFlags
   #
   # @return [String] Returns the SVG file output path, or the svg data if no path was specified.
   def svg
-    svg = USPSFlags::Generate.get(self.type, outfile: self.svg_file, scale: self.scale, field: self.field)
+    svg = USPSFlags::Generate.svg(self.type, outfile: self.svg_file, scale: self.scale, field: self.field)
     (self.svg_file.nil? || self.svg_file == "") ? svg : self.svg_file
   end
 
