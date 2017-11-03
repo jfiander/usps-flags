@@ -118,14 +118,7 @@ class USPSFlags::Generate
       final_svg << USPSFlags::Core.trident_spec(fly: fly, unit: unit)
       final_svg << USPSFlags::Core.footer
 
-      if outfile.nil?
-        puts final_svg, "\n"
-      else
-        f = ::File.new(outfile, "w+")
-        f.write(final_svg)
-        f.close
-      end
-      final_svg
+      output(final_svg, outfile: outfile)
     end
 
     private
@@ -143,77 +136,101 @@ class USPSFlags::Generate
       trident_color = field ? :white : flag_details[:color]
 
       final_svg << USPSFlags::Core.field(style: flag_details[:style], color: flag_details[:color]) if field
-
       final_svg << "<g transform=\"translate(-150, 400)\"><g transform=\"scale(0.58333)\">" if flag_details[:style] == :past
 
       if flag_details[:type] == :n && flag_details[:count] == 3
-        # The side C/C tridents are angled 45 degrees, and intersect the central one at 1/3 up from the bottom
-        trident = USPSFlags::Core.trident(flag_details[:type], color: trident_color)
-        x_distance = USPSFlags::Config::BASE_FLY*4/39
-        y_distance = USPSFlags::Config::BASE_FLY*5/78
-        final_svg << "<g transform=\"translate(-#{x_distance}, #{y_distance})\"><g transform=\"rotate(-45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})\">\n#{trident}</g></g>"
-        final_svg << "\n#{trident}"
-        final_svg << "<g transform=\"translate(#{x_distance}, #{y_distance})\"><g transform=\"rotate(45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})\">\n#{trident}</g></g>"
+        final_svg << cc_tridents(flag_details[:type], trident_color: trident_color)
       elsif flag_details[:type] == :n && flag_details[:count] == 2
-        # V/C tridents are angled 45 degrees, and intersect at 15/32 up from the bottom
-        trident = USPSFlags::Core.trident(flag_details[:type], color: trident_color)
-        x_distance = USPSFlags::Config::BASE_FLY*4/55
-        final_svg << "<g transform=\"translate(-#{x_distance})\"><g transform=\"rotate(-45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})\">\n#{trident}</g></g>"
-        final_svg << "<g transform=\"translate(#{x_distance})\"><g transform=\"rotate(45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})\">\n#{trident}</g></g>"
+        final_svg << vc_tridents(flag_details[:type], trident_color: trident_color)
       elsif [:s, :d].include?(flag_details[:type]) && flag_details[:count] == 3
-        # Cdr and D/C tridents are spaced 1/2 the fly apart with the central one 1/4 the fly above the sides
-        trident = USPSFlags::Core.trident(flag_details[:type], color: trident_color, field_color: flag_details[:color])
-        x_distance = USPSFlags::Config::BASE_FLY/4
-        y_distance = USPSFlags::Config::BASE_FLY/16
-        final_svg << "<g transform=\"translate(-#{x_distance}, #{y_distance})\">\n#{trident}</g>"
-        final_svg << "<g transform=\"translate(0, -#{y_distance+1})\">\n#{trident}</g>"
-        final_svg << "<g transform=\"translate(#{x_distance}, #{y_distance})\">\n#{trident}</g>"
+        final_svg << three_tridents(flag_details[:type], trident_color: trident_color, field_color: flag_details[:color])
       elsif [:s, :d].include?(flag_details[:type]) && flag_details[:count] == 2
-        # Lt/C and D/Lt/C tridents are spaced 1/3 the fly apart
-        trident = USPSFlags::Core.trident(flag_details[:type], color: trident_color, field_color: flag_details[:color])
-        x_distance = USPSFlags::Config::BASE_FLY/6
-        final_svg << "<g transform=\"translate(-#{x_distance})\">\n#{trident}</g>"
-        final_svg << "<g transform=\"translate(#{x_distance})\">\n#{trident}</g>"
+        final_svg << two_tridents(flag_details[:type], trident_color: trident_color, field_color: flag_details[:color])
       elsif [:s, :d, :stf, :n].include?(flag_details[:type]) && %w[LT DLT].include?(rank)
-        # Swallowtail tridents need to move towards the hoist due to the tails
-        x_distance = USPSFlags::Config::BASE_FLY/10 if field
-        final_svg << "<g transform=\"translate(-#{x_distance})\">" if field
-        final_svg << USPSFlags::Core.trident(flag_details[:type], field_color: flag_details[:color], color: :red)
-        final_svg << "</g>" if field
+        final_svg << offset_trident(flag_details[:type], field_color: flag_details[:color], field: field)
       elsif [:s, :d, :stf, :n].include?(flag_details[:type])
-        # All other tridents are centered on the field
         final_svg << USPSFlags::Core.trident(flag_details[:type], field_color: flag_details[:color])
       else
-        # Special Flags
-        # Paths were designed for a base fly of 3000 pixels, but the base was changed for more useful fractions.
-        final_svg << "<g transform=\"translate(#{USPSFlags::Config::BASE_FLY/10})\">" unless field
-        final_svg << "<g transform=\"scale(#{Rational(USPSFlags::Config::BASE_FLY,3000).to_f})\">"
-        case flag_details[:type]
-        when :a
-          final_svg << USPSFlags::Core.binoculars(flag_details[:level])
-        when :f
-          final_svg << USPSFlags::Core.trumpet(flag_details[:level])
-        when :fc
-          final_svg << USPSFlags::Core.anchor
-        when :pc
-          final_svg << USPSFlags::Core.lighthouse
-        end
-        final_svg << "</g>"
-        final_svg << "</g>" unless field
+        final_svg << special_flag(flag_details[:type], level: flag_details[:level], field: field)
       end
 
       final_svg << "</g></g>" if flag_details[:style] == :past
-
       final_svg << USPSFlags::Core.footer
 
-      if outfile.nil?
-        puts final_svg, "\n"
-      elsif outfile != ""
-        f = ::File.new(outfile, "w+")
-        f.write(final_svg)
-        f.close
+      output(final_svg, outfile: outfile)
+    end
+
+    def cc_tridents(type, trident_color:)
+      # The side C/C tridents are angled 45 degrees, and intersect the central one at 1/3 up from the bottom
+      trident = USPSFlags::Core.trident(type, color: trident_color)
+      x_distance = USPSFlags::Config::BASE_FLY*4/39
+      y_distance = USPSFlags::Config::BASE_FLY*5/78
+      <<~SVG
+        <g transform="translate(-#{x_distance}, #{y_distance})"><g transform="rotate(-45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})">\n#{trident}</g></g>
+        \n#{trident}
+        <g transform="translate(#{x_distance}, #{y_distance})"><g transform="rotate(45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})">\n#{trident}</g></g>
+      SVG
+    end
+
+    def vc_tridents(type, trident_color:)
+      # V/C tridents are angled 45 degrees, and intersect at 15/32 up from the bottom
+      trident = USPSFlags::Core.trident(type, color: trident_color)
+      x_distance = USPSFlags::Config::BASE_FLY*4/55
+      <<~SVG
+        <g transform="translate(-#{x_distance})"><g transform="rotate(-45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})">\n#{trident}</g></g>
+        <g transform="translate(#{x_distance})"><g transform="rotate(45, #{USPSFlags::Config::BASE_FLY/2}, #{USPSFlags::Config::BASE_HOIST/2})">\n#{trident}</g></g>
+      SVG
+    end
+
+    def three_tridents(type, trident_color:, field_color:)
+      # Cdr and D/C tridents are spaced 1/2 the fly apart with the central one 1/4 the fly above the sides
+      trident = USPSFlags::Core.trident(type, color: trident_color, field_color: field_color)
+      x_distance = USPSFlags::Config::BASE_FLY/4
+      y_distance = USPSFlags::Config::BASE_FLY/16
+      <<~SVG
+        <g transform="translate(-#{x_distance}, #{y_distance})">\n#{trident}</g>
+        <g transform="translate(0, -#{y_distance+1})">\n#{trident}</g>
+        <g transform="translate(#{x_distance}, #{y_distance})">\n#{trident}</g>
+      SVG
+    end
+
+    def two_tridents(type, trident_color:, field_color:)
+      # Lt/C and D/Lt/C tridents are spaced 1/3 the fly apart
+      trident = USPSFlags::Core.trident(type, color: trident_color, field_color: field_color)
+      x_distance = USPSFlags::Config::BASE_FLY/6
+      <<~SVG
+        <g transform="translate(-#{x_distance})">\n#{trident}</g>
+        <g transform="translate(#{x_distance})">\n#{trident}</g>
+      SVG
+    end
+
+    def offset_trident(type, field_color:, field: true)
+      # Swallowtail tridents need to move towards the hoist due to the tails
+      x_distance = USPSFlags::Config::BASE_FLY/10 if field
+      final_svg << "<g transform=\"translate(-#{x_distance})\">" if field
+      final_svg << USPSFlags::Core.trident(type, field_color: field_color, color: :red)
+      final_svg << "</g>" if field
+    end
+
+    def special_flag(type, level:, field: true)
+      # Paths were designed for a base fly of 3000 pixels, but the base was changed for more useful fractions.
+      svg = ""
+      svg << "<g transform=\"translate(#{USPSFlags::Config::BASE_FLY/10})\">" unless field
+      svg << "<g transform=\"scale(#{Rational(USPSFlags::Config::BASE_FLY,3000).to_f})\">"
+      svg << case type
+      when :a
+        USPSFlags::Core.binoculars(level)
+      when :f
+        USPSFlags::Core.trumpet(level)
+      when :fc
+        USPSFlags::Core.anchor
+      when :pc
+        USPSFlags::Core.lighthouse
       end
-      final_svg
+      svg << "</g>"
+      svg << "</g>" unless field
+
+      svg
     end
 
     def pennant(type: "CRUISE", outfile: nil, scale: nil)
@@ -229,14 +246,7 @@ class USPSFlags::Generate
       final_svg << USPSFlags::Core.pennant(type)
       final_svg << USPSFlags::Core.footer
 
-      if outfile.nil?
-        puts final_svg, "\n"
-      elsif outfile != ""
-        f = ::File.new(outfile, "w+")
-        f.write(final_svg)
-        f.close
-      end
-      final_svg
+      output(final_svg, outfile: outfile)
     end
 
     def ensign(outfile: nil, scale: nil)
@@ -245,14 +255,7 @@ class USPSFlags::Generate
       final_svg << USPSFlags::Core.ensign
       final_svg << USPSFlags::Core.footer
 
-      if outfile.nil?
-        puts final_svg, "\n"
-      elsif outfile != ""
-        f = ::File.new(outfile, "w+")
-        f.write(final_svg)
-        f.close
-      end
-      final_svg
+      output(final_svg, outfile: outfile)
     end
 
     def wheel(outfile: nil, scale: nil)
@@ -263,14 +266,7 @@ class USPSFlags::Generate
       final_svg << USPSFlags::Core.wheel
       final_svg << USPSFlags::Core.footer
 
-      if outfile.nil?
-        puts final_svg, "\n"
-      elsif outfile != ""
-        f = ::File.new(outfile, "w+")
-        f.write(final_svg)
-        f.close
-      end
-      final_svg
+      output(final_svg, outfile: outfile)
     end
 
     def us(outfile: nil, scale: nil)
@@ -283,14 +279,7 @@ class USPSFlags::Generate
       final_svg << USPSFlags::Core.us
       final_svg << USPSFlags::Core.footer
 
-      if outfile.nil?
-        puts final_svg, "\n"
-      elsif outfile != ""
-        f = ::File.new(outfile, "w+")
-        f.write(final_svg)
-        f.close
-      end
-      final_svg
+      output(final_svg, outfile: outfile)
     end
 
     def remove_static_files
@@ -386,6 +375,17 @@ class USPSFlags::Generate
       rescue => e
         USPSFlags::Helpers.log "x -> #{e.message}"
       end
+    end
+
+    def output(final_svg, outfile: nil)
+      if outfile.nil?
+        puts final_svg, "\n"
+      elsif outfile != ""
+        f = ::File.new(outfile, "w+")
+        f.write(final_svg)
+        f.close
+      end
+      final_svg
     end
   end
 end
