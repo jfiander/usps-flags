@@ -112,12 +112,12 @@ class USPSFlags::Generate
     # @return [String] Returns the SVG data.
     def spec(outfile: nil, fly: nil, unit: nil, scale: nil)
       fly = fly.nil? ? USPSFlags::Config::BASE_FLY : fly
-      final_svg = ""
-      final_svg << USPSFlags::Core.headers(scale: scale, title: "USPS Trident Specifications")
-      final_svg << USPSFlags::Core.trident_spec(fly: fly, unit: unit)
-      final_svg << USPSFlags::Core.footer
+      svg = ""
+      svg << USPSFlags::Core.headers(scale: scale, title: "USPS Trident Specifications")
+      svg << USPSFlags::Core.trident_spec(fly: fly, unit: unit)
+      svg << USPSFlags::Core.footer
 
-      USPSFlags::Helpers.output(final_svg, outfile: outfile)
+      USPSFlags::Helpers.output(svg, outfile: outfile)
     end
 
     private

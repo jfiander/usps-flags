@@ -153,15 +153,15 @@ class USPSFlags::Helpers
     #
     # This should never need to be called directly.
     # @private
-    def output(final_svg, outfile: nil)
+    def output(svg, outfile: nil)
       if outfile.nil?
-        puts final_svg, "\n"
+        puts svg, "\n"
       elsif outfile != ""
         f = ::File.new(outfile, "w+")
-        f.write(final_svg)
+        f.write(svg)
         f.close
       end
-      final_svg
+      svg
     end
 
     private
