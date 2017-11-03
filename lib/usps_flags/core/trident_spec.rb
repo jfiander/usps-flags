@@ -12,21 +12,20 @@ class USPSFlags::Core::TridentSpec
   def svg
     svg = spec_header
 
-    box_width  = USPSFlags::Config::BASE_FLY*5/32
     box_left   = (USPSFlags::Config::BASE_FLY*27/32)/2
     box_right  = (USPSFlags::Config::BASE_FLY*37/32)/2
     box_top    = USPSFlags::Config::BASE_HOIST/4
     box_bottom = USPSFlags::Config::BASE_HOIST*3/4
-    svg << short_trident(box_top, box_bottom, box_left, box_right, box_width)
+    svg << short_trident(box_top, box_bottom, box_left, box_right)
 
     box_top    = USPSFlags::Config::BASE_HOIST*3/16
     box_bottom = USPSFlags::Config::BASE_HOIST*13/16
-    svg << delta_trident(box_top, box_bottom, box_left, box_right, box_width)
+    svg << delta_trident(box_top, box_bottom, box_left, box_right)
 
     box_top    = USPSFlags::Config::BASE_HOIST/8
     box_bottom = USPSFlags::Config::BASE_HOIST*7/8
-    svg << circle_trident(box_top, box_bottom, box_left, box_right, box_width)
-    svg << long_trident(box_top, box_bottom, box_left, box_right, box_width)
+    svg << circle_trident(box_top, box_bottom, box_left, box_right)
+    svg << long_trident(box_top, box_bottom, box_left, box_right)
 
     svg
   end
@@ -86,7 +85,7 @@ class USPSFlags::Core::TridentSpec
     SVG
   end
 
-  def short_trident(box_top, box_bottom, box_left, box_right, box_width)
+  def short_trident(box_top, box_bottom, box_left, box_right)
     <<~SVG
       <!-- Short Trident -->
       <g transform="translate(-#{USPSFlags::Config::BASE_FLY*14/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
@@ -96,7 +95,7 @@ class USPSFlags::Core::TridentSpec
         #{USPSFlags::Core::Trident.new(:s).svg}
 
         <!-- Boundary box -->
-        <rect x="#{box_left}" y="#{box_top}" width="#{box_width}" height="#{USPSFlags::Config::BASE_HOIST/2}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
+        <rect x="#{box_left}" y="#{box_top}" width="#{box_right-box_left}" height="#{USPSFlags::Config::BASE_HOIST/2}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
 
         <!-- Right -->
           #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top, box_top+@trident_config[:bar_width], box_right, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Side spike top gap -->
@@ -129,7 +128,7 @@ class USPSFlags::Core::TridentSpec
     SVG
   end
 
-  def delta_trident(box_top, box_bottom, box_left, box_right, box_width)
+  def delta_trident(box_top, box_bottom, box_left, box_right)
     <<~SVG
       <!-- Delta Trident -->
       <g transform="translate(#{USPSFlags::Config::BASE_FLY*5/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
@@ -139,7 +138,7 @@ class USPSFlags::Core::TridentSpec
         #{USPSFlags::Core::Trident.new(:d).svg}
 
         <!-- Boundary box -->
-        <rect x="#{box_left}" y="#{box_top}" width="#{box_width}" height="#{USPSFlags::Config::BASE_HOIST*5/8}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
+        <rect x="#{box_left}" y="#{box_top}" width="#{box_right-box_left}" height="#{USPSFlags::Config::BASE_HOIST*5/8}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
 
         <!-- Right -->
           #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_bottom-@trident_config[:delta_from_bottom]-@trident_config[:bar_width]-@trident_config[:delta_gap_height], box_bottom-@trident_config[:delta_from_bottom]-@trident_config[:bar_width], @trident_config[:center_point], @trident_config[:center_point]+@trident_config[:delta_gap_width], fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Delta gap height -->
@@ -152,7 +151,7 @@ class USPSFlags::Core::TridentSpec
     SVG
   end
 
-  def circle_trident(box_top, box_bottom, box_left, box_right, box_width)
+  def circle_trident(box_top, box_bottom, box_left, box_right)
     <<~SVG
       <!-- Circle Trident -->
       <g transform="translate(#{USPSFlags::Config::BASE_FLY*23/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
@@ -162,7 +161,7 @@ class USPSFlags::Core::TridentSpec
         #{USPSFlags::Core::Trident.new(:stf).svg}
 
         <!-- Boundary box -->
-        <rect x="#{box_left}" y="#{box_top}" width="#{box_width}" height="#{USPSFlags::Config::BASE_HOIST*3/4}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
+        <rect x="#{box_left}" y="#{box_top}" width="#{box_right-box_left}" height="#{USPSFlags::Config::BASE_HOIST*3/4}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
 
         <!-- Right -->
           #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]*2, box_top+@trident_config[:crossbar_from_top]+@trident_config[:width], @trident_config[:center_point], @trident_config[:center_point], fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Inner circle diameter -->
@@ -175,7 +174,7 @@ class USPSFlags::Core::TridentSpec
     SVG
   end
 
-  def long_trident(box_top, box_bottom, box_left, box_right, box_width)
+  def long_trident(box_top, box_bottom, box_left, box_right)
     <<~SVG
       <!-- Long Trident -->
       <g transform="translate(#{USPSFlags::Config::BASE_FLY*40/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
@@ -185,7 +184,7 @@ class USPSFlags::Core::TridentSpec
         #{USPSFlags::Core::Trident.new(:n).svg}
 
         <!-- Boundary box -->
-        <rect x="#{box_left}" y="#{box_top}" width="#{box_width}" height="#{USPSFlags::Config::BASE_HOIST*3/4}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
+        <rect x="#{box_left}" y="#{box_top}" width="#{box_right-box_left}" height="#{USPSFlags::Config::BASE_HOIST*3/4}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
 
         <!-- Right -->
           #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]*3, box_bottom, @trident_config[:center_point]+@trident_config[:hash_width]/2, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash to bottom -->
