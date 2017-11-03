@@ -23,6 +23,11 @@ class USPSFlags
     require "usps_flags/generate/#{d}"
   end
 
+  # Dir['./lib/usps_flags/helpers/**'].map { |d| d.split("/").last.split(".rb").first }
+  %w[builders spec_arrows].each do |d|
+    require "usps_flags/helpers/#{d}"
+  end
+
   # Constructor for individual flags.
   #
   # @example Generate insignia at default scale for Lt/C

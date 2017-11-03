@@ -99,26 +99,26 @@ class USPSFlags::Core::TridentSpec
         <rect x="#{box_left}" y="#{box_top}" width="#{box_width}" height="#{USPSFlags::Config::BASE_HOIST/2}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
 
         <!-- Right -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_top, box_top+@trident_config[:bar_width], box_right, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Side spike top gap -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_top+@trident_config[:bar_width], box_top+@trident_config[:bar_width]*2+@trident_config[:point_height]+@trident_config[:side_spike_height], nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Top gap to hash gap -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_top+@trident_config[:bar_width]*2+@trident_config[:point_height]+@trident_config[:side_spike_height], box_top+@trident_config[:bar_width]*3+@trident_config[:point_height]+@trident_config[:side_spike_height], nil, @trident_config[:center_point]+@trident_config[:hash_width]/2, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Crossbar to hash gap -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top, box_top+@trident_config[:bar_width], box_right, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Side spike top gap -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:bar_width], box_top+@trident_config[:bar_width]*2+@trident_config[:point_height]+@trident_config[:side_spike_height], nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Top gap to hash gap -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:bar_width]*2+@trident_config[:point_height]+@trident_config[:side_spike_height], box_top+@trident_config[:bar_width]*3+@trident_config[:point_height]+@trident_config[:side_spike_height], nil, @trident_config[:center_point]+@trident_config[:hash_width]/2, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Crossbar to hash gap -->
 
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_top+@trident_config[:bar_width]*3+@trident_config[:point_height]+@trident_config[:side_spike_height], box_top+@trident_config[:bar_width]*4+@trident_config[:point_height]+@trident_config[:side_spike_height], nil, @trident_config[:center_point]+@trident_config[:hash_width]/2, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_top+@trident_config[:bar_width]*4+@trident_config[:point_height]+@trident_config[:side_spike_height], box_bottom, nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash to bottom -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:bar_width]*3+@trident_config[:point_height]+@trident_config[:side_spike_height], box_top+@trident_config[:bar_width]*4+@trident_config[:point_height]+@trident_config[:side_spike_height], nil, @trident_config[:center_point]+@trident_config[:hash_width]/2, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:bar_width]*4+@trident_config[:point_height]+@trident_config[:side_spike_height], box_bottom, nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash to bottom -->
 
         <!-- Left -->
-          #{USPSFlags::Helpers.v_arrow(box_left-@trident_config[:bar_width]*5.25, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Boundary height -->
-          #{USPSFlags::Helpers.v_arrow(box_left-@trident_config[:bar_width]*0.75, box_top, box_top+@trident_config[:point_height], nil, @trident_config[:center_point]-@trident_config[:bar_width], fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/26, label_offset_y: -USPSFlags::Config::BASE_FLY/100, font_size: @label_font_size, label_align: "middle")} <!-- Main point height -->
-          #{USPSFlags::Helpers.v_arrow(box_left-@trident_config[:bar_width]*1.5, box_top+@trident_config[:bar_width], box_top+@trident_config[:bar_width]+@trident_config[:point_height], box_left, box_left+@trident_config[:bar_width], fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/24, font_size: @label_font_size, label_align: "middle")} <!-- Side point height -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_left-@trident_config[:bar_width]*5.25, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Boundary height -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_left-@trident_config[:bar_width]*0.75, box_top, box_top+@trident_config[:point_height], nil, @trident_config[:center_point]-@trident_config[:bar_width], fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/26, label_offset_y: -USPSFlags::Config::BASE_FLY/100, font_size: @label_font_size, label_align: "middle")} <!-- Main point height -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_left-@trident_config[:bar_width]*1.5, box_top+@trident_config[:bar_width], box_top+@trident_config[:bar_width]+@trident_config[:point_height], box_left, box_left+@trident_config[:bar_width], fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/24, font_size: @label_font_size, label_align: "middle")} <!-- Side point height -->
 
         <!-- Bottom -->
-          #{USPSFlags::Helpers.h_arrow(box_bottom+@trident_config[:bar_width], @trident_config[:center_point]-@trident_config[:bar_width]/2, @trident_config[:center_point]+@trident_config[:bar_width]/2, box_bottom, box_bottom, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Bar width -->
-          #{USPSFlags::Helpers.h_arrow(box_bottom+@trident_config[:bar_width]*2.5, @trident_config[:center_point]-@trident_config[:hash_width]/2, @trident_config[:center_point]+@trident_config[:hash_width]/2, box_top+@trident_config[:bar_width]*4+@trident_config[:point_height]+@trident_config[:side_spike_height], box_top+@trident_config[:bar_width]*4+@trident_config[:point_height]+@trident_config[:side_spike_height], fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash width -->
-          #{USPSFlags::Helpers.h_arrow(box_bottom+@trident_config[:bar_width]*4, box_left, box_right, box_bottom, box_bottom, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Boundary width -->
+          #{USPSFlags::Helpers::SpecArrows.horizontal(box_bottom+@trident_config[:bar_width], @trident_config[:center_point]-@trident_config[:bar_width]/2, @trident_config[:center_point]+@trident_config[:bar_width]/2, box_bottom, box_bottom, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Bar width -->
+          #{USPSFlags::Helpers::SpecArrows.horizontal(box_bottom+@trident_config[:bar_width]*2.5, @trident_config[:center_point]-@trident_config[:hash_width]/2, @trident_config[:center_point]+@trident_config[:hash_width]/2, box_top+@trident_config[:bar_width]*4+@trident_config[:point_height]+@trident_config[:side_spike_height], box_top+@trident_config[:bar_width]*4+@trident_config[:point_height]+@trident_config[:side_spike_height], fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash width -->
+          #{USPSFlags::Helpers::SpecArrows.horizontal(box_bottom+@trident_config[:bar_width]*4, box_left, box_right, box_bottom, box_bottom, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Boundary width -->
 
         <!-- Top -->
-          #{USPSFlags::Helpers.h_arrow(box_top-@trident_config[:bar_width], box_left, box_left+@trident_config[:bar_width]*3/2, box_top, box_top+@trident_config[:bar_width]+@trident_config[:point_height], fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/60, font_size: @label_font_size)} <!-- Side point width -->
-          #{USPSFlags::Helpers.h_arrow(box_top-@trident_config[:bar_width]*2.5, @trident_config[:center_point]-@trident_config[:bar_width], @trident_config[:center_point]+@trident_config[:bar_width], box_top+@trident_config[:point_height], box_top+@trident_config[:point_height], fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/60, font_size: @label_font_size)} <!-- Main point width -->
+          #{USPSFlags::Helpers::SpecArrows.horizontal(box_top-@trident_config[:bar_width], box_left, box_left+@trident_config[:bar_width]*3/2, box_top, box_top+@trident_config[:bar_width]+@trident_config[:point_height], fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/60, font_size: @label_font_size)} <!-- Side point width -->
+          #{USPSFlags::Helpers::SpecArrows.horizontal(box_top-@trident_config[:bar_width]*2.5, @trident_config[:center_point]-@trident_config[:bar_width], @trident_config[:center_point]+@trident_config[:bar_width], box_top+@trident_config[:point_height], box_top+@trident_config[:point_height], fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/60, font_size: @label_font_size)} <!-- Main point width -->
 
         <!-- Overlay -->
           <!-- Main point barb -->
@@ -142,12 +142,12 @@ class USPSFlags::Core::TridentSpec
         <rect x="#{box_left}" y="#{box_top}" width="#{box_width}" height="#{USPSFlags::Config::BASE_HOIST*5/8}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
 
         <!-- Right -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_bottom-@trident_config[:delta_from_bottom]-@trident_config[:bar_width]-@trident_config[:delta_gap_height], box_bottom-@trident_config[:delta_from_bottom]-@trident_config[:bar_width], @trident_config[:center_point], @trident_config[:center_point]+@trident_config[:delta_gap_width], fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Delta gap height -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_bottom-@trident_config[:delta_from_bottom]-@trident_config[:bar_width], box_bottom-@trident_config[:delta_from_bottom], nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Delta width -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_bottom-@trident_config[:delta_from_bottom], box_bottom, nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Delta to bottom -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_bottom-@trident_config[:delta_from_bottom]-@trident_config[:bar_width]-@trident_config[:delta_gap_height], box_bottom-@trident_config[:delta_from_bottom]-@trident_config[:bar_width], @trident_config[:center_point], @trident_config[:center_point]+@trident_config[:delta_gap_width], fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Delta gap height -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_bottom-@trident_config[:delta_from_bottom]-@trident_config[:bar_width], box_bottom-@trident_config[:delta_from_bottom], nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Delta width -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_bottom-@trident_config[:delta_from_bottom], box_bottom, nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Delta to bottom -->
 
         <!-- Left -->
-          #{USPSFlags::Helpers.v_arrow(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY*2/11, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY*2/11, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
       </g></g>
     SVG
   end
@@ -165,12 +165,12 @@ class USPSFlags::Core::TridentSpec
         <rect x="#{box_left}" y="#{box_top}" width="#{box_width}" height="#{USPSFlags::Config::BASE_HOIST*3/4}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
 
         <!-- Right -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]*2, box_top+@trident_config[:crossbar_from_top]+@trident_config[:width], @trident_config[:center_point], @trident_config[:center_point], fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Inner circle diameter -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]+@trident_config[:width], nil, @trident_config[:center_point]+@trident_config[:bar_width]/2, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Outer circle diameter -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]+@trident_config[:width], box_bottom, nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Circle to bottom -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]*2, box_top+@trident_config[:crossbar_from_top]+@trident_config[:width], @trident_config[:center_point], @trident_config[:center_point], fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Inner circle diameter -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]+@trident_config[:width], nil, @trident_config[:center_point]+@trident_config[:bar_width]/2, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Outer circle diameter -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]+@trident_config[:width], box_bottom, nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Circle to bottom -->
 
         <!-- Left -->
-          #{USPSFlags::Helpers.v_arrow(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY/4.5, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY/4.5, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
       </g></g>
     SVG
   end
@@ -188,10 +188,10 @@ class USPSFlags::Core::TridentSpec
         <rect x="#{box_left}" y="#{box_top}" width="#{box_width}" height="#{USPSFlags::Config::BASE_HOIST*3/4}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
 
         <!-- Right -->
-          #{USPSFlags::Helpers.v_arrow(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]*3, box_bottom, @trident_config[:center_point]+@trident_config[:hash_width]/2, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash to bottom -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]*3, box_bottom, @trident_config[:center_point]+@trident_config[:hash_width]/2, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash to bottom -->
 
         <!-- Left -->
-          #{USPSFlags::Helpers.v_arrow(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY/4.5, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
+          #{USPSFlags::Helpers::SpecArrows.vertical(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY/4.5, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
       </g></g>
     SVG
   end
