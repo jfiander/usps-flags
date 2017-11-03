@@ -55,13 +55,12 @@ class USPSFlags::Generate
     def all(svg: true, png: true, zips: true, reset: true)
       remove_static_files if reset
 
-      max_length = USPSFlags::Helpers.valid_flags(:all).map(&:length).max
       puts "\nSVGs generate a single file.",
         "PNGs generate full-res, 1500w, 1000w, 500w, and thumbnail files.",
         "Corresponding rank insignia (including smaller sizes) are also generated, as appropriate."
       USPSFlags::Helpers.log "\n#{Time.now.strftime('%Y%m%d.%H%M%S%z')} – Generating static files...\n\n"
-      USPSFlags::Helpers.log "Flag | SVG | PNG        | Run time\n".rjust(max_length+31),
-        "\n".rjust(max_length+32, "-")
+      USPSFlags::Helpers.log "Flag | SVG | PNG        | Run time\n".rjust(USPSFlags::Helpers.max_flag_name_length+31),
+        "\n".rjust(USPSFlags::Helpers.max_flag_name_length+32, "-")
 
       overall_start_time = Time.now
 
@@ -137,9 +136,9 @@ class USPSFlags::Generate
 
     def generate_static_images_for(flag, svg: true, png: true)
       start_time = Time.now
-      USPSFlags::Helpers.log " |     |  _ _ _ _ _  |         \r".rjust(max_length+31, " ")
+      USPSFlags::Helpers.log " |     |  _ _ _ _ _  |         \r".rjust(USPSFlags::Helpers.max_flag_name_length+31, " ")
       flag = flag.upcase
-      USPSFlags::Helpers.log "#{flag.rjust(max_length)} |"
+      USPSFlags::Helpers.log "#{flag.rjust(USPSFlags::Helpers.max_flag_name_length)} |"
 
       svg_file, png_file, svg_ins_file, png_ins_file = get_file_paths(flag)
 

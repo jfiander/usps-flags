@@ -62,6 +62,14 @@ class USPSFlags::Helpers
       end
     end
 
+    # Gets the maximum length among valid flags.
+    #
+    # This is used USPSFlags::Generate, and should never need to be called directly.
+    # @private
+    def max_flag_name_length
+      valid_flags(:all).map(&:length).max
+    end
+
     # Gets the generation details for the given rank.
     #
     # This is used USPSFlags::Generate, and should never need to be called directly.
