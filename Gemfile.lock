@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    usps_flags (0.2.0)
+    usps_flags (0.2.1)
       file_utils (~> 1.1, >= 1.1.2)
       mini_magick (~> 4.8, >= 4.8.0)
       rubyzip (~> 1.2, >= 1.2.1)
@@ -55,4 +55,4 @@ DEPENDENCIES
   usps_flags!
 
 BUNDLED WITH
-   1.14.6
+   1.16.0
