@@ -26,10 +26,9 @@ class USPSFlags::Generate
     # Convert SVG data into a PNG file.
     #
     # @param [String] svg The SVG data.
-    # @param [String] outfile The path to save the PNG file to. (File is not accessible if this is left blank.)
+    # @param [String] outfile The path to save the PNG file to. (Required because the file is not accessible if this is left blank.)
     # @param [Boolean] trim Whether to trim the generated PNG file of excess transparency.
-    def png(svg, outfile: nil, trim: false)
-      outfile = "temp.png" if outfile.nil?
+    def png(svg, outfile:, trim: false)
       temp_svg = ::File.new("temp.svg", "w+")
       temp_svg.write(svg)
       temp_svg.flush
@@ -43,7 +42,6 @@ class USPSFlags::Generate
       end
     ensure
       ::File.delete(temp_svg) if ::File.exist?(temp_svg)
-      ::File.delete("temp.png") if ::File.exist?("temp.png")
     end
 
     # Generate all static SVG and PNG files, and automaticall generates zip archives for download.
