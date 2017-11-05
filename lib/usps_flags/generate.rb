@@ -58,6 +58,7 @@ class USPSFlags::Generate
       puts "\nSVGs generate a single file.",
         "PNGs generate full-res, 1500w, 1000w, 500w, and thumbnail files.",
         "Corresponding rank insignia (including smaller sizes) are also generated, as appropriate."
+      USPSFlags::Helpers.log "\nGeneration location: #{USPSFlags::Config.flags_dir}\n"
       USPSFlags::Helpers.log "\n#{Time.now.strftime('%Y%m%d.%H%M%S%z')} – Generating static files...\n\n"
       USPSFlags::Helpers.log "Flag | SVG | PNG        | Run time\n".rjust(USPSFlags::Helpers.max_flag_name_length+31),
         "\n".rjust(USPSFlags::Helpers.max_flag_name_length+32, "-")
