@@ -169,19 +169,17 @@ class USPSFlags::Generate
     end
 
     def generate_static_svg(flag)
-      begin
-        USPSFlags::Helpers.log " "
-        svg flag, outfile: @svg_file, scale: 1
-        USPSFlags::Helpers.log "S"
-        if USPSFlags::Helpers.valid_flags(:past).include?(flag) || !USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
-          USPSFlags::Helpers.log "-"
-        else
-          svg flag, field: false, outfile: @svg_ins_file, scale: 1
-          USPSFlags::Helpers.log "I"
-        end
-      rescue => e
-        USPSFlags::Helpers.log "x -> #{e.message}"
+      USPSFlags::Helpers.log " "
+      svg flag, outfile: @svg_file, scale: 1
+      USPSFlags::Helpers.log "S"
+      if USPSFlags::Helpers.valid_flags(:past).include?(flag) || !USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
+        USPSFlags::Helpers.log "-"
+      else
+        svg flag, field: false, outfile: @svg_ins_file, scale: 1
+        USPSFlags::Helpers.log "I"
       end
+    rescue => e
+      USPSFlags::Helpers.log "x -> #{e.message}"
     end
 
     def generate_static_png(flag)
