@@ -194,7 +194,7 @@ class USPSFlags::Generate
       USPSFlags::Helpers.log "  | "
       generate_fullsize_png
       generate_fullsize_png_insignia(flag)
-      generate_reduced_size_pngs
+      generate_reduced_size_pngs(flag)
     end
 
     def generate_fullsize_png
@@ -211,7 +211,7 @@ class USPSFlags::Generate
       end
     end
 
-    def generate_reduced_size_pngs
+    def generate_reduced_size_pngs(flag)
       USPSFlags::Helpers.png_sizes.keys.each do |size|
         USPSFlags::Helpers.log(".") and next if ::File.exist?("#{USPSFlags::Config.flags_dir}/PNG/#{flag}.#{size}.png")
         size, size_key = USPSFlags::Helpers.size_and_key(size: size, flag: flag)
