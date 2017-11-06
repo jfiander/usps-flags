@@ -119,17 +119,17 @@ USPSFlags::Generate.png svg_data, outfile: nil, trim: false
 You can also construct individual flags using the following syntax:
 
 ```ruby
-f = USPSFlags.new do
-  type "LtC"
-  scale 3
-  field false
-  trim true
-  svg_file "/path/to/svg/output.svg"
-  png_file "/path/to/png/output.png"
+flag = USPSFlags.new do |f|
+  f.type = "LtC"
+  f.scale = 3
+  f.field = false
+  f.trim = true
+  f.svg_file = "/path/to/svg/output.svg"
+  f.png_file = "/path/to/png/output.png"
 end
 
-f.svg # Generate SVG file
-f.png # Generate PNG file
+flag.svg #=> Generates SVG file at "/path/to/svg/output.svg"
+flag.png #=> Generates PNG file at "/path/to/png/output.png"
 ```
 
 - Calling any DSL method without argument, or with `nil` as argument will return

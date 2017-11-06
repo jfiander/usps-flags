@@ -95,41 +95,40 @@ describe USPSFlags do
 
   describe "constructor" do
     it "should update type" do
-      @flag.type "LtC"
+      @flag.type = "LtC"
       expect(@flag.type).to eql("LtC")
     end
 
     it "should update scale" do
-      @flag.scale 4
+      @flag.scale = 4
       expect(@flag.scale).to eql(4)
     end
 
     it "should update field" do
-      @flag.field false
+      @flag.field = false
       expect(@flag.field).to eql(false)
     end
 
     it "should update trim" do
-      @flag.trim true
+      @flag.trim = true
       expect(@flag.trim).to eql(true)
     end
 
     it "should update svg_file" do
-      @flag.svg_file "/path/to/svg/output.svg"
+      @flag.svg_file = "/path/to/svg/output.svg"
       expect(@flag.svg_file).to eql("/path/to/svg/output.svg")
     end
 
     it "should update png_file" do
-      @flag.png_file "/path/to/png/output.png"
+      @flag.png_file = "/path/to/png/output.png"
       expect(@flag.png_file).to eql("/path/to/png/output.png")
     end
 
     describe "as configured" do
       before(:each) do
-        @flag.type "LtC"
-        @flag.scale 5
-        @flag.svg_file ""
-        @flag.svg
+        @flag.type = "LtC"
+        @flag.scale = 5
+        @flag.svg_file = ""
       end
 
       it "should construct and generate a flag with a valid header" do

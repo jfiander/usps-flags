@@ -31,106 +31,64 @@ class USPSFlags
   # Constructor for individual flags.
   #
   # @example Generate insignia at default scale for Lt/C
-  #  f = USPSFlags.new do
-  #    type "LtC"
-  #    scale 3
-  #    field false
-  #    trim true
-  #    svg_file "/path/to/svg/output.svg"
-  #    png_file "/path/to/png/output.png"
+  #  flag = USPSFlags.new do |f|
+  #    f.type = "LtC"
+  #    f.scale = 3
+  #    f.field = false
+  #    f.trim = true
+  #    f.svg_file = "/path/to/svg/output.svg"
+  #    f.png_file = "/path/to/png/output.png"
   #  end
   #
-  #  f.svg #=> Generates SVG file at "/path/to/svg/output.svg"
-  #  f.png #=> Generates PNG file at "/path/to/png/output.png"
-  def initialize(&block)
+  #  flag.svg #=> Generates SVG file at "/path/to/svg/output.svg"
+  #  flag.png #=> Generates PNG file at "/path/to/png/output.png"
+  def initialize
     @type = nil
     @svg_file = nil
     @png_file = nil
     @scale = nil
     @field = nil
     @trim = nil
-    instance_eval(&block) if block_given?
+    yield self if block_given?
   end
 
   # Constructor accessor for the flag type.
   #
-  # @param [String] type If set, updates the constructor's flag type.
-  # @return [String] Returns the current (or updated) flag type.
-  def type(string = nil)
-    if string.nil?
-      @type
-    else
-      @type = string
-      self
-    end
-  end
+  # @param [String] type The type of flag to generate.
+  # @return [String]
+  attr_accessor :type
 
   # Constructor accessor for the SVG file output path.
   #
-  # @param [String] svg_file If set, updates the constructor's SVG file output path.
+  # @param [String] svg_file The SVG file output path.
   # @return [String] Returns the current (or updated) SVG file output path.
-  def svg_file(string = nil)
-    if string.nil?
-      @svg_file
-    else
-      @svg_file = string
-      self
-    end
-  end
+  attr_accessor :svg_file
 
   # Constructor accessor for the PNG file output path.
   #
-  # @param [String] png_file If set, updates the constructor's PNG file output path.
+  # @param [String] png_file The PNG file output path.
   # @return [String] Returns the current (or updated) PNG file output path.
-  def png_file(string = nil)
-    if string.nil?
-      @png_file
-    else
-      @png_file = string
-      self
-    end
-  end
+  attr_accessor :png_file
 
   # Constructor accessor for the image scale divisor factor.
   #
   # Available options are Float between 0 and 1, or Integer above 1.
   #
-  # @param [Integer, Float] scale If set, updates the constructor's scale divisor factor.
+  # @param [Integer, Float] scale The scale divisor factor.
   # @return [Integer, Float] Returns the current (or updated) scaling factor.
-  def scale(num = nil)
-    if num.nil?
-      @scale
-    else
-      @scale = num
-      self
-    end
-  end
+  attr_accessor :scale
 
   # Constructor accessor for whether to generate the flag field (including any border).
   #
-  # @param [Boolean] field If set, updates the constructor's field setting.
+  # @param [Boolean] field The field setting.
   # @return [Boolean] Returns the current (or updated) setting.
-  def field(bool = nil)
-    if bool.nil?
-      @field
-    else
-      @field = bool
-      self
-    end
-  end
+  attr_accessor :field
 
   # Constructor accessor for whether to trim the generated PNG file of excess transparency.
   #
-  # @param [Boolean] trim If set, updates the constructor's trim setting.
+  # @param [Boolean] trim The trim setting.
   # @return [String] Returns the current (or updated) setting.
-  def trim(bool = nil)
-    if bool.nil?
-      @trim
-    else
-      @trim = bool
-      self
-    end
-  end
+  attr_accessor :trim
 
   # Generates the constructed file as SVG.
   #
