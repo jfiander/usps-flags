@@ -89,8 +89,7 @@ class USPSFlags::Core::TridentSpec
     <<~SVG
       <!-- Short Trident -->
       <g transform="translate(-#{USPSFlags::Config::BASE_FLY*14/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
-        <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*1/40}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/30}px" font-weight="bold" fill="#BF0D3E" text-anchor="middle">Short</text>
-        <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*5/80}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/40}px" fill="#BF0D3E" text-anchor="middle">Squadron Officers</text>
+        #{trident_heading(:s)}
 
         #{USPSFlags::Core::Trident.new(:s).svg}
 
@@ -132,8 +131,7 @@ class USPSFlags::Core::TridentSpec
     <<~SVG
       <!-- Delta Trident -->
       <g transform="translate(#{USPSFlags::Config::BASE_FLY*5/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
-        <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*1/40}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/30}px" font-weight="bold" fill="#BF0D3E" text-anchor="middle">Delta</text>
-        <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*5/80}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/40}px" fill="#BF0D3E" text-anchor="middle">District Officers</text>
+        #{trident_heading(:d)}
 
         #{USPSFlags::Core::Trident.new(:d).svg}
 
@@ -155,21 +153,18 @@ class USPSFlags::Core::TridentSpec
     <<~SVG
       <!-- Circle Trident -->
       <g transform="translate(#{USPSFlags::Config::BASE_FLY*23/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
-        <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*1/40}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/30}px" font-weight="bold" fill="#BF0D3E" text-anchor="middle">Circle</text>
-        <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*5/80}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/40}px" fill="#BF0D3E" text-anchor="middle">Staff Commanders Only</text>
+        #{trident_heading(:stf)}
 
         #{USPSFlags::Core::Trident.new(:stf).svg}
 
-        <!-- Boundary box -->
-        <rect x="#{box_left}" y="#{box_top}" width="#{box_right-box_left}" height="#{USPSFlags::Config::BASE_HOIST*3/4}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
+        #{long_trident_boundary_box(box_top, box_left, box_right)}
 
         <!-- Right -->
           #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]*2, box_top+@trident_config[:crossbar_from_top]+@trident_config[:width], @trident_config[:center_point], @trident_config[:center_point], fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Inner circle diameter -->
           #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]+@trident_config[:width], nil, @trident_config[:center_point]+@trident_config[:bar_width]/2, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Outer circle diameter -->
           #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]+@trident_config[:width], box_bottom, nil, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Circle to bottom -->
 
-        <!-- Left -->
-          #{USPSFlags::Helpers::SpecArrows.vertical(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY/4.5, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
+        #{long_trident_left_arrow(box_top, box_bottom, box_left, box_right)}
       </g></g>
     SVG
   end
@@ -178,20 +173,48 @@ class USPSFlags::Core::TridentSpec
     <<~SVG
       <!-- Long Trident -->
       <g transform="translate(#{USPSFlags::Config::BASE_FLY*40/80},#{USPSFlags::Config::BASE_HOIST*9/32})"><g transform="scale(0.7)">
-        <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*1/40}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/30}px" font-weight="bold" fill="#BF0D3E" text-anchor="middle">Long</text>
-        <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*5/80}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/40}px" fill="#BF0D3E" text-anchor="middle">National Officers</text>
+        #{trident_heading(:n)}
 
         #{USPSFlags::Core::Trident.new(:n).svg}
 
-        <!-- Boundary box -->
-        <rect x="#{box_left}" y="#{box_top}" width="#{box_right-box_left}" height="#{USPSFlags::Config::BASE_HOIST*3/4}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
+        #{long_trident_boundary_box(box_top, box_left, box_right)}
 
         <!-- Right -->
           #{USPSFlags::Helpers::SpecArrows.vertical(box_right+@trident_config[:bar_width], box_top+@trident_config[:crossbar_from_top]+@trident_config[:bar_width]*3, box_bottom, @trident_config[:center_point]+@trident_config[:hash_width]/2, box_right, fly: @fly, unit: @unit, font_size: @label_font_size)} <!-- Hash to bottom -->
 
-        <!-- Left -->
-          #{USPSFlags::Helpers::SpecArrows.vertical(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY/4.5, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
+        #{long_trident_left_arrow(box_top, box_bottom, box_left, box_right)}
       </g></g>
+    SVG
+  end
+
+  def trident_heading(type_sym)
+    type, description = case type_sym
+    when :s
+      ["Short", "Squadron Officers"]
+    when  :d
+      ["Delta", "District Officers"]
+    when  :stf
+      ["Circle", "Staff Commanders Only"]
+    when  :n
+      ["Long", "National Officers"]
+    end
+    <<~SVG
+      <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*1/40}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/30}px" font-weight="bold" fill="#BF0D3E" text-anchor="middle">#{type}</text>
+      <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*5/80}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/40}px" fill="#BF0D3E" text-anchor="middle">#{description}</text>
+    SVG
+  end
+
+  def long_trident_boundary_box(box_top, box_left, box_right)
+    <<~SVG
+      <!-- Boundary box -->
+        <rect x="#{box_left}" y="#{box_top}" width="#{box_right-box_left}" height="#{USPSFlags::Config::BASE_HOIST*3/4}" stroke="#666666" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" stroke-dasharray="15, 15" fill="none" />
+    SVG
+  end
+
+  def long_trident_left_arrow(box_top, box_bottom, box_left, box_right)
+    <<~SVG
+      <!-- Left -->
+        #{USPSFlags::Helpers::SpecArrows.vertical(box_left-@trident_config[:bar_width]*1.5, box_top, box_bottom, box_left, box_left, fly: @fly, unit: @unit, label_offset: -USPSFlags::Config::BASE_FLY/30, label_offset_y: -USPSFlags::Config::BASE_FLY/4.5, font_size: @label_font_size, label_align: "middle")} <!-- Boundary height -->
     SVG
   end
 end
