@@ -105,7 +105,7 @@ class USPSFlags
   #
   # @return [String] Returns the SVG file output path.
   def png
-    raise "Error: png_file must be set." if self.png_file.nil?
+    raise USPSFlags::Errors::PNGGenerationError, "A path must be set with png_file." if self.png_file.nil?
     svg_file_storage = self.svg_file
     self.svg_file ""
     USPSFlags::Generate.png(self.svg, outfile: self.png_file, trim: self.trim)
