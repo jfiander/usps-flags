@@ -26,16 +26,6 @@ USPSFlags::Config.new do |config|
 end
 ```
 
-### Other
-
-Run the following commands:
-
-```ruby
-gem install usps_flags
-require 'usps_flags'
-USPSFlags::Config.flags_dir "path/to/flags/dir"
-```
-
 ## Available flags
 
 - US Ensign
