@@ -152,8 +152,20 @@ describe USPSFlags::Generate do
   end
 
   describe "static files" do
+    it "should raise USPSFlags::Errors::StaticFilesGenerationError when not given any true arguments" do
+      expect { USPSFlags::Generate.all(svg: false, png: false, zips: false) }.to raise_error(
+        USPSFlags::Errors::StaticFilesGenerationError, "At least one argument switch must be true out of [svg, png, zips]."
+      )
+    end
+
     it "should not raise StaticFilesGenerationError while generating all static files" do
       expect { USPSFlags::Generate.all }.to_not raise_error(USPSFlags::Errors::StaticFilesGenerationError)
+    end
+
+    it "should raise USPSFlags::Errors::ZipGenerationError when not given any true arguments" do
+      expect { USPSFlags::Generate.zips(svg: false, png: false) }.to raise_error(
+        USPSFlags::Errors::ZipGenerationError, "At least one argument switch must be true out of [svg, png]."
+      )
     end
 
     it "should not raise ZipGenerationError while generating zip files" do
