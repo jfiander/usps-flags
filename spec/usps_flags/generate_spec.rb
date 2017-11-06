@@ -31,6 +31,56 @@ describe USPSFlags::Generate do
     end
   end
 
+  describe "line flags" do
+    it "should generate CC" do
+      expect(USPSFlags::Generate.svg("CC", outfile: "")).to include("<title>CC</title>")
+    end
+
+    it "should generate VC" do
+      expect(USPSFlags::Generate.svg("VC", outfile: "")).to include("<title>VC</title>")
+    end
+
+    it "should generate RC" do
+      expect(USPSFlags::Generate.svg("RC", outfile: "")).to include("<title>RC</title>")
+    end
+
+    it "should generate StfC" do
+      expect(USPSFlags::Generate.svg("StfC", outfile: "")).to include("<title>STFC</title>")
+    end
+
+    it "should generate DC" do
+      expect(USPSFlags::Generate.svg("DC", outfile: "")).to include("<title>DC</title>")
+    end
+
+    it "should generate DLtC" do
+      expect(USPSFlags::Generate.svg("DLtC", outfile: "")).to include("<title>DLTC</title>")
+    end
+
+    it "should generate D1Lt" do
+      expect(USPSFlags::Generate.svg("D1Lt", outfile: "")).to include("<title>D1LT</title>")
+    end
+
+    it "should generate DLt" do
+      expect(USPSFlags::Generate.svg("DLt", outfile: "")).to include("<title>DLT</title>")
+    end
+
+    it "should generate Cdr" do
+      expect(USPSFlags::Generate.svg("Cdr", outfile: "")).to include("<title>CDR</title>")
+    end
+
+    it "should generate LtC" do
+      expect(USPSFlags::Generate.svg("LtC", outfile: "")).to include("<title>LTC</title>")
+    end
+
+    it "should generate 1Lt" do
+      expect(USPSFlags::Generate.svg("1Lt", outfile: "")).to include("<title>1LT</title>")
+    end
+
+    it "should generate Lt" do
+      expect(USPSFlags::Generate.svg("Lt", outfile: "")).to include("<title>LT</title>")
+    end
+  end
+
   describe "special flags" do
     it "should generate PortCap" do
       expect(USPSFlags::Generate.svg("PortCap", outfile: "")).to include("<title>PORTCAP</title>")
