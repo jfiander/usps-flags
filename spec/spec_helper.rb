@@ -18,6 +18,6 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
-    ::FileUtils.rm_rf($tmp_flags_dir) if ::Dir.exist?($tmp_flags_dir)
+    ::FileUtils.rm_rf("tmp") if ::Dir.exist?("tmp")
   end
 end
