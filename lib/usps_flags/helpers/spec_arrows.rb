@@ -9,26 +9,11 @@ class USPSFlags::Helpers::SpecArrows
     # This is used USPSFlags::Core.trident_spec, and should never need to be called directly.
     # @private
     def vertical(x, top, bottom, pointer_top = nil, pointer_bottom = nil, label: nil, label_offset: (USPSFlags::Config::BASE_FLY/120), label_offset_y: 0, label_align: "left", color: "#CCCCCC", stroke_width: (USPSFlags::Config::BASE_FLY/600), stroke_dash: "10, 10", font_size: (USPSFlags::Config::BASE_FLY/60), arrow_size: (USPSFlags::Config::BASE_FLY/120), fly: USPSFlags::Config::BASE_FLY, unit: nil)
-      label = bottom - top if label.nil?
-      label = label.to_i if label - label.to_i == 0
-      label = Rational(label) * fly / USPSFlags::Config::BASE_FLY
-      if label == label.to_i
-        label = label.to_i
-        label_fraction = ""
-      else
-        label, label_fraction = label.to_simplified_a
-      end
+      label, label_fraction = get_labels(bottom, top, fly, label: label)
       svg = ""
-      unless pointer_top.nil?
-        svg << <<~SVG
-          <line x1="#{x}" y1="#{top}" x2="#{pointer_top}" y2="#{top}" stroke="#{color}" stroke-width="#{stroke_width}" stroke-dasharray="#{stroke_dash}" />
-        SVG
-      end
-      unless pointer_bottom.nil?
-        svg << <<~SVG
-          <line x1="#{x}" y1="#{bottom}" x2="#{pointer_bottom}" y2="#{bottom}" stroke="#{color}" stroke-width="#{stroke_width}" stroke-dasharray="#{stroke_dash}" />
-        SVG
-      end
+
+      svg << arrow_pointer(x, pointer_top, top, top, color, stroke_width, stroke_dash) unless pointer_top.nil?
+      svg << arrow_pointer(x, pointer_bottom, bottom, bottom, color, stroke_width, stroke_dash) unless pointer_bottom.nil?
 
       svg << <<~SVG
         <path d="M#{x} #{top} l #{arrow_size} #{arrow_size} M#{x} #{top} l -#{arrow_size} #{arrow_size} M#{x} #{top} l 0 #{bottom - top} l #{arrow_size} -#{arrow_size} M#{x} #{bottom} l -#{arrow_size} -#{arrow_size}" stroke="#{color}" stroke-width="#{stroke_width}" fill="none" />
@@ -46,26 +31,11 @@ class USPSFlags::Helpers::SpecArrows
     # This is used USPSFlags::Core.trident_spec, and should never need to be called directly.
     # @private
     def horizontal(y, left, right, pointer_left = nil, pointer_right = nil, label: nil, label_offset: (USPSFlags::Config::BASE_FLY/45), label_offset_x: 0, label_align: "middle", color: "#CCCCCC", stroke_width: (USPSFlags::Config::BASE_FLY/600), stroke_dash: "10, 10", font_size: (USPSFlags::Config::BASE_FLY/60), arrow_size: (USPSFlags::Config::BASE_FLY/120), fly: USPSFlags::Config::BASE_FLY, unit: nil)
-      label = right - left if label.nil?
-      label = label.to_i if label - label.to_i == 0
-      label = Rational(label) * fly / USPSFlags::Config::BASE_FLY
-      if label == label.to_i
-        label = label.to_i
-        label_fraction = ""
-      else
-        label, label_fraction = label.to_simplified_a
-      end
+      label, label_fraction = get_labels(right, left, fly, label: label)
       svg = ""
-      unless pointer_left.nil?
-        svg << <<~SVG
-          <line x1="#{left}" y1="#{y}" x2="#{left}" y2="#{pointer_left}" stroke="#{color}" stroke-width="#{stroke_width}" stroke-dasharray="#{stroke_dash}" />
-        SVG
-      end
-      unless pointer_right.nil?
-        svg << <<~SVG
-          <line x1="#{right}" y1="#{y}" x2="#{right}" y2="#{pointer_right}" stroke="#{color}" stroke-width="#{stroke_width}" stroke-dasharray="#{stroke_dash}" />
-        SVG
-      end
+
+      svg << arrow_pointer(left, left, pointer_left, y, color, stroke_width, stroke_dash) unless pointer_left.nil?
+      svg << arrow_pointer(right, right, y, pointer_right, color, stroke_width, stroke_dash) unless pointer_right.nil?
 
       svg << <<~SVG
         <path d="M#{left} #{y} l #{arrow_size} #{arrow_size} M#{left} #{y} l #{arrow_size} -#{arrow_size} M#{left} #{y} l #{right - left} 0 l -#{arrow_size} -#{arrow_size} M#{right} #{y} l -#{arrow_size} #{arrow_size}" stroke="#{color}" stroke-width="#{stroke_width}" fill="none" />
@@ -76,6 +46,26 @@ class USPSFlags::Helpers::SpecArrows
       SVG
 
       svg
+    end
+
+    private
+    def arrow_pointer(x1, x2, y1, y2, color, stroke_width, stroke_dash)
+      <<~SVG
+        <line x1="#{x1}" y1="#{y1}" x2="#{x2}" y2="#{y2}" stroke="#{color}" stroke-width="#{stroke_width}" stroke-dasharray="#{stroke_dash}" />
+      SVG
+    end
+
+    def get_labels(a, b, fly, label: nil)
+      label = a - b if label.nil?
+      label = label.to_i if label - label.to_i == 0
+      label = Rational(label) * fly / USPSFlags::Config::BASE_FLY
+      if label == label.to_i
+        label = label.to_i
+        label_fraction = ""
+      else
+        label, label_fraction = label.to_simplified_a
+      end
+      [label, label_fraction]
     end
   end
 end
