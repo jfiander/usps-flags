@@ -54,6 +54,8 @@ class USPSFlags::Generate
     # @param [Boolean] zips Whether to create zip archives for all images created. Does not create a zip for skipped formats.
     # @param [Boolean] reset Whether to delete all previous files before generating new files.
     def all(svg: true, png: true, zips: true, reset: true)
+      raise USPSFlags::Errors::StaticFilesGenerationError, "At least one argument switch must be true out of [svg, png, zips]." unless svg || png || zips
+
       remove_static_files if reset
 
       puts "\nSVGs generate a single file.",
@@ -76,6 +78,7 @@ class USPSFlags::Generate
 
       nil
     rescue => e
+      raise e if e.is_a?(USPSFlags::Errors::StaticFilesGenerationError)
       raise USPSFlags::Errors::StaticFilesGenerationError, cause: e
     end
 
@@ -84,6 +87,7 @@ class USPSFlags::Generate
     # @param [Boolean] svg Generate zip archive of SVG images.
     # @param [Boolean] png Generate zip archive of PNG images.
     def zips(svg: true, png: true)
+      raise USPSFlags::Errors::ZipGenerationError, "At least one argument switch must be true out of [svg, png]." unless svg || png
       begin
         generate_zip("svg") if svg
       rescue Errno::EACCES => e
@@ -96,6 +100,7 @@ class USPSFlags::Generate
         raise USPSFlags::Errors::ZipGenerationError, type: :png, cause: e
       end
     rescue => e
+      raise e if e.is_a?(USPSFlags::Errors::ZipGenerationError)
       raise USPSFlags::Errors::ZipGenerationError, type: e.type, cause: e
     end
 
