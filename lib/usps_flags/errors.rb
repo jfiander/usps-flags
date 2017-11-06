@@ -12,7 +12,7 @@ module USPSFlags::Errors
   end
 
   class ZipGenerationError < StandardError
-    def initialize(msg = "There was an error generating the zip file.", type:, cause: nil)
+    def initialize(msg = "There was an error generating the zip file.", type: nil, cause: nil)
       super(msg)
     end
   end
