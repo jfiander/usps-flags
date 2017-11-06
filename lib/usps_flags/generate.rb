@@ -186,38 +186,51 @@ class USPSFlags::Generate
 
     def generate_static_png(flag)
       USPSFlags::Helpers.log "  | "
-      begin
-        USPSFlags::Helpers.log "…\b"
-        png(File.read(@svg_file), outfile: @png_file) unless ::File.exist?(@png_file)
-        USPSFlags::Helpers.log "F"
-        if USPSFlags::Helpers.valid_flags(:past).include?(flag) || !USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
-          USPSFlags::Helpers.log "-"
-        else
-          USPSFlags::Helpers.log "…\b"
-          png(File.read(@svg_ins_file), outfile: @png_ins_file, trim: true) unless ::File.exist?(@png_ins_file)
-          USPSFlags::Helpers.log "I"
-        end
-        USPSFlags::Helpers.png_sizes.keys.each do |size|
-          USPSFlags::Helpers.log(".") and next if ::File.exist?("#{USPSFlags::Config.flags_dir}/PNG/#{flag}.#{size}.png")
+      generate_fullsize_png
+      generate_fullsize_png_insignia(flag)
+      generate_reduced_size_pngs
+    rescue => e
+      USPSFlags::Helpers.log "x -> #{e.message}"
+    end
 
-          USPSFlags::Helpers.log "…\b"
-          size, size_key = USPSFlags::Helpers.size_and_key(size: size, flag: flag)
-          USPSFlags::Helpers.resize_png(@png_ins_file, flag: flag, size: size, size_key: size_key) if USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
-          USPSFlags::Helpers.log USPSFlags::Helpers.png_sizes[size_key]
-          if ::File.exist?(@png_ins_file) && ::File.exist?("#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size}.png")
-            USPSFlags::Helpers.log "."
-          elsif ::File.exist?(@png_ins_file) && MiniMagick::Image.open(@png_ins_file)[:width] > size && USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
-            USPSFlags::Helpers.log "…\b"
-            USPSFlags::Helpers.resize_png(@png_ins_file, flag: flag, size: size, size_key: size_key)
-            USPSFlags::Helpers.log "i"
-          elsif ::File.exist?(@png_ins_file)
-            USPSFlags::Helpers.log "+"
-          else
-            USPSFlags::Helpers.log "-"
-          end
-        end
-      rescue => e
-        USPSFlags::Helpers.log "x -> #{e.message}"
+    def generate_fullsize_png
+      png(File.read(@svg_file), outfile: @png_file) unless ::File.exist?(@png_file)
+      USPSFlags::Helpers.log "F"
+    end
+
+    def generate_fullsize_png_insignia(flag)
+      if USPSFlags::Helpers.valid_flags(:past).include?(flag) || !USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
+        USPSFlags::Helpers.log "-"
+      else
+        png(File.read(@svg_ins_file), outfile: @png_ins_file, trim: true) unless ::File.exist?(@png_ins_file)
+        USPSFlags::Helpers.log "I"
+      end
+    end
+
+    def generate_reduced_size_pngs
+      USPSFlags::Helpers.png_sizes.keys.each do |size|
+        USPSFlags::Helpers.log(".") and next if ::File.exist?("#{USPSFlags::Config.flags_dir}/PNG/#{flag}.#{size}.png")
+        size, size_key = USPSFlags::Helpers.size_and_key(size: size, flag: flag)
+        generate_smaller_png(flag, size, size_key)
+        generate_smaller_png_insignia(flag, size, size_key)
+      end
+    end
+
+    def generate_smaller_png(flag, size, size_key)
+      USPSFlags::Helpers.resize_png(@png_ins_file, flag: flag, size: size, size_key: size_key) if USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
+      USPSFlags::Helpers.log USPSFlags::Helpers.png_sizes[size_key]
+    end
+
+    def generate_smaller_png_insignia(flag, size, size_key)
+      if ::File.exist?(@png_ins_file) && ::File.exist?("#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size}.png")
+        USPSFlags::Helpers.log "."
+      elsif ::File.exist?(@png_ins_file) && MiniMagick::Image.open(@png_ins_file)[:width] > size && USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
+        USPSFlags::Helpers.resize_png(@png_ins_file, flag: flag, size: size, size_key: size_key)
+        USPSFlags::Helpers.log "i"
+      elsif ::File.exist?(@png_ins_file)
+        USPSFlags::Helpers.log "+"
+      else
+        USPSFlags::Helpers.log "-"
       end
     end
   end
