@@ -135,6 +135,12 @@ describe USPSFlags::Generate do
     end
   end
 
+  describe "trident specifications" do
+    it "should generate the trident specification sheet" do
+      expect(USPSFlags::Generate.spec(outfile: "")).to include("<title>USPS Trident Specifications</title>")
+    end
+  end
+
   describe "png" do
     it "should raise PNGGenerationError without an outfile" do
       expect {USPSFlags::Generate.png(USPSFlags::Generate.svg("LtC", outfile: ""), outfile: "")}.to raise_error(USPSFlags::Errors::PNGGenerationError)
