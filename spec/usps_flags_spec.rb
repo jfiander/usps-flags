@@ -114,14 +114,14 @@ describe USPSFlags do
       expect(@flag.trim).to eql(true)
     end
 
-    it "should update svg_file" do
-      @flag.svg_file = "/path/to/svg/output.svg"
-      expect(@flag.svg_file).to eql("/path/to/svg/output.svg")
+    it "should correctly update svg_file" do
+      @flag.svg_file = "#{$tmp_alt_flags_dir}/SVG/output.svg"
+      expect(@flag.svg_file).to eql("#{$tmp_alt_flags_dir}/SVG/output.svg")
     end
 
-    it "should update png_file" do
-      @flag.png_file = "/path/to/png/output.png"
-      expect(@flag.png_file).to eql("/path/to/png/output.png")
+    it "should correctly update png_file" do
+      @flag.png_file = "#{$tmp_alt_flags_dir}/PNG/output.png"
+      expect(@flag.png_file).to eql("#{$tmp_alt_flags_dir}/PNG/output.png")
     end
 
     describe "as configured" do
