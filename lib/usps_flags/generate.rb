@@ -118,7 +118,10 @@ class USPSFlags::Generate
 
     private
     def remove_static_files
-      ["SVG", "PNG", "ZIP"].each { |dir| ::FileUtils.rm_rf(Dir.glob("#{USPSFlags::Config.flags_dir}/#{dir}/*")) }
+      ["SVG", "PNG", "ZIP"].each do |dir|
+        dir_path = "#{USPSFlags::Config.flags_dir}/#{dir}"
+        ::FileUtils.rm_rf(::Dir.glob("#{dir_path}/*")) if ::Dir.exist?(dir_path)
+      end
       ["SVG/insignia", "PNG/insignia"].each { |dir| ::FileUtils.mkdir_p("#{USPSFlags::Config.flags_dir}/#{dir}") }
       USPSFlags::Helpers.log "\n - Cleared previous files.\n"
     end
