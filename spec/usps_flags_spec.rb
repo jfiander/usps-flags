@@ -141,12 +141,12 @@ describe USPSFlags do
 
       describe "png" do
         it "should raise PNGGenerationError without png_file set" do
-          expect {@flag.png}.to raise_error(USPSFlags::Errors::PNGGenerationError, "A path must be set with png_file.")
+          expect { @flag.png }.to raise_error(USPSFlags::Errors::PNGGenerationError, "A path must be set with png_file.")
         end
 
         it "should not raise PNGGenerationError with png_file set" do
           @flag.png_file = "#{$tmp_alt_flags_dir}/PNG/LtC.png"
-          expect {@flag.png}.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
+          expect { @flag.png }.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
         end
       end
     end

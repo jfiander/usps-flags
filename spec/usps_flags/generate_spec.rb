@@ -143,21 +143,21 @@ describe USPSFlags::Generate do
 
   describe "png" do
     it "should raise PNGGenerationError without an outfile" do
-      expect {USPSFlags::Generate.png(USPSFlags::Generate.svg("LtC", outfile: ""), outfile: "")}.to raise_error(USPSFlags::Errors::PNGGenerationError)
+      expect { USPSFlags::Generate.png(USPSFlags::Generate.svg("LtC", outfile: ""), outfile: "") }.to raise_error(USPSFlags::Errors::PNGGenerationError)
     end
 
     it "should not raise PNGGenerationError when correctly configured" do
-      expect {USPSFlags::Generate.png(USPSFlags::Generate.svg("LtC", outfile: ""), outfile: "lib/output/PNG/LTC.png")}.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
+      expect { USPSFlags::Generate.png(USPSFlags::Generate.svg("LtC", outfile: ""), outfile: "lib/output/PNG/LTC.png") }.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
     end
   end
 
   describe "static files" do
     it "should not raise StaticFilesGenerationError while generating all static files" do
-      expect {USPSFlags::Generate.all}.to_not raise_error(USPSFlags::Errors::StaticFilesGenerationError)
+      expect { USPSFlags::Generate.all }.to_not raise_error(USPSFlags::Errors::StaticFilesGenerationError)
     end
 
     it "should not raise ZipGenerationError while generating zip files" do
-      expect {USPSFlags::Generate.zips}.to_not raise_error(USPSFlags::Errors::ZipGenerationError)
+      expect { USPSFlags::Generate.zips }.to_not raise_error(USPSFlags::Errors::ZipGenerationError)
     end
   end
 end
