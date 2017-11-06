@@ -9,4 +9,7 @@ require 'usps_flags'
 
 RSpec.configure do |config|
   # some (optional) config here
+  config.after(:suite) do
+    ::FileUtils.rm_rf("lib/output") if ::Dir.exist?("lib/output")
+  end
 end
