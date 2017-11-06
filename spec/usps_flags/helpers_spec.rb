@@ -12,5 +12,13 @@ describe USPSFlags::Helpers do
         DFLT D1LT DLTC DC PSTFC PRC PVC PCC NAIDE NFLT STFC RC VC CC
       ].sort)
     end
+
+    it "should correctly generate the grid helper" do
+      expect(USPSFlags::Helpers::Builders.grid).to include("<circle cx=\"0\" cy=\"0\" r=\"#{USPSFlags::Config::BASE_FLY/60}\" fill=\"#000000\" fill-opacity=\"0.4\" />")
+    end
+
+    it "should correctly generate the locator helper" do
+      expect(USPSFlags::Helpers::Builders.locator).to include("<rect x=\"0\" y=\"0\" width=\"#{USPSFlags::Config::BASE_FLY/30}\" height=\"#{USPSFlags::Config::BASE_FLY/30}\" fill=\"#333333\" fill-opacity=\"0.6\" />")
+    end
   end
 end
