@@ -60,4 +60,28 @@ describe USPSFlags::Generate do
       expect(USPSFlags::Generate.svg("NFLt", outfile: "")).to include("<title>NFLT</title>")
     end
   end
+
+  describe "pennants" do
+    it "should generate the cruise pennant" do
+      expect(USPSFlags::Generate.svg("Cruise", outfile: "")).to include("<title>Cruise Pennant</title>")
+    end
+
+    it "should generate the officer-in-charge pennant" do
+      expect(USPSFlags::Generate.svg("OIC", outfile: "")).to include("<title>Officer-in-Charge Pennant</title>")
+    end
+  end
+
+  describe "other flags" do
+    it "should generate US" do
+      expect(USPSFlags::Generate.svg("US", outfile: "")).to include("<title>US Ensign</title>")
+    end
+
+    it "should generate USPS Ensign" do
+      expect(USPSFlags::Generate.svg("Ensign", outfile: "")).to include("<title>USPS Ensign</title>")
+    end
+
+    it "should generate the USPS Wheel logo" do
+      expect(USPSFlags::Generate.svg("Wheel", outfile: "")).to include("<title>USPS Ensign Wheel</title>")
+    end
+  end
 end
