@@ -12,6 +12,7 @@ class USPSFlags
   require 'usps_flags/helpers'
   require 'usps_flags/core'
   require 'usps_flags/generate'
+  require 'usps_flags/errors'
 
   # Dir['./lib/usps_flags/core/**'].map { |d| d.split("/").last.split(".rb").first }
   %w[anchor binoculars ensign field footer headers lighthouse pennant star trident tridents trident_spec trumpet us wheel].each do |d|
