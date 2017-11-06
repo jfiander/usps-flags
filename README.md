@@ -124,8 +124,6 @@ flag.svg #=> Generates SVG file at "/path/to/svg/output.svg"
 flag.png #=> Generates PNG file at "/path/to/png/output.png"
 ```
 
-- Calling any DSL method without argument, or with `nil` as argument will return
-  the current value.
 - You can explicitly set `svg_file` to `""` to suppress printing the SVG content
   to console/log.
 - Calling `.png` requires `png_file` to be set.
