@@ -79,26 +79,16 @@ class USPSFlags::Generate
     # @param [Boolean] svg Generate zip archive of SVG images.
     # @param [Boolean] png Generate zip archive of PNG images.
     def zips(svg: true, png: true)
-      ["svg", "png"].each do |format|
-        begin
-          if binding.local_variable_get(format)
-            zip = "#{USPSFlags::Config.flags_dir}/ZIP/USPS_Flags.#{format}.zip"
-            ::File.delete(zip) if ::File.exist?(zip)
-            Zip::File.open(zip, Zip::File::CREATE) do |z|
-              Dir.glob("#{USPSFlags::Config.flags_dir}/#{format.upcase}/**/*").each do |f|
-                if f.split("/").last(2).first == "insignia"
-                  filename = "insignia/#{f.split("/").last}"
-                  z.add(filename, f)
-                else
-                  z.add(f.split("/").last, f)
-                end
-              end
-            end
-            puts "Generated #{format.upcase} Zip"
-          end
-        rescue Errno::EACCES => e
-          puts "Error: Failed to generate #{format.upcase} Zip -> #{e.message}"
-        end
+      begin
+        generate_zip("svg") if svg
+      rescue Errno::EACCES => e
+        puts "Error: Failed to generate SVG Zip -> #{e.message}"
+      end
+
+      begin
+        generate_zip("png") if png
+      rescue Errno::EACCES => e
+        puts "Error: Failed to generate SVG Zip -> #{e.message}"
       end
     end
 
@@ -132,6 +122,26 @@ class USPSFlags::Generate
       @svg_ins_file = @svg_file.gsub("/SVG/", "/SVG/insignia/")
       @png_ins_file = @svg_file.gsub("/SVG/", "/PNG/insignia/").gsub(".svg", ".png")
       [@svg_file, @png_file, @svg_ins_file, @png_ins_file]
+    end
+
+    def generate_zip(type)
+      raise "Error: Flags directory not found." unless ::Dir.exist?("#{USPSFlags::Config.flags_dir}/ZIP")
+
+      zip = "#{USPSFlags::Config.flags_dir}/ZIP/USPS_Flags.#{type}.zip"
+      ::File.delete(zip) if ::File.exist?(zip)
+
+      ::Zip::File.open(zip, Zip::File::CREATE) do |z|
+        ::Dir.glob("#{USPSFlags::Config.flags_dir}/#{type.upcase}/**/*").each do |f|
+          add_to_zip(z, f)
+        end
+      end
+      puts "Generated #{type.upcase} Zip"
+    end
+
+    def add_to_zip(z, f)
+      filename = f.split("/").last
+      filename = "insignia/#{filename}" if f.split("/").last(2).first == "insignia"
+      z.add(filename, f)
     end
 
     def generate_static_images_for(flag, svg: true, png: true)
