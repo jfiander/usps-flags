@@ -101,7 +101,7 @@ class USPSFlags::Generate
       end
     rescue => e
       raise e if e.is_a?(USPSFlags::Errors::ZipGenerationError)
-      raise USPSFlags::Errors::ZipGenerationError, type: e.type, cause: e
+      raise USPSFlags::Errors::ZipGenerationError, cause: e
     end
 
     # Generate trident spec sheet as an SVG image.
