@@ -33,6 +33,8 @@ class USPSFlags::Generate
       temp_svg.write(svg)
       temp_svg.flush
 
+      raise USPSFlags::Errors::PNGGenerationError, svg: svg if outfile.nil? || outfile.empty?
+
       MiniMagick::Tool::Convert.new do |convert|
         convert << "-background" << "none"
         convert << "-format" << "png"
@@ -72,6 +74,8 @@ class USPSFlags::Generate
       USPSFlags::Helpers.log "\nTotal run time: #{Time.now - overall_start_time} s\n\n"
 
       nil
+    rescue => e
+      raise USPSFlags::Errors::StaticFilesGenerationError, cause: e
     end
 
     # Generate zip archives of current static image files.
@@ -82,14 +86,16 @@ class USPSFlags::Generate
       begin
         generate_zip("svg") if svg
       rescue Errno::EACCES => e
-        puts "Error: Failed to generate SVG Zip -> #{e.message}"
+        raise USPSFlags::Errors::ZipGenerationError, type: :svg, cause: e
       end
 
       begin
         generate_zip("png") if png
       rescue Errno::EACCES => e
-        puts "Error: Failed to generate SVG Zip -> #{e.message}"
+        raise USPSFlags::Errors::ZipGenerationError, type: :png, cause: e
       end
+    rescue => e
+      raise USPSFlags::Errors::ZipGenerationError, type: e.type, cause: e
     end
 
     # Generate trident spec sheet as an SVG image.
@@ -178,8 +184,6 @@ class USPSFlags::Generate
         svg flag, field: false, outfile: @svg_ins_file, scale: 1
         USPSFlags::Helpers.log "I"
       end
-    rescue => e
-      USPSFlags::Helpers.log "x -> #{e.message}"
     end
 
     def generate_static_png(flag)
@@ -187,8 +191,6 @@ class USPSFlags::Generate
       generate_fullsize_png
       generate_fullsize_png_insignia(flag)
       generate_reduced_size_pngs
-    rescue => e
-      USPSFlags::Helpers.log "x -> #{e.message}"
     end
 
     def generate_fullsize_png
