@@ -32,21 +32,36 @@ class USPSFlags::Core::TridentSpec
 
   private
   def configure_sizes(fly)
+    @fly = fly
+    get_hoist_from_fly(@fly)
+    configure_hoist_fraction
+    configure_fly_fraction
+  end
+
+  def get_hoist_from_fly(fly)
     hoist = (fly*Rational(2,3))
-    @hoist = hoist == hoist.to_i ? hoist.to_i : hoist
-
-    @fly_fraction = ""
-    @hoist_fraction = ""
-    if fly == fly.to_i
-      @fly = fly.to_i
+    @hoist = if hoist == hoist.to_i
+      hoist.to_i
     else
-      @fly, @fly_fraction = fly.to_simplified_a
+      hoist
     end
+  end
 
-    if hoist == hoist.to_i
-      @hoist = hoist.to_i
+  def configure_hoist_fraction
+    @hoist_fraction = ""
+    if @hoist == @hoist.to_i
+      @hoist = @hoist.to_i
     else
-      @hoist, @hoist_fraction = hoist.to_simplified_a
+      @hoist, @hoist_fraction = @hoist.to_simplified_a
+    end
+  end
+
+  def configure_fly_fraction
+    @fly_fraction = ""
+    if @fly == @fly.to_i
+      @fly = @fly.to_i
+    else
+      @fly, @fly_fraction = @fly.to_simplified_a
     end
   end
 
