@@ -31,48 +31,61 @@ class USPSFlags::Core::Field
   def svg
     case @style
     when :regular
-      <<~SVG
-        <path d="M 0 0
-          l #{@fly} 0
-          l 0 #{@hoist}
-          l -#{@fly} 0
-          l 0 -#{@hoist}
-        " fill="#{@color_code}" #{@border_svg}/>
-      SVG
+      regular_field
     when :swallowtail
-      <<~SVG
-        <path d="M 0 0
-          l #{@fly} #{@hoist/6}
-          l -#{@fly/5} #{@hoist/3}
-          l #{@fly/5} #{@hoist/3}
-          l -#{@fly} #{@hoist/6}
-        " fill="#FFFFFF" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" />
-      SVG
+      swallowtail_field
     when :past
-      <<~SVG
-        <path d="M 0 0
-          l #{@fly/2} #{@hoist*1/12}
-          l 0 #{@hoist*10/12}
-          l -#{@fly/2} #{@hoist*1/12}
-        " fill="#{@color_code}" />
-        <path d="M #{@fly/2} #{@hoist*1/12}
-          l #{@fly/4} #{@hoist*1/24}
-          l 0 #{@hoist*9/12}
-          l -#{@fly/4} #{@hoist*1/24}
-        " fill="#{@past_mid_color}" />
-        <path d="M #{@fly*3/4} #{@hoist*3/24}
-          l #{@fly/4} #{@hoist*1/24}
-          l -#{@fly/5} #{@hoist/3}
-          l #{@fly/5} #{@hoist/3}
-          l -#{@fly/4} #{@hoist*1/24}
-        " fill="#{@past_tail_color}" />
-        <path d="M 0 0
-          l #{@fly} #{@hoist/6}
-          l -#{@fly/5} #{@hoist/3}
-          l #{@fly/5} #{@hoist/3}
-          l -#{@fly} #{@hoist/6}
-        " fill="none" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" />
-      SVG
+      past_field
     end
+  end
+
+  private
+  def regular_field
+    <<~SVG
+      <path d="M 0 0
+        l #{@fly} 0
+        l 0 #{@hoist}
+        l -#{@fly} 0
+        l 0 -#{@hoist}
+      " fill="#{@color_code}" #{@border_svg}/>
+    SVG
+  end
+
+  def swallowtail_field
+    <<~SVG
+      <path d="M 0 0
+        l #{@fly} #{@hoist/6}
+        l -#{@fly/5} #{@hoist/3}
+        l #{@fly/5} #{@hoist/3}
+        l -#{@fly} #{@hoist/6}
+      " fill="#FFFFFF" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" />
+    SVG
+  end
+
+  def past_field
+    <<~SVG
+      <path d="M 0 0
+        l #{@fly/2} #{@hoist*1/12}
+        l 0 #{@hoist*10/12}
+        l -#{@fly/2} #{@hoist*1/12}
+      " fill="#{@color_code}" />
+      <path d="M #{@fly/2} #{@hoist*1/12}
+        l #{@fly/4} #{@hoist*1/24}
+        l 0 #{@hoist*9/12}
+        l -#{@fly/4} #{@hoist*1/24}
+      " fill="#{@past_mid_color}" />
+      <path d="M #{@fly*3/4} #{@hoist*3/24}
+        l #{@fly/4} #{@hoist*1/24}
+        l -#{@fly/5} #{@hoist/3}
+        l #{@fly/5} #{@hoist/3}
+        l -#{@fly/4} #{@hoist*1/24}
+      " fill="#{@past_tail_color}" />
+      <path d="M 0 0
+        l #{@fly} #{@hoist/6}
+        l -#{@fly/5} #{@hoist/3}
+        l #{@fly/5} #{@hoist/3}
+        l -#{@fly} #{@hoist/6}
+      " fill="none" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" />
+    SVG
   end
 end
