@@ -207,15 +207,15 @@ class USPSFlags::Generate
     end
 
     def generate_smaller_png_insignia(flag, size, size_key)
-      if ::File.exist?(@png_ins_file) && ::File.exist?("#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size}.png")
+      USPSFlags::Helpers.log "-" and return unless ::File.exist?(@png_ins_file)
+
+      if ::File.exist?("#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size}.png")
         USPSFlags::Helpers.log "."
-      elsif ::File.exist?(@png_ins_file) && MiniMagick::Image.open(@png_ins_file)[:width] > size && USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
+      elsif MiniMagick::Image.open(@png_ins_file)[:width] < size
+        USPSFlags::Helpers.log "+"
+      elsif USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
         USPSFlags::Helpers.resize_png(@png_ins_file, flag: flag, size: size, size_key: size_key)
         USPSFlags::Helpers.log "i"
-      elsif ::File.exist?(@png_ins_file)
-        USPSFlags::Helpers.log "+"
-      else
-        USPSFlags::Helpers.log "-"
       end
     end
   end
