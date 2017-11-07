@@ -57,29 +57,13 @@ class USPSFlags::Generate
       raise USPSFlags::Errors::StaticFilesGenerationError, "At least one argument switch must be true out of [svg, png, zips]." unless svg || png || zips
 
       remove_static_files if reset
-
-      puts "\nSVGs generate a single file.",
-        "PNGs generate full-res, 1500w, 1000w, 500w, and thumbnail files.",
-        "Corresponding rank insignia (including smaller sizes) are also generated, as appropriate."
-      USPSFlags::Helpers.log "\nGeneration location: #{USPSFlags::Config.flags_dir}\n"
-      USPSFlags::Helpers.log "\n#{Time.now.strftime('%Y%m%d.%H%M%S%z')} – Generating static files...\n\n"
-      USPSFlags::Helpers.log "Flag | SVG | PNG        | Run time\n".rjust(USPSFlags::Helpers.max_flag_name_length+31),
-        "\n".rjust(USPSFlags::Helpers.max_flag_name_length+32, "-")
-
+      static_generation_header
       overall_start_time = Time.now
-
       USPSFlags::Helpers.valid_flags(:all).each do |flag|
         generate_static_images_for(flag, svg: svg, png: png)
       end
-
       zips(svg: svg, png: png) if zips
-
       USPSFlags::Helpers.log "\nTotal run time: #{Time.now - overall_start_time} s\n\n"
-
-      nil
-    rescue => e
-      raise e if e.is_a?(USPSFlags::Errors::StaticFilesGenerationError)
-      raise USPSFlags::Errors::StaticFilesGenerationError, cause: e
     end
 
     # Generate zip archives of current static image files.
@@ -90,9 +74,6 @@ class USPSFlags::Generate
       raise USPSFlags::Errors::ZipGenerationError, "At least one argument switch must be true out of [svg, png]." unless svg || png
       generate_zip("svg") if svg
       generate_zip("png") if png
-    rescue => e
-      raise e if e.is_a?(USPSFlags::Errors::ZipGenerationError)
-      raise USPSFlags::Errors::ZipGenerationError, cause: e
     end
 
     # Generate trident spec sheet as an SVG image.
@@ -130,8 +111,18 @@ class USPSFlags::Generate
       [@svg_file, @png_file, @svg_ins_file, @png_ins_file]
     end
 
+    def static_generation_header
+      puts "\nSVGs generate a single file.",
+        "PNGs generate full-res, 1500w, 1000w, 500w, and thumbnail files.",
+        "Corresponding rank insignia (including smaller sizes) are also generated, as appropriate."
+      USPSFlags::Helpers.log "\nGeneration location: #{USPSFlags::Config.flags_dir}\n"
+      USPSFlags::Helpers.log "\n#{Time.now.strftime('%Y%m%d.%H%M%S%z')} – Generating static files...\n\n"
+      USPSFlags::Helpers.log "Flag | SVG | PNG        | Run time\n".rjust(USPSFlags::Helpers.max_flag_name_length+31),
+        "\n".rjust(USPSFlags::Helpers.max_flag_name_length+32, "-")
+    end
+
     def generate_zip(type)
-      raise "Error: Flags directory not found." unless ::Dir.exist?("#{USPSFlags::Config.flags_dir}/ZIP")
+      raise USPSFlags::Errors::ZipGenerationError, "Flags directory not found." unless ::Dir.exist?("#{USPSFlags::Config.flags_dir}/ZIP")
 
       zip = "#{USPSFlags::Config.flags_dir}/ZIP/USPS_Flags.#{type}.zip"
       ::File.delete(zip) if ::File.exist?(zip)
@@ -158,17 +149,8 @@ class USPSFlags::Generate
 
       set_file_paths(flag)
 
-      if svg
-        generate_static_svg(flag)
-      else
-        USPSFlags::Helpers.log "-"
-      end
-
-      if png
-        generate_static_png(flag)
-      else
-        USPSFlags::Helpers.log "- "
-      end
+      svg ? generate_static_svg(flag) : USPSFlags::Helpers.log("-")
+      png ? generate_static_png(flag) : USPSFlags::Helpers.log("- ")
 
       run_time = (Time.now - start_time).round(4).to_s[(0..5)].ljust(6, "0")
       USPSFlags::Helpers.log " | #{run_time} s\n"
