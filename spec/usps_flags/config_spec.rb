@@ -42,7 +42,7 @@ describe USPSFlags::Config do
     before(:each) do
       class Rails
         def self.root
-          "path/to/rails_app"
+          "tmp/rails_app"
         end
       end
 
@@ -52,7 +52,7 @@ describe USPSFlags::Config do
     end
 
     it "should use the default Rails log directory" do
-      expect(USPSFlags::Config.log_path).to eql("path/to/rails_app/log")
+      expect(USPSFlags::Config.log_path).to eql("tmp/rails_app/log")
     end
   end
 end
