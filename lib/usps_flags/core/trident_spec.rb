@@ -75,9 +75,16 @@ class USPSFlags::Core::TridentSpec
     @unit_text = unit.nil? ? "" :  "#{unit}"
     @unit = unit
 
+    configure_barb_label
+  end
+
+  def configure_barb_label
     barb_label = Rational(@trident_config[:main_point_barb]) * @fly / USPSFlags::Config::BASE_FLY
-    barb_label = barb_label == barb_label.to_i ? barb_label.to_i : barb_label.to_simplified_s
-    @barb_label = "#{barb_label}#{@unit_text}"
+    @barb_label = if barb_label == barb_label.to_i
+      "#{barb_label.to_i}#{@unit_text}"
+    else
+      "#{barb_label.to_simplified_s}#{@unit_text}"
+    end
   end
 
   def spec_header
