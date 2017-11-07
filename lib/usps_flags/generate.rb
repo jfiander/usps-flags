@@ -88,17 +88,8 @@ class USPSFlags::Generate
     # @param [Boolean] png Generate zip archive of PNG images.
     def zips(svg: true, png: true)
       raise USPSFlags::Errors::ZipGenerationError, "At least one argument switch must be true out of [svg, png]." unless svg || png
-      begin
-        generate_zip("svg") if svg
-      rescue Errno::EACCES => e
-        raise USPSFlags::Errors::ZipGenerationError, type: :svg, cause: e
-      end
-
-      begin
-        generate_zip("png") if png
-      rescue Errno::EACCES => e
-        raise USPSFlags::Errors::ZipGenerationError, type: :png, cause: e
-      end
+      generate_zip("svg") if svg
+      generate_zip("png") if png
     rescue => e
       raise e if e.is_a?(USPSFlags::Errors::ZipGenerationError)
       raise USPSFlags::Errors::ZipGenerationError, cause: e
