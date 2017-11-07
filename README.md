@@ -71,7 +71,7 @@ USPSFlags::Generate.svg "flag", outfile: nil, scale: nil, field: true
 
 - `outfile` specifies where to save the file. If left as `nil`, this method will
   `puts` the generated SVG. Either way, the SVG code is returned.
-- `scale` is a divisor scaling factor – the larger it is, the smaller the 
+- `scale` is a divisor scaling factor – the larger it is, the smaller the
   resulting SVG will be rendered. Accepted values are floats between 0 and 1,
   and integers above that.
 - `field` specifies whether to render the field of a flag, or to only render the
