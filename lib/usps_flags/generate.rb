@@ -83,8 +83,7 @@ class USPSFlags::Generate
     # @param [String] outfile The unit to append to all trident measurements.
     # @param [String] scale The image scale divisor factor.
     # @return [String] Returns the SVG data.
-    def spec(outfile: nil, fly: nil, unit: nil, scale: nil)
-      fly = fly.nil? ? USPSFlags::Config::BASE_FLY : fly
+    def spec(outfile: nil, fly: USPSFlags::Config::BASE_FLY, unit: nil, scale: nil)
       svg = ""
       svg << USPSFlags::Core.headers(scale: scale, title: "USPS Trident Specifications")
       svg << USPSFlags::Core.trident_spec(fly: fly, unit: unit)
