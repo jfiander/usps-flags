@@ -10,7 +10,7 @@ class USPSFlags::Helpers::SpecArrows
     # @private
     def vertical(x, top, bottom, pointer_top = nil, pointer_bottom = nil, label: nil, unit: nil, label_offset: (USPSFlags::Config::BASE_FLY/120), label_offset_y: 0, label_align: "left")
       load_common_config
-      label, label_fraction = get_labels(bottom, top, label: label)
+      label, label_fraction = get_labels(bottom, top)
       svg = ""
 
       svg << arrow_pointer(x, pointer_top, top, top) unless pointer_top.nil?
@@ -33,7 +33,7 @@ class USPSFlags::Helpers::SpecArrows
     # @private
     def horizontal(y, left, right, pointer_left = nil, pointer_right = nil, label: nil, unit: nil, label_offset: (USPSFlags::Config::BASE_FLY/45), label_offset_x: 0, label_align: "middle")
       load_common_config
-      label, label_fraction = get_labels(right, left, label: label)
+      label, label_fraction = get_labels(right, left)
       svg = ""
 
       svg << arrow_pointer(left, left, pointer_left, y) unless pointer_left.nil?
@@ -66,10 +66,8 @@ class USPSFlags::Helpers::SpecArrows
       SVG
     end
 
-    def get_labels(a, b, label: nil)
-      label = a - b if label.nil?
-      label = label.to_i if label - label.to_i == 0
-      label = Rational(label) * @fly / USPSFlags::Config::BASE_FLY
+    def get_labels(a, b)
+      label = (a - b) * Rational(@fly, USPSFlags::Config::BASE_FLY)
       if label == label.to_i
         label = label.to_i
         label_fraction = ""
