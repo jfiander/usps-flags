@@ -16,7 +16,7 @@ class USPSFlags::Core::Pennant
       <<~SVG
         #{cruise}
         <g transform=\"translate(385, 340)\">
-          #{USPSFlags::Core::Star.new.svg}
+          #{USPSFlags::Core.star}
         </g>"
       SVG
     end

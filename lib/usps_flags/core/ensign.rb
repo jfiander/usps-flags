@@ -46,7 +46,7 @@ class USPSFlags::Core::Ensign
         <g transform="scale(0.375)">
           <g transform="translate(1885, 465)">
             <g transform="rotate(#{rotation}, 0, 900)">
-              #{USPSFlags::Core::Star.new.svg}
+              #{USPSFlags::Core.star}
             </g>
           </g>
         </g>

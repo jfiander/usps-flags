@@ -39,7 +39,7 @@ class USPSFlags::Core::US
     rows[type].each do |r|
       columns[type].each do |c|
         svg << <<~SVG
-          <g transform="translate(#{@canton_fly*c/12}, #{@star_offset+@canton_hoist*r/10})"><g transform="scale(0.31)">#{USPSFlags::Core::Star.new.svg}</g></g>
+          <g transform="translate(#{@canton_fly*c/12}, #{@star_offset+@canton_hoist*r/10})"><g transform="scale(0.31)">#{USPSFlags::Core.star}</g></g>
         SVG
       end
     end
