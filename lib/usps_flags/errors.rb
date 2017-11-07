@@ -1,3 +1,6 @@
+# Custom errors.
+#
+# @private
 module USPSFlags::Errors
   class PNGGenerationError < StandardError
     def initialize(msg = "There was an error generating the PNG file.", svg: "")
