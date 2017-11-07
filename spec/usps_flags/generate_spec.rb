@@ -169,25 +169,26 @@ describe USPSFlags::Generate do
       )
     end
 
-    it "should not raise StaticFilesGenerationError while generating all static files" do
-      ::FileUtils.cp("spec/assets/1LT.thumb.png", "#{USPSFlags::Config.flags_dir}/PNG/insignia/1LT.thumb.png")
-      ::FileUtils.cp("spec/assets/LT.png", "#{USPSFlags::Config.flags_dir}/PNG/insignia/LT.png")
-      ::FileUtils.cp("spec/assets/FLT.png", "#{USPSFlags::Config.flags_dir}/PNG/FLT.png")
-      expect { USPSFlags::Generate.all(reset: false) }.to_not raise_error(USPSFlags::Errors::StaticFilesGenerationError)
-    end
-
-    it "should not raise StaticFilesGenerationError while clearing all static files" do
-      expect { USPSFlags::Generate.all(svg: false, png: false, zips: false, reset: true) }.to_not raise_error(USPSFlags::Errors::StaticFilesGenerationError)
-    end
-
     it "should raise USPSFlags::Errors::ZipGenerationError when not given any true arguments" do
       expect { USPSFlags::Generate.zips(svg: false, png: false) }.to raise_error(
         USPSFlags::Errors::ZipGenerationError, "At least one argument switch must be true out of [svg, png]."
       )
     end
 
-    it "should not raise ZipGenerationError while generating zip files" do
-      expect { USPSFlags::Generate.zips }.to_not raise_error(USPSFlags::Errors::ZipGenerationError)
+    it "should not raise an error while generating all static files" do
+      png_dir = "#{USPSFlags::Config.flags_dir}/PNG"
+      ::FileUtils.cp("spec/assets/1LT.thumb.png", "#{png_dir}/insignia/1LT.thumb.png")
+      ::FileUtils.cp("spec/assets/LT.png", "#{png_dir}/insignia/LT.png")
+      ::FileUtils.cp("spec/assets/FLT.png", "#{png_dir}/FLT.png")
+      expect { USPSFlags::Generate.all(reset: false) }.to_not raise_error # (USPSFlags::Errors::StaticFilesGenerationError)
+    end
+
+    it "should not raise an error while clearing all static files" do
+      expect { USPSFlags::Generate.all(svg: false, png: false, zips: false, reset: true) }.to_not raise_error # (USPSFlags::Errors::StaticFilesGenerationError)
+    end
+
+    it "should not raise an error while generating zip files" do
+      expect { USPSFlags::Generate.zips }.to_not raise_error # (USPSFlags::Errors::ZipGenerationError)
     end
   end
 end
