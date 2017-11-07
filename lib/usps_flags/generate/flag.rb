@@ -6,37 +6,20 @@ class USPSFlags::Generate::Flag
   class << self
     def officer(rank: nil, width: USPSFlags::Config::BASE_FLY, outfile: nil, scale: nil, field: true)
       raise "Error: No rank specified." if rank.nil?
-      rank = rank.to_s.upcase
+      @rank = rank.to_s.upcase
+      @field = field
 
       svg = ""
-      svg << USPSFlags::Core.headers(scale: scale, title: rank)
+      svg << USPSFlags::Core.headers(scale: scale, title: @rank)
 
-      rank.slice!(0) if !field && USPSFlags::Helpers.valid_flags(:past).include?(rank)
-      rank = "CDR" if rank == "C"
+      modify_rank_for_insignia
+      @flag_details = USPSFlags::Helpers.flag_details(@rank)
+      @trident_color = @field ? :white : @flag_details[:color]
 
-      flag_details = USPSFlags::Helpers.flag_details(rank)
-      trident_color = field ? :white : flag_details[:color]
-
-      svg << USPSFlags::Core.field(style: flag_details[:style], color: flag_details[:color]) if field
-      svg << "<g transform=\"translate(-150, 400)\"><g transform=\"scale(0.58333)\">" if flag_details[:style] == :past
-
-      if flag_details[:type] == :n && flag_details[:count] == 3
-        svg << USPSFlags::Core::Tridents.cc(flag_details[:type], trident_color: trident_color)
-      elsif flag_details[:type] == :n && flag_details[:count] == 2
-        svg << USPSFlags::Core::Tridents.vc(flag_details[:type], trident_color: trident_color)
-      elsif [:s, :d].include?(flag_details[:type]) && flag_details[:count] == 3
-        svg << USPSFlags::Core::Tridents.three(flag_details[:type], trident_color: trident_color, field_color: flag_details[:color])
-      elsif [:s, :d].include?(flag_details[:type]) && flag_details[:count] == 2
-        svg << USPSFlags::Core::Tridents.two(flag_details[:type], trident_color: trident_color, field_color: flag_details[:color])
-      elsif [:s, :d, :stf, :n].include?(flag_details[:type]) && %w[LT DLT].include?(rank)
-        svg << USPSFlags::Core::Tridents.offset(flag_details[:type], field_color: flag_details[:color], field: field)
-      elsif [:a, :f, :fc, :pc].include?(flag_details[:type])
-        svg << special(flag_details[:type], level: flag_details[:level], field: field)
-      else
-        svg << USPSFlags::Core.trident(flag_details[:type], field_color: flag_details[:color])
-      end
-
-      svg << "</g></g>" if flag_details[:style] == :past
+      svg << USPSFlags::Core.field(style: @flag_details[:style], color: @flag_details[:color]) if @field
+      svg << "<g transform=\"translate(-150, 400)\"><g transform=\"scale(0.58333)\">" if @flag_details[:style] == :past
+      svg << get_officer_flag
+      svg << "</g></g>" if @flag_details[:style] == :past
       svg << USPSFlags::Core.footer
 
       USPSFlags::Helpers.output(svg, outfile: outfile)
@@ -110,6 +93,30 @@ class USPSFlags::Generate::Flag
       svg << USPSFlags::Core.footer
 
       USPSFlags::Helpers.output(svg, outfile: outfile)
+    end
+
+    private
+    def get_officer_flag
+      if @flag_details[:type] == :n && @flag_details[:count] == 3
+        USPSFlags::Core::Tridents.cc(@flag_details[:type], trident_color: @trident_color)
+      elsif @flag_details[:type] == :n && @flag_details[:count] == 2
+        USPSFlags::Core::Tridents.vc(@flag_details[:type], trident_color: @trident_color)
+      elsif [:s, :d].include?(@flag_details[:type]) && @flag_details[:count] == 3
+        USPSFlags::Core::Tridents.three(@flag_details[:type], trident_color: @trident_color, field_color: @flag_details[:color])
+      elsif [:s, :d].include?(@flag_details[:type]) && @flag_details[:count] == 2
+        USPSFlags::Core::Tridents.two(@flag_details[:type], trident_color: @trident_color, field_color: @flag_details[:color])
+      elsif [:s, :d, :stf, :n].include?(@flag_details[:type]) && %w[LT DLT].include?(@rank)
+        USPSFlags::Core::Tridents.offset(@flag_details[:type], field_color: @flag_details[:color], field: @field)
+      elsif [:a, :f, :fc, :pc].include?(@flag_details[:type])
+        special(@flag_details[:type], level: @flag_details[:level], field: @field)
+      else
+        USPSFlags::Core.trident(@flag_details[:type], field_color: @flag_details[:color])
+      end
+    end
+
+    def modify_rank_for_insignia
+      @rank.slice!(0) if !@field && USPSFlags::Helpers.valid_flags(:past).include?(@rank)
+      @rank = "CDR" if @rank == "C"
     end
   end
 end
