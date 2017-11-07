@@ -56,14 +56,11 @@ class USPSFlags::Generate
     def all(svg: true, png: true, zips: true, reset: true)
       raise USPSFlags::Errors::StaticFilesGenerationError, "At least one argument switch must be true out of [svg, png, zips, reset]." unless svg || png || zips || reset
 
-      remove_static_files if reset
-      static_generation_header if svg || png
       overall_start_time = Time.now
-      USPSFlags::Helpers.valid_flags(:all).each do |flag|
-        generate_static_images_for(flag, svg: svg, png: png) if svg || png
-      end
+      remove_static_files if reset
+      images(svg: svg, png: png) if svg || png
       zips(svg: svg, png: png) if zips
-      USPSFlags::Helpers.log "\nTotal run time: #{Time.now - overall_start_time} s\n\n" if svg || png || zips
+      USPSFlags::Helpers.log "\nTotal run time: #{Time.now - overall_start_time} s\n\n"
     end
 
     # Generate zip archives of current static image files.
@@ -74,6 +71,17 @@ class USPSFlags::Generate
       raise USPSFlags::Errors::ZipGenerationError, "At least one argument switch must be true out of [svg, png]." unless svg || png
       generate_zip("svg") if svg
       generate_zip("png") if png
+    end
+
+    # Generate static image files.
+    #
+    # @param [Boolean] svg Generate static SVG images.
+    # @param [Boolean] png Generate static PNG images.
+    def images(svg: true, png: true)
+      static_generation_header
+      USPSFlags::Helpers.valid_flags(:all).each do |flag|
+        generate_static_images_for(flag, svg: svg, png: png)
+      end
     end
 
     # Generate trident spec sheet as an SVG image.
