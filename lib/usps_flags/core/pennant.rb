@@ -11,9 +11,9 @@ class USPSFlags::Core::Pennant
 
   def svg
     if @type == "OIC"
-      svg = oic
+      oic
     elsif @type == "CRUISE"
-      svg << <<~SVG
+      <<~SVG
         #{cruise}
         <g transform=\"translate(385, 340)\">
           #{USPSFlags::Core::Star.new.svg}
@@ -22,6 +22,7 @@ class USPSFlags::Core::Pennant
     end
   end
 
+  private
   def oic
     <<~SVG
       <polyline fill="#{USPSFlags::Config::BLUE}" points="0 0 #{USPSFlags::Config::BASE_FLY} #{USPSFlags::Config::BASE_HOIST/8} 0 #{USPSFlags::Config::BASE_HOIST/4}" />
