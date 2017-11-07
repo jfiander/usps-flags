@@ -34,7 +34,7 @@ class USPSFlags::Config
   #
   # All other values are derived from these, or directly from the constant sizes.
   #
-  # @return [Hash] Returns the configuration values for tridents.
+  # @return [Hash] RThe configuration values for tridents.
   def self.trident
     point_height = USPSFlags::Config::BASE_FLY/48*17/8
     bar_width = USPSFlags::Config::BASE_FLY/48
@@ -68,6 +68,18 @@ class USPSFlags::Config
       delta_gap_y: USPSFlags::Config::BASE_HOIST*221/256,
 
       circle_height_adj: USPSFlags::Config::BASE_FLY/800
+    }
+  end
+
+  # Height values for trident insignia.
+  #
+  # @return [Hash] The height values for tridents.
+  def self.trident_heights
+    {
+      s:   USPSFlags::Config::BASE_HOIST/2,
+      d:   USPSFlags::Config::BASE_HOIST*5/8,
+      stf: USPSFlags::Config::BASE_HOIST*3/4,
+      n:   USPSFlags::Config::BASE_HOIST*3/4
     }
   end
 
@@ -130,14 +142,5 @@ class USPSFlags::Config
     @@flags_dir = @flags_dir
     @@use_larger_tridents = @use_larger_tridents
     @@log_fail_quietly = @log_fail_quietly
-  end
-
-  def trident_heights
-    {
-      s:   USPSFlags::Config::BASE_HOIST/2,
-      d:   USPSFlags::Config::BASE_HOIST*5/8,
-      stf: USPSFlags::Config::BASE_HOIST*3/4,
-      n:   USPSFlags::Config::BASE_HOIST*3/4
-    }
   end
 end
