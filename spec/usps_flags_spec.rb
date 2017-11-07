@@ -153,6 +153,10 @@ describe USPSFlags do
           it "should not raise PNGGenerationError with png_file set" do
             expect { @flag.png }.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
           end
+
+          it "should return the value of png_file" do
+            expect(@flag.png).to eql("#{$tmp_alt_flags_dir}/PNG/LtC.png")
+          end
         end
       end
     end
