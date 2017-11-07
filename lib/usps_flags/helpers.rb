@@ -44,13 +44,13 @@ class USPSFlags::Helpers
     #
     # This is used USPSFlags::Generate, and should never need to be called directly.
     # @private
-    def resize_png(png_ins_file, flag:, size:, size_key:)
+    def resize_png(png_file, file:, size:, size_key:)
       MiniMagick::Tool::Convert.new do |convert|
         convert << "-background" << "none"
         convert << "-format" << "png"
         convert << "-resize" << "#{size}"
-        convert << png_ins_file
-        convert << "#{USPSFlags::Config.flags_dir}/PNG/insignia/#{flag}.#{size_key}.png"
+        convert << png_file
+        convert << "#{USPSFlags::Config.flags_dir}/PNG/#{file}.#{size_key}.png"
       end
     end
 
