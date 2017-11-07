@@ -12,23 +12,7 @@ class USPSFlags::Core::US
 
     star_offset = 20 # Half of scaled star height
 
-    svg = ""
-    svg << <<~SVG
-      <rect x="0" y="0" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
-      <rect x="0" y="#{base_hoist*1/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
-      <rect x="0" y="#{base_hoist*2/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
-      <rect x="0" y="#{base_hoist*3/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
-      <rect x="0" y="#{base_hoist*4/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
-      <rect x="0" y="#{base_hoist*5/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
-      <rect x="0" y="#{base_hoist*6/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
-      <rect x="0" y="#{base_hoist*7/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
-      <rect x="0" y="#{base_hoist*8/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
-      <rect x="0" y="#{base_hoist*9/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
-      <rect x="0" y="#{base_hoist*10/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
-      <rect x="0" y="#{base_hoist*11/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
-      <rect x="0" y="#{base_hoist*12/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
-      <rect x="0" y="0" width="#{canton_fly}" height="#{canton_hoist}" fill="#{USPSFlags::Config::BLUE}" />
-    SVG
+    svg = stripes
 
     [1,3,5,7,9].each do |r|
       [1,3,5,7,9,11].each do |c|
@@ -52,5 +36,25 @@ class USPSFlags::Core::US
     # SVG
 
     svg
+  end
+
+  private
+  def stripes
+    <<~SVG
+      <rect x="0" y="0" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
+      <rect x="0" y="#{base_hoist*1/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
+      <rect x="0" y="#{base_hoist*2/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
+      <rect x="0" y="#{base_hoist*3/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
+      <rect x="0" y="#{base_hoist*4/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
+      <rect x="0" y="#{base_hoist*5/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
+      <rect x="0" y="#{base_hoist*6/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
+      <rect x="0" y="#{base_hoist*7/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
+      <rect x="0" y="#{base_hoist*8/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
+      <rect x="0" y="#{base_hoist*9/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
+      <rect x="0" y="#{base_hoist*10/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
+      <rect x="0" y="#{base_hoist*11/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
+      <rect x="0" y="#{base_hoist*12/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
+      <rect x="0" y="0" width="#{canton_fly}" height="#{canton_hoist}" fill="#{USPSFlags::Config::BLUE}" />
+    SVG
   end
 end
