@@ -181,12 +181,16 @@ class USPSFlags::Generate
     end
 
     def generate_fullsize_png_insignia(flag)
-      if USPSFlags::Helpers.valid_flags(:past).include?(flag) || !USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
+      if can_have_insignia?(flag)
         USPSFlags::Helpers.log "-"
       else
         png(File.read(@svg_ins_file), outfile: @png_ins_file, trim: true) unless ::File.exist?(@png_ins_file)
         USPSFlags::Helpers.log "I"
       end
+    end
+
+    def can_have_insignia?(flag)
+      USPSFlags::Helpers.valid_flags(:past).include?(flag) || !USPSFlags::Helpers.valid_flags(:insignia).include?(flag)
     end
 
     def generate_reduced_size_pngs(flag)
