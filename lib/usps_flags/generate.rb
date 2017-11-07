@@ -202,7 +202,6 @@ class USPSFlags::Generate
         size, size_key = USPSFlags::Helpers.size_and_key(size: size, flag: @flag)
         @sized_png_file = "#{USPSFlags::Config.flags_dir}/PNG/#{@flag}.#{@size_key}.png"
         @sized_png_ins_file = @sized_png_file.gsub("/PNG/", "/PNG/insignia/")
-        return if file_found?(@sized_png_file)
 
         generate_smaller_png(size, size_key)
         generate_smaller_png_insignia(size, size_key)
