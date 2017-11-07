@@ -10,13 +10,11 @@ class USPSFlags::Config
   
   @@flags_dir ||= defined?(::Rails) ? "#{::Rails.root}/app/assets/images/usps_flags" : "#{File.dirname(__dir__)}/output"
   @@use_larger_tridents ||= true
-  @@log_fail_quietly ||= true
   
   # Configuration constructor
   #
   # @param [String] flag_dir The path to the flags directory.
   # @param [Boolean] use_larger_tridents Whether to use the larger trident configuration.
-  # @param [Boolean] log_fail_quietly Whether to print an error message if the log file is inaccessible.
   # @param [Boolean] reset Whether to clear out the specified flags_dir.
   def initialize
     load_init_variables
@@ -28,7 +26,6 @@ class USPSFlags::Config
   attr_accessor :flags_dir
   attr_accessor :reset
   attr_accessor :use_larger_tridents
-  attr_accessor :log_fail_quietly
 
   # Base configuration values for trident insignia.
   #
@@ -112,18 +109,10 @@ class USPSFlags::Config
     @@use_larger_tridents
   end
 
-  # Accessor for the boolean of whether to print an error message if the log file is inaccessible.
-  #
-  # @return [Boolean] Returns the current setting.
-  def self.log_fail_quietly
-    @@log_fail_quietly
-  end
-
   private
   def load_init_variables
     @flags_dir = @@flags_dir
     @use_larger_tridents = @@use_larger_tridents
-    @log_fail_quietly = @@log_fail_quietly
     @reset = false
   end
 
@@ -141,6 +130,5 @@ class USPSFlags::Config
   def set_class_variables
     @@flags_dir = @flags_dir
     @@use_larger_tridents = @use_larger_tridents
-    @@log_fail_quietly = @log_fail_quietly
   end
 end

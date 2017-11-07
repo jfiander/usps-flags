@@ -26,12 +26,6 @@ describe USPSFlags::Config do
     end
   end
 
-  describe "log_fail_quietly" do
-    it "should return a Boolean from log_fail_quietly" do
-      expect([true, false]).to include(USPSFlags::Config.log_fail_quietly)
-    end
-  end
-
   describe "configuration constructor" do
     it "should return a properly constructed configuration" do
       @config = USPSFlags::Config.new do |config|
@@ -41,7 +35,6 @@ describe USPSFlags::Config do
       expect(@config.flags_dir).to eql($tmp_flags_dir)
       expect(@config.reset).to eql(false)
       expect(@config.use_larger_tridents).to eql(true)
-      expect(@config.log_fail_quietly).to eql(true)
     end
   end
 end

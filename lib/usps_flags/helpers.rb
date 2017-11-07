@@ -89,12 +89,8 @@ class USPSFlags::Helpers
       ::FileUtils.mkdir_p(USPSFlags::Config.log_path)
       outputs = [STDOUT]
 
-      begin
-        log_file = File.open("#{USPSFlags::Config.log_path}/flag.log", 'a')
-        outputs << log_file
-      rescue Errno::EACCES => e
-        puts "\nError accessing log file." unless USPSFlags::Config.log_fail_quietly
-      end
+      log_file = File.open("#{USPSFlags::Config.log_path}/flag.log", 'a')
+      outputs << log_file
 
       messages.each do |message|
         outputs.each { |f| f.write(message) }
