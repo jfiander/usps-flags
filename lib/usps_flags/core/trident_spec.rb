@@ -32,7 +32,7 @@ class USPSFlags::Core::TridentSpec
 
   private
   def configure_sizes(fly)
-    @fly = fly
+    @fly = Rational(fly)
     get_hoist_from_fly(@fly)
     configure_hoist_fraction
     configure_fly_fraction
