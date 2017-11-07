@@ -141,7 +141,7 @@ describe USPSFlags::Generate do
     end
 
     it "should generate the trident specification sheet with a fractional field size" do
-      expect(USPSFlags::Generate.spec(outfile: "", fly: 23)).to include("<title>USPS Trident Specifications</title>")
+      expect(USPSFlags::Generate.spec(outfile: "", fly: 23.5)).to include("<title>USPS Trident Specifications</title>")
     end
   end
 
