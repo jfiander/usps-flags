@@ -188,18 +188,12 @@ class USPSFlags::Helpers
     end
 
     def flag_level(rank)
-      if rank == "DAIDE"
-        :d
-      elsif rank == "NAIDE"
+      if rank.match /N.*/
         :n
+      elsif rank.match /D.*/
+        :d
       elsif rank == "FLT"
         :s
-      elsif rank == "DFLT"
-        :d
-      elsif rank == "NFLT"
-        :n
-      else
-        nil
       end
     end
 
@@ -218,19 +212,19 @@ class USPSFlags::Helpers
         :pc
       elsif rank == "FLEETCAP"
         :fc
-      elsif rank == "DAIDE"
-        :a
-      elsif rank == "NAIDE"
-        :a
-      elsif rank == "FLT"
-        :f
-      elsif rank == "DFLT"
-        :f
-      elsif rank == "NFLT"
-        :f
       elsif rank == "STFC"
         :stf
-      elsif valid_flags(:squadron).include?(rank)
+      elsif rank.match /.AIDE/
+        :a
+      elsif rank.match /.?FLT/
+        :f
+      else
+        get_line_flag_level(rank)
+      end
+    end
+
+    def get_line_flag_level(rank)
+      if valid_flags(:squadron).include?(rank)
         :s
       elsif valid_flags(:district).include?(rank)
         :d
