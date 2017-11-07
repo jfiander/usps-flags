@@ -124,9 +124,9 @@ class USPSFlags::Core::Trident
     elsif color == :blue
       @color_code = USPSFlags::Config::BLUE
       @field_color_code = "#FFFFFF"
-    elsif color == :white && field_color == :red
+    elsif field_color == :red
       @field_color_code = USPSFlags::Config::RED
-    elsif color == :white && field_color == :blue
+    elsif field_color == :blue
       @field_color_code = USPSFlags::Config::BLUE
     end
   end
