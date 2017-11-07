@@ -54,7 +54,7 @@ class USPSFlags::Generate
     # @param [Boolean] zips Whether to create zip archives for all images created. Does not create a zip for skipped formats.
     # @param [Boolean] reset Whether to delete all previous files before generating new files.
     def all(svg: true, png: true, zips: true, reset: true)
-      raise USPSFlags::Errors::StaticFilesGenerationError, "At least one argument switch must be true out of [svg, png, zips]." unless svg || png || zips
+      raise USPSFlags::Errors::StaticFilesGenerationError, "At least one argument switch must be true out of [svg, png, zips, reset]." unless svg || png || zips || reset
 
       remove_static_files if reset
       static_generation_header
