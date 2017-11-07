@@ -39,7 +39,7 @@ class USPSFlags::Core::US
   end
 
   private
-  def stripes
+  def stripes(base_fly, base_hoist, canton_fly, canton_hoist)
     <<~SVG
       <rect x="0" y="0" width="#{base_fly}" height="#{base_hoist/13}" fill="#{USPSFlags::Config::RED}" />
       <rect x="0" y="#{base_hoist*1/13}" width="#{base_fly}" height="#{base_hoist/13}" fill="#FFFFFF" />
