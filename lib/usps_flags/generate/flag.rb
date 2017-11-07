@@ -97,17 +97,17 @@ class USPSFlags::Generate::Flag
 
     private
     def get_officer_flag
-      if @flag_details[:type] == :n && @flag_details[:count] == 3
+      if cc?
         USPSFlags::Core::Tridents.cc(@flag_details[:type], trident_color: @trident_color)
-      elsif @flag_details[:type] == :n && @flag_details[:count] == 2
+      elsif vc?
         USPSFlags::Core::Tridents.vc(@flag_details[:type], trident_color: @trident_color)
-      elsif [:s, :d].include?(@flag_details[:type]) && @flag_details[:count] == 3
+      elsif cdr_or_dc?
         USPSFlags::Core::Tridents.three(@flag_details[:type], trident_color: @trident_color, field_color: @flag_details[:color])
-      elsif [:s, :d].include?(@flag_details[:type]) && @flag_details[:count] == 2
+      elsif ltc_or_dltc?
         USPSFlags::Core::Tridents.two(@flag_details[:type], trident_color: @trident_color, field_color: @flag_details[:color])
-      elsif [:s, :d, :stf, :n].include?(@flag_details[:type]) && %w[LT DLT].include?(@rank)
+      elsif lt_or_dlt?
         USPSFlags::Core::Tridents.offset(@flag_details[:type], field_color: @flag_details[:color], field: @field)
-      elsif [:a, :f, :fc, :pc].include?(@flag_details[:type])
+      elsif special_officer?
         special(@flag_details[:type], level: @flag_details[:level], field: @field)
       else
         USPSFlags::Core.trident(@flag_details[:type], field_color: @flag_details[:color])
@@ -117,6 +117,30 @@ class USPSFlags::Generate::Flag
     def modify_rank_for_insignia
       @rank.slice!(0) if !@field && USPSFlags::Helpers.valid_flags(:past).include?(@rank)
       @rank = "CDR" if @rank == "C"
+    end
+
+    def cc?
+      @flag_details[:type] == :n && @flag_details[:count] == 3
+    end
+
+    def vc?
+      @flag_details[:type] == :n && @flag_details[:count] == 2
+    end
+
+    def cdr_or_dc?
+      [:s, :d].include?(@flag_details[:type]) && @flag_details[:count] == 3
+    end
+
+    def ltc_or_dltc?
+      [:s, :d].include?(@flag_details[:type]) && @flag_details[:count] == 2
+    end
+
+    def lt_or_dlt?
+      %w[LT DLT].include?(@rank)
+    end
+
+    def special_officer?
+      [:a, :f, :fc, :pc].include?(@flag_details[:type])
     end
   end
 end
