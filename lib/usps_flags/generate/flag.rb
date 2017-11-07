@@ -5,7 +5,7 @@
 class USPSFlags::Generate::Flag
   class << self
     def officer(rank: nil, width: USPSFlags::Config::BASE_FLY, outfile: nil, scale: nil, field: true)
-      raise "Error: No rank specified." if rank.nil?
+      raise ArgumentError, "No rank specified." if rank.nil?
       @rank = rank.to_s.upcase
       @field = field
 
