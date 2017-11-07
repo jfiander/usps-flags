@@ -8,8 +8,8 @@ class USPSFlags::Helpers::SpecArrows
     #
     # This is used USPSFlags::Core.trident_spec, and should never need to be called directly.
     # @private
-    def vertical(x, top, bottom, pointer_top = nil, pointer_bottom = nil, label: nil, unit: nil, label_offset: (USPSFlags::Config::BASE_FLY/120), label_offset_y: 0, label_align: "left")
-      load_common_config
+    def vertical(x, top, bottom, pointer_top = nil, pointer_bottom = nil, fly: nil, unit: nil, label_offset: (USPSFlags::Config::BASE_FLY/120), label_offset_y: 0, label_align: "left")
+      load_common_config(fly)
       label, label_fraction = get_labels(bottom, top)
       svg = ""
 
@@ -31,8 +31,8 @@ class USPSFlags::Helpers::SpecArrows
     #
     # This is used USPSFlags::Core.trident_spec, and should never need to be called directly.
     # @private
-    def horizontal(y, left, right, pointer_left = nil, pointer_right = nil, label: nil, unit: nil, label_offset: (USPSFlags::Config::BASE_FLY/45), label_offset_x: 0, label_align: "middle")
-      load_common_config
+    def horizontal(y, left, right, pointer_left = nil, pointer_right = nil, fly: nil, unit: nil, label_offset: (USPSFlags::Config::BASE_FLY/45), label_offset_x: 0, label_align: "middle")
+      load_common_config(fly)
       label, label_fraction = get_labels(right, left)
       svg = ""
 
@@ -51,13 +51,13 @@ class USPSFlags::Helpers::SpecArrows
     end
 
     private
-    def load_common_config
+    def load_common_config(fly)
       @color = "#CCCCCC"
       @stroke_width = (USPSFlags::Config::BASE_FLY/600)
       @stroke_dash = "10, 10"
       @font_size = (USPSFlags::Config::BASE_FLY/60)
       @arrow_size = (USPSFlags::Config::BASE_FLY/120)
-      @fly = USPSFlags::Config::BASE_FLY
+      @fly = fly || USPSFlags::Config::BASE_FLY
     end
 
     def arrow_pointer(x1, x2, y1, y2)
