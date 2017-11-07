@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.authors       = ['Julian Fiander']
   s.email         = 'julian@fiander.one'
   s.require_paths = ['lib', 'spec', 'doc']
-  s.files         = `git ls-files`.split("\n").reject { |f| f.match /archive\/.*/ }
+  s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
 
   s.cert_chain    = ['certs/jfiander.pem']
@@ -23,6 +23,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake',      '~> 12.1', '>= 12.1.0'
   s.add_development_dependency 'rspec',     '~> 3.7',  '>= 3.7.0'
-  s.add_development_dependency 'coveralls', '~> 0.8',  '>= 0.8.21'
   s.add_development_dependency 'codeclimate-test-reporter', '~> 0.4', '>= 0.4.8'
 end
