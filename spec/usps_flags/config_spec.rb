@@ -37,4 +37,22 @@ describe USPSFlags::Config do
       expect(@config.use_larger_tridents).to eql(true)
     end
   end
+
+  describe "Rails configuration" do
+    before(:each) do
+      class Rails
+        def self.root
+          "path/to/rails_app"
+        end
+      end
+
+      @config = USPSFlags::Config.new do |config|
+        config.flags_dir = $tmp_flags_dir
+      end
+    end
+
+    it "should use the default Rails log directory" do
+      expect(USPSFlags::Config.log_path).to eql("path/to/rails_app/log")
+    end
+  end
 end
