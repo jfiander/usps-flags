@@ -14,52 +14,8 @@ class USPSFlags::Helpers
     # @option type [Symbol] :us US flag
     # @return [Array] Valid options for flag generation (based on the provided type).
     def valid_flags(type = :all)
-      squadron_past = %w[PLTC PC]
-      squadron_elected = %w[1LT LTC CDR]
-      squadron_swallowtail = %w[PORTCAP FLEETCAP LT FLT]
-      district_past = %w[PDLTC PDC]
-      district_elected = %w[D1LT DLTC DC]
-      district_swallowtail = %w[DLT DAIDE DFLT]
-      national_past = %w[PSTFC PRC PVC PCC]
-      national_elected = %w[NAIDE NFLT STFC RC VC CC]
-      special = %w[CRUISE OIC ENSIGN WHEEL]
-      us = %w[US]
-
-      squadron = squadron_past + squadron_elected + squadron_swallowtail
-      district = district_past + district_elected + district_swallowtail
-      national = national_past + national_elected
-      past = squadron_past + district_past + national_past
-
-      case type
-      when :all
-        squadron + district + national + special + us
-      when :officer
-        squadron + district + national
-      when :insignia
-        squadron + district + national - past
-      when :squadron
-        squadron
-      when :district
-        district
-      when :national
-        national
-      when :special
-        special
-      when :us
-        us
-      when :past
-        past
-      when :swallowtail
-        past + squadron_swallowtail + district_swallowtail
-      when :bridge
-        squadron_elected.last(2) + squadron_past.last(2) + 
-        district_elected.last(2) + district_past.last(2) + 
-        national_elected.last(2) + national_past.last(2)
-      when :command
-        [squadron_elected.last, squadron_past.last,
-        district_elected.last, district_past.last,
-        national_elected.last, national_past.last]
-      end
+      load_valid_flags
+      valid_flags_for(type)
     end
 
     # Gets the maximum length among valid flags.
@@ -165,6 +121,50 @@ class USPSFlags::Helpers
     end
 
     private
+    def load_valid_flags
+      @squadron_past = %w[PLTC PC]
+      @squadron_elected = %w[1LT LTC CDR]
+      @squadron_swallowtail = %w[PORTCAP FLEETCAP LT FLT]
+      @district_past = %w[PDLTC PDC]
+      @district_elected = %w[D1LT DLTC DC]
+      @district_swallowtail = %w[DLT DAIDE DFLT]
+      @national_past = %w[PSTFC PRC PVC PCC]
+      @national_elected = %w[NAIDE NFLT STFC RC VC CC]
+      @special = %w[CRUISE OIC ENSIGN WHEEL]
+      @us = %w[US]
+
+      @past = @squadron_past + @district_past + @national_past
+      @squadron = @squadron_past + @squadron_elected + @squadron_swallowtail
+      @district = @district_past + @district_elected + @district_swallowtail
+      @national = @national_past + @national_elected
+      @officer = @squadron + @district + @national
+    end
+
+    def valid_flags_for(type)
+      {
+        special: @special,
+        us: @us,
+
+        squadron: @squadron,
+        district: @district,
+        national: @national,
+        past: @past,
+
+        all: @officer + @special + @us,
+        officer: @officer,
+        insignia: @officer - @past,
+        swallowtail: @past + @squadron_swallowtail + @district_swallowtail,
+
+        bridge: @squadron_elected.last(2) + @squadron_past.last(2) + 
+          @district_elected.last(2) + @district_past.last(2) + 
+          @national_elected.last(2) + @national_past.last(2),
+
+        command: [@squadron_elected.last, @squadron_past.last,
+          @district_elected.last, @district_past.last,
+          @national_elected.last, @national_past.last]
+      }[type]
+    end
+
     def flag_style(rank)
       if valid_flags(:past).include?(rank)
         :past
