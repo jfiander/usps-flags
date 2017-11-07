@@ -40,12 +40,7 @@ class USPSFlags::Config
     bar_width = USPSFlags::Config::BASE_FLY/48
     bar_width = bar_width*5/4 if self.use_larger_tridents
     {
-      height: {
-        s:   USPSFlags::Config::BASE_HOIST/2,
-        d:   USPSFlags::Config::BASE_HOIST*5/8,
-        stf: USPSFlags::Config::BASE_HOIST*3/4,
-        n:   USPSFlags::Config::BASE_HOIST*3/4
-      },
+      height: trident_heights,
 
       center_point: BASE_FLY/2,
 
@@ -135,5 +130,14 @@ class USPSFlags::Config
     @@flags_dir = @flags_dir
     @@use_larger_tridents = @use_larger_tridents
     @@log_fail_quietly = @log_fail_quietly
+  end
+
+  def trident_heights
+    {
+      s:   USPSFlags::Config::BASE_HOIST/2,
+      d:   USPSFlags::Config::BASE_HOIST*5/8,
+      stf: USPSFlags::Config::BASE_HOIST*3/4,
+      n:   USPSFlags::Config::BASE_HOIST*3/4
+    }
   end
 end
