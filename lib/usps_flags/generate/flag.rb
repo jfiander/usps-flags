@@ -11,16 +11,10 @@ class USPSFlags::Generate::Flag
 
       svg = ""
       svg << USPSFlags::Core.headers(scale: scale, title: @rank)
-
       modify_rank_for_insignia
       @flag_details = USPSFlags::Helpers.flag_details(@rank)
       @trident_color = @field ? :white : @flag_details[:color]
-
-      svg << USPSFlags::Core.field(style: @flag_details[:style], color: @flag_details[:color]) if @field
-      svg << "<g transform=\"translate(-150, 400)\"><g transform=\"scale(0.58333)\">" if @flag_details[:style] == :past
-      svg << get_officer_flag
-      svg << "</g></g>" if @flag_details[:style] == :past
-      svg << USPSFlags::Core.footer
+      svg << officer_flag_body
 
       USPSFlags::Helpers.output(svg, outfile: outfile)
     end
@@ -112,6 +106,16 @@ class USPSFlags::Generate::Flag
       else
         USPSFlags::Core.trident(@flag_details[:type], field_color: @flag_details[:color])
       end
+    end
+
+    def officer_flag_body
+      svg = ""
+      svg << USPSFlags::Core.field(style: @flag_details[:style], color: @flag_details[:color]) if @field
+      svg << "<g transform=\"translate(-150, 400)\"><g transform=\"scale(0.58333)\">" if @flag_details[:style] == :past
+      svg << get_officer_flag
+      svg << "</g></g>" if @flag_details[:style] == :past
+      svg << USPSFlags::Core.footer
+      svg
     end
 
     def modify_rank_for_insignia
