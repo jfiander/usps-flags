@@ -95,13 +95,13 @@ class USPSFlags::Generate::Flag
         USPSFlags::Core::Tridents.cc(@flag_details[:type], trident_color: @trident_color)
       elsif vc?
         USPSFlags::Core::Tridents.vc(@flag_details[:type], trident_color: @trident_color)
-      elsif cdr_or_dc?
+      elsif three?
         USPSFlags::Core::Tridents.three(@flag_details[:type], trident_color: @trident_color, field_color: @flag_details[:color])
-      elsif ltc_or_dltc?
+      elsif two?
         USPSFlags::Core::Tridents.two(@flag_details[:type], trident_color: @trident_color, field_color: @flag_details[:color])
-      elsif lt_or_dlt?
+      elsif offset?
         USPSFlags::Core::Tridents.offset(@flag_details[:type], field_color: @flag_details[:color], field: @field)
-      elsif special_officer?
+      elsif special?
         special(@flag_details[:type], level: @flag_details[:level], field: @field)
       else
         USPSFlags::Core.trident(@flag_details[:type], field_color: @flag_details[:color])
@@ -131,19 +131,19 @@ class USPSFlags::Generate::Flag
       @flag_details[:type] == :n && @flag_details[:count] == 2
     end
 
-    def cdr_or_dc?
+    def three?
       [:s, :d].include?(@flag_details[:type]) && @flag_details[:count] == 3
     end
 
-    def ltc_or_dltc?
+    def two?
       [:s, :d].include?(@flag_details[:type]) && @flag_details[:count] == 2
     end
 
-    def lt_or_dlt?
+    def offset?
       %w[LT DLT].include?(@rank)
     end
 
-    def special_officer?
+    def special?
       [:a, :f, :fc, :pc].include?(@flag_details[:type])
     end
   end
