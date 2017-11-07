@@ -155,6 +155,13 @@ describe USPSFlags::Generate do
     end
   end
 
+  describe "without an outfile set" do
+    it "should print SVG data to the console" do
+      expect(STDOUT).to receive(:puts).with(USPSFlags::Generate.svg("Lt", outfile: ""), "\n")
+      USPSFlags::Generate.svg("Lt")
+    end
+  end
+
   describe "static files" do
     it "should raise USPSFlags::Errors::StaticFilesGenerationError when not given any true arguments" do
       expect { USPSFlags::Generate.all(svg: false, png: false, zips: false) }.to raise_error(
