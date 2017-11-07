@@ -107,9 +107,9 @@ class USPSFlags
   def png
     raise USPSFlags::Errors::PNGGenerationError, "A path must be set with png_file." if self.png_file.nil?
     svg_file_storage = self.svg_file
-    self.svg_file ""
+    self.svg_file = ""
     USPSFlags::Generate.png(self.svg, outfile: self.png_file, trim: self.trim)
-    self.svg_file svg_file_storage
+    self.svg_file = svg_file_storage
     self.png_file
   end
 end
