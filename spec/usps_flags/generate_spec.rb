@@ -176,6 +176,10 @@ describe USPSFlags::Generate do
       expect { USPSFlags::Generate.all(reset: false) }.to_not raise_error(USPSFlags::Errors::StaticFilesGenerationError)
     end
 
+    it "should not raise StaticFilesGenerationError while clearing all static files" do
+      expect { USPSFlags::Generate.all(svg: false, png: false, zips: false, reset: true) }.to_not raise_error(USPSFlags::Errors::StaticFilesGenerationError)
+    end
+
     it "should raise USPSFlags::Errors::ZipGenerationError when not given any true arguments" do
       expect { USPSFlags::Generate.zips(svg: false, png: false) }.to raise_error(
         USPSFlags::Errors::ZipGenerationError, "At least one argument switch must be true out of [svg, png]."
