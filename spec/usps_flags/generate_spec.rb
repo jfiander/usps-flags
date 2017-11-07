@@ -170,7 +170,10 @@ describe USPSFlags::Generate do
     end
 
     it "should not raise StaticFilesGenerationError while generating all static files" do
-      expect { USPSFlags::Generate.all }.to_not raise_error(USPSFlags::Errors::StaticFilesGenerationError)
+      ::FileUtils.cp("spec/assets/1LT.thumb.png", "#{USPSFlags::Config.flags_dir}/PNG/insignia/1LT.thumb.png")
+      ::FileUtils.cp("spec/assets/LT.png", "#{USPSFlags::Config.flags_dir}/PNG/insignia/LT.png")
+      ::FileUtils.cp("spec/assets/FLT.png", "#{USPSFlags::Config.flags_dir}/PNG/FLT.png")
+      expect { USPSFlags::Generate.all(reset: false) }.to_not raise_error(USPSFlags::Errors::StaticFilesGenerationError)
     end
 
     it "should raise USPSFlags::Errors::ZipGenerationError when not given any true arguments" do
