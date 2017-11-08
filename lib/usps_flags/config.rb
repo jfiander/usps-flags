@@ -10,6 +10,7 @@ class USPSFlags::Config
 
   @@flags_dir = "#{File.dirname(__dir__)}/output"
   @@use_larger_tridents = true
+  @@reset = false
   
   # Configuration constructor
   #
@@ -113,16 +114,24 @@ class USPSFlags::Config
     @@use_larger_tridents
   end
 
+  # Accessor for the boolean of whether to clear the flags_dir.
+  #
+  # @return [Boolean] Returns the current setting.
+  def self.reset
+    @@reset
+  end
+
   private
   def load_init_variables
     @flags_dir = @@flags_dir
     @use_larger_tridents = @@use_larger_tridents
-    @reset = false
+    @reset = @@reset
   end
 
   def set_class_variables
     @@flags_dir = @flags_dir
     @@use_larger_tridents = @use_larger_tridents
+    @@reset = @reset
   end
 
   def set_flags_dir(reset: false)
