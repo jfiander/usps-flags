@@ -183,6 +183,51 @@ describe USPSFlags::Generate do
       expect { USPSFlags::Generate.all(reset: false) }.to_not raise_error # (USPSFlags::Errors::StaticFilesGenerationError)
     end
 
+    it "should have generated the correct log output" do
+      correct_log_pattern = <<~LOG
+            Flag | SVG | PNG        | Run time
+        ---------------------------------------
+            PLTC | S-  | F-H-K-D-T- | .*? s
+              PC | S-  | F-H-K-D-T- | .*? s
+             1LT | SI  | FIH\\+K\\+DiT\\. | .*? s
+             LTC | SI  | FIHiKiDiTi | .*? s
+             CDR | SI  | FIHiKiDiTi | .*? s
+         PORTCAP | SI  | FIH\\+K\\+DiTi | .*? s
+        FLEETCAP | SI  | FIH\\+KiDiTi | .*? s
+              LT | SI  | F\\.H\\+K\\+DiTi | .*? s
+             FLT | SI  | \\.IH\\+K\\+DiTi | .*? s
+           PDLTC | S-  | F-H-K-D-T- | .*? s
+             PDC | S-  | F-H-K-D-T- | .*? s
+            D1LT | SI  | FIH\\+K\\+DiTi | .*? s
+            DLTC | SI  | FIHiKiDiTi | .*? s
+              DC | SI  | FIHiKiDiTi | .*? s
+             DLT | SI  | FIH\\+K\\+DiTi | .*? s
+           DAIDE | SI  | FIH\\+KiDiTi | .*? s
+            DFLT | SI  | FIHiKiDiTi | .*? s
+           PSTFC | S-  | F-H-K-D-T- | .*? s
+             PRC | S-  | F-H-K-D-T- | .*? s
+             PVC | S-  | F-H-K-D-T- | .*? s
+             PCC | S-  | F-H-K-D-T- | .*? s
+           NAIDE | SI  | FIH\\+KiDiTi | .*? s
+            NFLT | SI  | FIHiKiDiTi | .*? s
+            STFC | SI  | FIH\\+K\\+DiTi | .*? s
+              RC | SI  | FIH\\+K\\+DiTi | .*? s
+              VC | SI  | FIHiKiDiTi | .*? s
+              CC | SI  | FIHiKiDiTi | .*? s
+          CRUISE | S-  | F-H-K-D-T- | .*? s
+             OIC | S-  | F-H-K-D-T- | .*? s
+          ENSIGN | S-  | F-H-K-D-T- | .*? s
+           WHEEL | S-  | F-H-K-D-T- | .*? s
+              US | S-  | F-H-K-D-T- | .*? s
+          Generated SVG Zip
+          Generated PNG Zip
+      LOG
+
+      log_contents = ::File.read("#{USPSFlags::Config.log_path}/flag.log")
+
+      expect(log_contents).to match(Regexp.new(correct_log_pattern))
+    end
+
     it "should not raise an error while clearing all static files" do
       expect { USPSFlags::Generate.all(svg: false, png: false, zips: false, reset: true) }.to_not raise_error # (USPSFlags::Errors::StaticFilesGenerationError)
     end
