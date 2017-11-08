@@ -7,9 +7,9 @@ class USPSFlags::Config
   BASE_FLY ||= 3072
   BASE_HOIST ||= BASE_FLY*2/3
   FRACTION_SCALE ||= 85
-  
-  @@flags_dir ||= defined?(::Rails) ? "#{::Rails.root}/app/assets/images/usps_flags" : "#{File.dirname(__dir__)}/output"
-  @@use_larger_tridents ||= true
+
+  @@flags_dir = "#{File.dirname(__dir__)}/output"
+  @@use_larger_tridents = true
   
   # Configuration constructor
   #
@@ -19,8 +19,8 @@ class USPSFlags::Config
   def initialize
     load_init_variables
     yield self if block_given?
-    set_flags_dir(reset: @reset)
     set_class_variables
+    set_flags_dir(reset: @reset)
   end
 
   attr_accessor :flags_dir
@@ -84,7 +84,11 @@ class USPSFlags::Config
   #
   # @return [String] The current path to the flags directory.
   def self.flags_dir
-    @@flags_dir
+    @@flags_dir || if defined?(::Rails)
+      "#{::Rails.root}/app/assets/images/usps-flags"
+    else
+      "#{File.dirname(__dir__)}/output"
+    end
   end
 
   # Alias for the directory to store generated log files.
@@ -116,19 +120,20 @@ class USPSFlags::Config
     @reset = false
   end
 
-  def set_flags_dir(reset: false)
-    ::FileUtils.rm_rf(@flags_dir) if reset
-    [
-      "#{@flags_dir}/SVG/insignia",
-      "#{@flags_dir}/PNG/insignia",
-      "#{@flags_dir}/ZIP"
-    ].each do |dir|
-      ::FileUtils.mkdir_p(dir)
-    end
-  end
-
   def set_class_variables
     @@flags_dir = @flags_dir
     @@use_larger_tridents = @use_larger_tridents
+  end
+
+  def set_flags_dir(reset: false)
+    return false if @@flags_dir.nil? || @@flags_dir.empty?
+    ::FileUtils.rm_rf(@@flags_dir) if reset
+    [
+      "#{@@flags_dir}/SVG/insignia",
+      "#{@@flags_dir}/PNG/insignia",
+      "#{@@flags_dir}/ZIP"
+    ].each do |dir|
+      ::FileUtils.mkdir_p(dir)
+    end
   end
 end
