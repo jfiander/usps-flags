@@ -15,6 +15,9 @@ describe USPSFlags::Config do
       expect([true, false]).to include(USPSFlags::Config.use_larger_tridents)
     end
 
+    it "should return a Boolean from reset" do
+      expect([true, false]).to include(USPSFlags::Config.reset)
+    end
   end
 
   describe "trident" do
