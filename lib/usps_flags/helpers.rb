@@ -18,6 +18,27 @@ class USPSFlags::Helpers
       valid_flags_for(type)
     end
 
+    # Resizes and saves a PNG image.
+    #
+    # One of the params [file, outfile] is required, and outfile takes precedence.
+    #
+    # @param [String] png_file Path to the PNG file to resize.
+    # @param [String] file Abbreviated key for the output file (e.g. "LTC", "insignia/FLT").
+    # @param [String] outfile Path to the output file.
+    # @param [String] size Actual size to output as.
+    # @param [String] size_key Size suffix to attach to the file name.
+    def resize_png(png_file, file: nil, outfile: nil, size:, size_key:)
+      raise USPSFlags::Errors::PNGConversionError if outfile.nil? && file.nil?
+      output_file_name = outfile || "#{USPSFlags::Config.flags_dir}/PNG/#{file}.#{size_key}.png"
+      MiniMagick::Tool::Convert.new do |convert|
+        convert << "-background" << "none"
+        convert << "-format" << "png"
+        convert << "-resize" << "#{size}"
+        convert << png_file
+        convert << output_file_name
+      end
+    end
+
     # Gets the maximum length among valid flags.
     #
     # This is used USPSFlags::Generate, and should never need to be called directly.
@@ -38,20 +59,6 @@ class USPSFlags::Helpers
         level: flag_level(rank),
         count: flag_count(rank)
       }
-    end
-
-    # Resizes and saves a PNG image.
-    #
-    # This is used USPSFlags::Generate, and should never need to be called directly.
-    # @private
-    def resize_png(png_file, file:, size:, size_key:)
-      MiniMagick::Tool::Convert.new do |convert|
-        convert << "-background" << "none"
-        convert << "-format" << "png"
-        convert << "-resize" << "#{size}"
-        convert << png_file
-        convert << "#{USPSFlags::Config.flags_dir}/PNG/#{file}.#{size_key}.png"
-      end
     end
 
     # Image sizes for generated PNG images.

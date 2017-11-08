@@ -8,6 +8,12 @@ module USPSFlags::Errors
     end
   end
 
+  class PNGConversionError < StandardError
+    def initialize(msg = "There was an error converting the PNG file.")
+      super(msg)
+    end
+  end
+
   class StaticFilesGenerationError < StandardError
     def initialize(msg = "There was an error generating the static files.", cause: nil)
       super(msg)

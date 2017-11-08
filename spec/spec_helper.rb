@@ -5,10 +5,7 @@ CodeClimate::TestReporter.start
 
 require 'usps_flags'
 
-# The spec for USPSFlags and USPSFlags::Generate contain some examples that check for
-# USPSFlags::Errors::PNGGenerationError
-# USPSFlags::Errors::StaticFilesGenerationError
-# USPSFlags::Errors::ZipGenerationError
+# Some specs contain examples that check for the custom examples from USPSFlags::Errors
 RSpec::Expectations.configuration.on_potential_false_positives = :nothing
 
 RSpec.configure do |config|

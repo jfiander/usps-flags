@@ -21,4 +21,10 @@ describe USPSFlags::Helpers do
       expect(USPSFlags::Helpers::Builders.locator).to include("<rect x=\"0\" y=\"0\" width=\"#{USPSFlags::Config::BASE_FLY/30}\" height=\"#{USPSFlags::Config::BASE_FLY/30}\" fill=\"#333333\" fill-opacity=\"0.6\" />")
     end
   end
+
+  describe "resize_png" do
+    it "should raise USPSFlags::Errors::PNGConversionError with invalid parameters" do
+      expect { USPSFlags::Helpers.resize_png("path/to/image.png", size: 100, size_key: "thumb") }.to raise_error(USPSFlags::Errors::PNGConversionError)
+    end
+  end
 end
