@@ -200,7 +200,7 @@ class USPSFlags::Generate
     def generate_reduced_size_pngs
       USPSFlags::Helpers.png_sizes.keys.each do |size|
         size, size_key = USPSFlags::Helpers.size_and_key(size: size, flag: @flag)
-        @sized_png_file = "#{USPSFlags::Config.flags_dir}/PNG/#{@flag}.#{@size_key}.png"
+        @sized_png_file = "#{USPSFlags::Config.flags_dir}/PNG/#{@flag}.#{size_key}.png"
         @sized_png_ins_file = @sized_png_file.gsub("/PNG/", "/PNG/insignia/")
 
         generate_smaller_png(size, size_key)
