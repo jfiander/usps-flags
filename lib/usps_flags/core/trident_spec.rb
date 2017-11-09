@@ -4,7 +4,7 @@
 # @private
 class USPSFlags::Core::TridentSpec
   def initialize(fly: 24, unit: "in")
-    @trident_config = USPSFlags::Config.trident
+    @trident_config = USPSFlags.configuration.trident
     configure_sizes(fly)
     configure_labels(unit)
   end

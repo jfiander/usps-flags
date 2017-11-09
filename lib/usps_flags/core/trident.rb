@@ -41,7 +41,7 @@ class USPSFlags::Core::Trident
 
   private
   def load_config
-    @trident_config = USPSFlags::Config.trident
+    @trident_config = USPSFlags.configuration.trident
     @main_spike_overhang = @trident_config[:bar_width] / 2
     @side_spike_overhang = @trident_config[:bar_width] / 2
     @top_point = ((USPSFlags::Config::BASE_HOIST - @trident_config[:height][@type]) / 2)

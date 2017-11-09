@@ -8,7 +8,7 @@ describe USPSFlags::Config do
 
     it "should return the current flags directory" do
       default_log_path = $tmp_flags_dir + "/log"
-      expect(USPSFlags::Config.log_path).to eql(default_log_path)
+      expect(USPSFlags.configuration.log_path).to eql(default_log_path)
     end
 
     it "should return a Boolean from use_larger_tridents" do
@@ -22,7 +22,7 @@ describe USPSFlags::Config do
 
   describe "trident" do
     it "should return a Hash from trident" do
-      expect(USPSFlags::Config.trident).to be_a(Hash)
+      expect(USPSFlags.configuration.trident).to be_a(Hash)
     end
   end
 

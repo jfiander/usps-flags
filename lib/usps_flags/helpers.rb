@@ -93,10 +93,10 @@ class USPSFlags::Helpers
     # This should never need to be called directly.
     # @private
     def log(*messages)
-      ::FileUtils.mkdir_p(USPSFlags::Config.log_path)
+      ::FileUtils.mkdir_p(USPSFlags.configuration.log_path)
       outputs = [STDOUT]
 
-      log_file = File.open("#{USPSFlags::Config.log_path}/flag.log", 'a')
+      log_file = File.open("#{USPSFlags.configuration.log_path}/flag.log", 'a')
       outputs << log_file
 
       messages.each do |message|

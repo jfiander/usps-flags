@@ -25,7 +25,7 @@ class USPSFlags::Config
   # All other values are derived from these, or directly from the constant sizes.
   #
   # @return [Hash] RThe configuration values for tridents.
-  def self.trident
+  def trident
     point_height = USPSFlags::Config::BASE_FLY/48*17/8
     bar_width = USPSFlags::Config::BASE_FLY/48
     bar_width = bar_width*5/4 if USPSFlags.configuration.use_larger_tridents
@@ -64,7 +64,7 @@ class USPSFlags::Config
   # Height values for trident insignia.
   #
   # @return [Hash] The height values for tridents.
-  def self.trident_heights
+  def trident_heights
     {
       s:   USPSFlags::Config::BASE_HOIST/2,
       d:   USPSFlags::Config::BASE_HOIST*5/8,
@@ -76,7 +76,7 @@ class USPSFlags::Config
   # Alias for the directory to store generated log files.
   #
   # @return [String] The current path to the logs directory.
-  def self.log_path
+  def log_path
     if defined?(::Rails)
       "#{::Rails.root}/log"
     else

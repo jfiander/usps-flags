@@ -53,7 +53,7 @@ class USPSFlags
     ::FileUtils.mkdir_p("#{@configuration.flags_dir}/PNG/insignia")
     ::FileUtils.mkdir_p("#{@configuration.flags_dir}/SVG/insignia")
     ::FileUtils.mkdir_p("#{@configuration.flags_dir}/ZIP")
-    ::FileUtils.mkdir_p(USPSFlags::Config.log_path)
+    ::FileUtils.mkdir_p(USPSFlags.configuration.log_path)
   end
 
   # Constructor for individual flags.

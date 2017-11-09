@@ -223,7 +223,7 @@ describe USPSFlags::Generate do
           Generated PNG Zip
       LOG
 
-      log_contents = ::File.read("#{USPSFlags::Config.log_path}/flag.log")
+      log_contents = ::File.read("#{USPSFlags.configuration.log_path}/flag.log")
 
       expect(log_contents).to match(Regexp.new(correct_log_pattern))
     end
