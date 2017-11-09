@@ -53,43 +53,15 @@ class USPSFlags
     yield self if block_given?
   end
 
-  # Constructor accessor for the flag type.
+  # Constructor accessors.
   #
   # @param [String] type The type of flag to generate.
-  # @return [String]
-  attr_accessor :type
-
-  # Constructor accessor for the SVG file output path.
-  #
   # @param [String] svg_file The SVG file output path.
-  # @return [String] Returns the current (or updated) SVG file output path.
-  attr_accessor :svg_file
-
-  # Constructor accessor for the PNG file output path.
-  #
   # @param [String] png_file The PNG file output path.
-  # @return [String] Returns the current (or updated) PNG file output path.
-  attr_accessor :png_file
-
-  # Constructor accessor for the image scale divisor factor.
-  #
-  # Available options are Float between 0 and 1, or Integer above 1.
-  #
   # @param [Integer, Float] scale The scale divisor factor.
-  # @return [Integer, Float] Returns the current (or updated) scaling factor.
-  attr_accessor :scale
-
-  # Constructor accessor for whether to generate the flag field (including any border).
-  #
   # @param [Boolean] field The field setting.
-  # @return [Boolean] Returns the current (or updated) setting.
-  attr_accessor :field
-
-  # Constructor accessor for whether to trim the generated PNG file of excess transparency.
-  #
   # @param [Boolean] trim The trim setting.
-  # @return [String] Returns the current (or updated) setting.
-  attr_accessor :trim
+  attr_accessor :type, :svg_file, :png_file, :scale, :field, :trim
 
   # Generates the constructed file as SVG.
   #
