@@ -1,7 +1,7 @@
 require 'bundler/setup'
 Bundler.setup
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start
+require 'simplecov'
+SimpleCov.start
 
 require 'usps_flags'
 
