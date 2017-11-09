@@ -8,9 +8,9 @@ class USPSFlags::Config
   BASE_HOIST ||= BASE_FLY*2/3
   FRACTION_SCALE ||= 85
 
-  @@flags_dir = "#{File.dirname(__dir__)}/output"
-  @@use_larger_tridents = true
-  @@reset = false
+  @@flags_dir ||= "#{File.dirname(__dir__)}/output"
+  @@use_larger_tridents ||= true
+  @@reset ||= false
   
   # Configuration constructor
   #
