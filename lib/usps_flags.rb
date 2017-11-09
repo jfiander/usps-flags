@@ -49,11 +49,42 @@ class USPSFlags
   #
   # @private
   def self.ensure_directories
-    ::FileUtils.rm_rf(@configuration.flags_dir) if @configuration.clear
+    self.get_dir_configs
+    self.prepare_dir_configs
+    self.prepare_flags_dir
+    ::FileUtils.mkdir_p(USPSFlags.configuration.log_path)
+  end
+
+  # Gets all configuration variables that specify a dir.
+  #
+  # @private
+  def self.get_dir_configs
+    @dirs = USPSFlags.configuration.
+      instance_variables.
+      map(&:to_s).
+      map { |v| v.match(/.*?_dir/) }.
+      reject! { |v| v.nil? }.
+      map(&:to_s)
+  end
+
+  # Ensures that directories exist (and are cleared, if configured).
+  #
+  # @private
+  def self.prepare_dir_configs
+    @dirs.each do |dir|
+      dir_path = @configuration.instance_variable_get(dir)
+      ::FileUtils.rm_rf(dir_path) if @configuration.clear
+      ::FileUtils.mkdir_p(dir_path)
+    end
+  end
+
+  # Ensures that the flags_dir subdirectories exist.
+  #
+  # @private
+  def self.prepare_flags_dir
     ::FileUtils.mkdir_p("#{@configuration.flags_dir}/PNG/insignia")
     ::FileUtils.mkdir_p("#{@configuration.flags_dir}/SVG/insignia")
     ::FileUtils.mkdir_p("#{@configuration.flags_dir}/ZIP")
-    ::FileUtils.mkdir_p(USPSFlags.configuration.log_path)
   end
 
   # Constructor for individual flags.
