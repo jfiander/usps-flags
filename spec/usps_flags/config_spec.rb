@@ -46,13 +46,13 @@ describe USPSFlags::Config do
         end
       end
 
-      USPSFlags.configuration do |config|
+      @config = USPSFlags::Config.new do |config|
         config.flags_dir = $tmp_flags_dir
       end
     end
 
     it "should use the default Rails log directory" do
-      expect(USPSFlags::Config.log_path).to eql("tmp/rails_app/log")
+      expect(@config.log_path).to eql("tmp/rails_app/log")
     end
   end
 end
