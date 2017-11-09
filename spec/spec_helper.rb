@@ -13,7 +13,7 @@ RSpec.configure do |config|
     $tmp_flags_dir = "tmp/flags"
     $tmp_alt_flags_dir = "tmp/alt_flags"
 
-    USPSFlags::Config.new do |c|
+    USPSFlags.configure do |c|
       c.flags_dir = $tmp_flags_dir
     end
   end

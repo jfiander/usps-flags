@@ -29,7 +29,7 @@ class USPSFlags::Helpers
     # @param [String] size_key Size suffix to attach to the file name.
     def resize_png(png_file, file: nil, outfile: nil, size:, size_key:)
       raise USPSFlags::Errors::PNGConversionError if outfile.nil? && file.nil?
-      output_file_name = outfile || "#{USPSFlags::Config.flags_dir}/PNG/#{file}.#{size_key}.png"
+      output_file_name = outfile || "#{USPSFlags.configuration.flags_dir}/PNG/#{file}.#{size_key}.png"
       MiniMagick::Tool::Convert.new do |convert|
         convert << "-background" << "none"
         convert << "-format" << "png"

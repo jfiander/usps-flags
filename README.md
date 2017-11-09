@@ -21,7 +21,7 @@ gem 'usps_flags'
 Create the file `config/initializers/usps_flags.rb`:
 
 ```ruby
-USPSFlags::Config.new do |config|
+USPSFlags.configure do |config|
   config.flags_dir "#{Rails.root}/app/assets/images/flags"
 end
 ```

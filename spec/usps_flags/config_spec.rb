@@ -3,7 +3,7 @@ require 'spec_helper'
 describe USPSFlags::Config do
   describe "class variable accessors" do
     it "should return the current flags directory" do
-      expect(USPSFlags::Config.flags_dir).to eql($tmp_flags_dir)
+      expect(USPSFlags.configuration.flags_dir).to eql($tmp_flags_dir)
     end
 
     it "should return the current flags directory" do
@@ -12,11 +12,11 @@ describe USPSFlags::Config do
     end
 
     it "should return a Boolean from use_larger_tridents" do
-      expect([true, false]).to include(USPSFlags::Config.use_larger_tridents)
+      expect([true, false]).to include(USPSFlags.configuration.use_larger_tridents)
     end
 
-    it "should return a Boolean from reset" do
-      expect([true, false]).to include(USPSFlags::Config.reset)
+    it "should return a Boolean from clear" do
+      expect([true, false]).to include(USPSFlags.configuration.clear)
     end
   end
 
@@ -28,13 +28,13 @@ describe USPSFlags::Config do
 
   describe "configuration constructor" do
     it "should return a properly constructed configuration" do
-      @config = USPSFlags::Config.new do |config|
+      USPSFlags.configure do |config|
         config.flags_dir = $tmp_flags_dir
       end
 
-      expect(@config.flags_dir).to eql($tmp_flags_dir)
-      expect(@config.reset).to eql(false)
-      expect(@config.use_larger_tridents).to eql(true)
+      expect(USPSFlags.configuration.flags_dir).to eql($tmp_flags_dir)
+      expect(USPSFlags.configuration.clear).to eql(false)
+      expect(USPSFlags.configuration.use_larger_tridents).to eql(true)
     end
   end
 
@@ -46,7 +46,7 @@ describe USPSFlags::Config do
         end
       end
 
-      @config = USPSFlags::Config.new do |config|
+      USPSFlags.configuration do |config|
         config.flags_dir = $tmp_flags_dir
       end
     end

@@ -29,6 +29,33 @@ class USPSFlags
     require "usps_flags/helpers/#{d}"
   end
 
+  class << self
+    attr_accessor :configuration
+  end
+
+  # Configuration accessor.
+  def self.configuration
+    @configuration ||= USPSFlags::Config.new
+  end
+
+  # Configuration constructor.
+  def self.configure
+    yield(configuration)
+    self.ensure_directories
+    @configuration
+  end
+
+  # Ensures the directory structure exists.
+  #
+  # @private
+  def self.ensure_directories
+    ::FileUtils.rm_rf(@configuration.flags_dir) if @configuration.clear
+    ::FileUtils.mkdir_p("#{@configuration.flags_dir}/PNG/insignia")
+    ::FileUtils.mkdir_p("#{@configuration.flags_dir}/SVG/insignia")
+    ::FileUtils.mkdir_p("#{@configuration.flags_dir}/ZIP")
+    ::FileUtils.mkdir_p(USPSFlags::Config.log_path)
+  end
+
   # Constructor for individual flags.
   #
   # @example Generate insignia at default scale for Lt/C

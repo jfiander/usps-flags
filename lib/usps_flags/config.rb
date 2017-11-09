@@ -8,25 +8,17 @@ class USPSFlags::Config
   BASE_HOIST ||= BASE_FLY*2/3
   FRACTION_SCALE ||= 85
 
-  @@flags_dir ||= "#{File.dirname(__dir__)}/output"
-  @@use_larger_tridents ||= true
-  @@reset ||= false
+  attr_accessor :flags_dir, :clear, :use_larger_tridents
   
   # Configuration constructor
   #
   # @param [String] flag_dir The path to the flags directory.
   # @param [Boolean] use_larger_tridents Whether to use the larger trident configuration.
-  # @param [Boolean] reset Whether to clear out the specified flags_dir.
+  # @param [Boolean] clear Whether to clear out the specified flags_dir.
   def initialize
-    load_init_variables
+    get_defaults
     yield self if block_given?
-    set_class_variables
-    set_flags_dir(reset: @reset)
   end
-
-  attr_accessor :flags_dir
-  attr_accessor :reset
-  attr_accessor :use_larger_tridents
 
   # Base configuration values for trident insignia.
   #
@@ -36,7 +28,7 @@ class USPSFlags::Config
   def self.trident
     point_height = USPSFlags::Config::BASE_FLY/48*17/8
     bar_width = USPSFlags::Config::BASE_FLY/48
-    bar_width = bar_width*5/4 if self.use_larger_tridents
+    bar_width = bar_width*5/4 if USPSFlags.configuration.use_larger_tridents
     {
       height: trident_heights,
 
@@ -57,8 +49,8 @@ class USPSFlags::Config
       hash_width: USPSFlags::Config::BASE_FLY*3/32,
 
       delta_height: USPSFlags::Config::BASE_FLY*2/15,
-      delta_gap_height: self.use_larger_tridents ? USPSFlags::Config::BASE_FLY*14/256 : USPSFlags::Config::BASE_FLY*17/256,
-      delta_gap_width: self.use_larger_tridents ? bar_width*5/4 : bar_width*7/4,
+      delta_gap_height: USPSFlags.configuration.use_larger_tridents ? USPSFlags::Config::BASE_FLY*14/256 : USPSFlags::Config::BASE_FLY*17/256,
+      delta_gap_width: USPSFlags.configuration.use_larger_tridents ? bar_width*5/4 : bar_width*7/4,
       delta_width: USPSFlags::Config::BASE_FLY*43/768,
       delta_from_bottom: USPSFlags::Config::BASE_HOIST*11/64,
       delta_gap_scale: 0.40,
@@ -81,68 +73,25 @@ class USPSFlags::Config
     }
   end
 
-  # Accessor for the directory for storing generated flags.
-  #
-  # @return [String] The current path to the flags directory.
-  def self.flags_dir
-    @@flags_dir || if defined?(::Rails)
-      "#{::Rails.root}/app/assets/images/usps-flags"
-    else
-      "#{File.dirname(__dir__)}/output"
-    end
-  end
-
   # Alias for the directory to store generated log files.
   #
   # @return [String] The current path to the logs directory.
   def self.log_path
-    log_path = if defined?(::Rails)
+    if defined?(::Rails)
       "#{::Rails.root}/log"
     else
-      "#{@@flags_dir}/log"
+      "#{USPSFlags.configuration.flags_dir}/log"
     end
-    ::FileUtils.mkdir_p(log_path)
-    log_path
-  end
-
-  # Accessor for the boolean of whether to use the larger or smaller trident width.
-  #
-  # @return [Boolean] Returns the current setting.
-  def self.use_larger_tridents
-    # Smaller: 1/2 in width on 24in x 16in field
-    # Larger:  5/8 in width on 24in x 16in field
-    @@use_larger_tridents
-  end
-
-  # Accessor for the boolean of whether to clear the flags_dir.
-  #
-  # @return [Boolean] Returns the current setting.
-  def self.reset
-    @@reset
   end
 
   private
-  def load_init_variables
-    @flags_dir = @@flags_dir
-    @use_larger_tridents = @@use_larger_tridents
-    @reset = @@reset
-  end
-
-  def set_class_variables
-    @@flags_dir = @flags_dir
-    @@use_larger_tridents = @use_larger_tridents
-    @@reset = @reset
-  end
-
-  def set_flags_dir(reset: false)
-    return false if @@flags_dir.nil? || @@flags_dir.empty?
-    ::FileUtils.rm_rf(@@flags_dir) if reset
-    [
-      "#{@@flags_dir}/SVG/insignia",
-      "#{@@flags_dir}/PNG/insignia",
-      "#{@@flags_dir}/ZIP"
-    ].each do |dir|
-      ::FileUtils.mkdir_p(dir)
+  def get_defaults
+    @flags_dir = if defined?(::Rails)
+      "#{::Rails.root}/app/assets/images/usps-flags"
+    else
+      "#{File.dirname(__dir__)}/output"
     end
+    @use_larger_tridents = true
+    @clear = false
   end
 end

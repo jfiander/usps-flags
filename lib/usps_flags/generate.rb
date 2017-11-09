@@ -103,15 +103,15 @@ class USPSFlags::Generate
     private
     def remove_static_files
       ["SVG", "PNG", "ZIP"].each do |dir|
-        dir_path = "#{USPSFlags::Config.flags_dir}/#{dir}"
+        dir_path = "#{USPSFlags.configuration.flags_dir}/#{dir}"
         ::FileUtils.rm_rf(::Dir.glob("#{dir_path}/*")) if ::Dir.exist?(dir_path)
       end
-      ["SVG/insignia", "PNG/insignia"].each { |dir| ::FileUtils.mkdir_p("#{USPSFlags::Config.flags_dir}/#{dir}") }
+      ["SVG/insignia", "PNG/insignia"].each { |dir| ::FileUtils.mkdir_p("#{USPSFlags.configuration.flags_dir}/#{dir}") }
       USPSFlags::Helpers.log "\n - Cleared previous files.\n"
     end
 
     def set_file_paths
-      @svg_file = "#{USPSFlags::Config.flags_dir}/SVG/#{@flag}.svg"
+      @svg_file = "#{USPSFlags.configuration.flags_dir}/SVG/#{@flag}.svg"
       @png_file = @svg_file.gsub("/SVG/", "/PNG/").gsub(".svg", ".png")
       @svg_ins_file = @svg_file.gsub("/SVG/", "/SVG/insignia/")
       @png_ins_file = @svg_file.gsub("/SVG/", "/PNG/insignia/").gsub(".svg", ".png")
@@ -122,20 +122,20 @@ class USPSFlags::Generate
       puts "\nSVGs generate a single file.",
         "PNGs generate full-res, 1500w, 1000w, 500w, and thumbnail files.",
         "Corresponding rank insignia (including smaller sizes) are also generated, as appropriate."
-      USPSFlags::Helpers.log "\nGeneration location: #{USPSFlags::Config.flags_dir}\n"
+      USPSFlags::Helpers.log "\nGeneration location: #{USPSFlags.configuration.flags_dir}\n"
       USPSFlags::Helpers.log "\n#{Time.now.strftime('%Y%m%d.%H%M%S%z')} – Generating static files...\n\n"
       USPSFlags::Helpers.log "Flag | SVG | PNG        | Run time\n".rjust(USPSFlags::Helpers.max_flag_name_length+31),
         "\n".rjust(USPSFlags::Helpers.max_flag_name_length+32, "-")
     end
 
     def generate_zip(type)
-      raise USPSFlags::Errors::ZipGenerationError, "Flags directory not found." unless ::Dir.exist?("#{USPSFlags::Config.flags_dir}/ZIP")
+      raise USPSFlags::Errors::ZipGenerationError, "Flags directory not found." unless ::Dir.exist?("#{USPSFlags.configuration.flags_dir}/ZIP")
 
-      zip = "#{USPSFlags::Config.flags_dir}/ZIP/USPS_Flags.#{type}.zip"
+      zip = "#{USPSFlags.configuration.flags_dir}/ZIP/USPS_Flags.#{type}.zip"
       ::File.delete(zip) if ::File.exist?(zip)
 
       ::Zip::File.open(zip, Zip::File::CREATE) do |z|
-        ::Dir.glob("#{USPSFlags::Config.flags_dir}/#{type.upcase}/**/*").each do |f|
+        ::Dir.glob("#{USPSFlags.configuration.flags_dir}/#{type.upcase}/**/*").each do |f|
           add_to_zip(z, f)
         end
       end
@@ -200,7 +200,7 @@ class USPSFlags::Generate
     def generate_reduced_size_pngs
       USPSFlags::Helpers.png_sizes.keys.each do |size|
         size, size_key = USPSFlags::Helpers.size_and_key(size: size, flag: @flag)
-        @sized_png_file = "#{USPSFlags::Config.flags_dir}/PNG/#{@flag}.#{size_key}.png"
+        @sized_png_file = "#{USPSFlags.configuration.flags_dir}/PNG/#{@flag}.#{size_key}.png"
         @sized_png_ins_file = @sized_png_file.gsub("/PNG/", "/PNG/insignia/")
 
         generate_smaller_png(size, size_key)

@@ -176,7 +176,7 @@ describe USPSFlags::Generate do
     end
 
     it "should not raise an error while generating all static files" do
-      png_dir = "#{USPSFlags::Config.flags_dir}/PNG"
+      png_dir = "#{USPSFlags.configuration.flags_dir}/PNG"
       ::FileUtils.cp("spec/assets/1LT.thumb.png", "#{png_dir}/insignia/1LT.thumb.png")
       ::FileUtils.cp("spec/assets/LT.png", "#{png_dir}/insignia/LT.png")
       ::FileUtils.cp("spec/assets/FLT.png", "#{png_dir}/FLT.png")
