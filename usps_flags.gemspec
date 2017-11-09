@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'mini_magick',   '~> 4.8',  '>= 4.8.0'
   s.add_runtime_dependency 'rubyzip',       '~> 1.2',  '>= 1.2.1'
 
-  s.add_development_dependency 'rake',      '~> 12.1', '>= 12.1.0'
+  s.add_development_dependency 'rake',      '~> 12.2', '>= 12.2.1'
   s.add_development_dependency 'rspec',     '~> 3.7',  '>= 3.7.0'
   s.add_development_dependency 'codeclimate-test-reporter', '~> 0.4', '>= 0.4.8'
 end
