@@ -166,14 +166,23 @@ class USPSFlags::Generate
 
     def generate_static_svg
       USPSFlags::Helpers.log " "
+ 
+      generate_regular_svg
+      generate_insignia_svg
+    end
+
+    def generate_regular_svg
+      return if file_found?(@svg_file)
+
       svg @flag, outfile: @svg_file, scale: 1
       USPSFlags::Helpers.log "S"
-      if USPSFlags::Helpers.valid_flags(:past).include?(@flag) || !USPSFlags::Helpers.valid_flags(:insignia).include?(@flag)
-        USPSFlags::Helpers.log "-"
-      else
-        svg @flag, field: false, outfile: @svg_ins_file, scale: 1
-        USPSFlags::Helpers.log "I"
-      end
+    end
+
+    def generate_insignia_svg
+      return if no_insignia?
+
+      svg @flag, field: false, outfile: @svg_ins_file, scale: 1
+      USPSFlags::Helpers.log "I"
     end
 
     def set_temp_svg(svg)
@@ -241,18 +250,21 @@ class USPSFlags::Generate
 
     def no_insignia?
       return false if USPSFlags::Helpers.valid_flags(:insignia).include?(@flag)
+
       USPSFlags::Helpers.log "-"
       true
     end
 
     def file_found?(file)
       return false unless ::File.exist?(file)
+
       USPSFlags::Helpers.log "."
       true
     end
 
     def too_big?(file, size)
       return false unless size > MiniMagick::Image.open(file)[:width]
+
       USPSFlags::Helpers.log "+"
       true
     end
