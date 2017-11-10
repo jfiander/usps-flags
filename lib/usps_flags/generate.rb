@@ -32,12 +32,9 @@ class USPSFlags::Generate
     # @param [String] outfile The path to save the PNG file to. (Required because the file is not accessible if this is left blank.)
     # @param [Boolean] trim Whether to trim the generated PNG file of excess transparency.
     def png(svg, outfile: nil, trim: false)
-      temp_svg_file = "temp.svg"
-      temp_svg = ::File.new(temp_svg_file, "w+")
-      temp_svg.write(svg)
-      temp_svg.flush
-
       raise USPSFlags::Errors::PNGGenerationError, svg: svg if outfile.nil? || outfile.empty?
+
+      set_temp_svg(svg)
 
       USPSFlags::Helpers.ensure_dir_for_file(outfile)
 
@@ -45,11 +42,11 @@ class USPSFlags::Generate
         convert << "-background" << "none"
         convert << "-format" << "png"
         convert << "-trim" if trim
-        convert << temp_svg.path
+        convert << @temp_svg_path
         convert << outfile
       end
     ensure
-      ::File.delete(temp_svg_file) if ::File.exist?(temp_svg_file)
+      ::File.delete(@temp_svg_path) if delete_temp_svg?
     end
 
     # Generate all static SVG and PNG files, and automaticall generates zip archives for download.
@@ -178,6 +175,19 @@ class USPSFlags::Generate
         svg @flag, field: false, outfile: @svg_ins_file, scale: 1
         USPSFlags::Helpers.log "I"
       end
+    end
+
+    def set_temp_svg(svg)
+      @temp_svg_path = "#{USPSFlags.configuration.flags_dir}/temp.svg"
+      temp_svg = ::File.new(@temp_svg_path, "w+")
+      temp_svg.write(svg)
+      temp_svg.flush
+      @temp_svg_path
+    end
+
+    def delete_temp_svg?
+      !@temp_svg_path.to_s.empty? &&
+      ::File.exist?(@temp_svg_path)
     end
 
     def generate_static_png
