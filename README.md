@@ -38,7 +38,12 @@ end
 
 ## Testing
 
-Tests are written in Rspec. To run all specs in a cloned repo, run 'rake'.
+Tests are written in Rspec.
+
+To run all specs, run `rake` or `rspec`.
+
+To run most specs, but skip the static file generators (which can be slow), run
+`rspec --tag '~slow'`.
 
 ## Generation
 

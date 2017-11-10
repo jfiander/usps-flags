@@ -166,7 +166,7 @@ describe USPSFlags::Generate do
     end
   end
 
-  describe "static files" do
+  describe "static files errors" do
     it "should raise USPSFlags::Errors::StaticFilesGenerationError when not given any true arguments" do
       expect { USPSFlags::Generate.all(svg: false, png: false, zips: false, reset: false) }.to raise_error(
         USPSFlags::Errors::StaticFilesGenerationError, "At least one argument switch must be true out of [svg, png, zips, reset]."
@@ -178,7 +178,9 @@ describe USPSFlags::Generate do
         USPSFlags::Errors::ZipGenerationError, "At least one argument switch must be true out of [svg, png]."
       )
     end
+  end
 
+  describe "static files generation", slow: true do
     it "should not raise an error while generating all static files" do
       png_dir = "#{USPSFlags.configuration.flags_dir}/PNG"
       ::FileUtils.cp("spec/assets/1LT.thumb.png", "#{png_dir}/insignia/1LT.thumb.png")
