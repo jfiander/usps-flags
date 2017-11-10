@@ -33,7 +33,7 @@ describe USPSFlags::Config do
       end
 
       expect(USPSFlags.configuration.flags_dir).to eql($tmp_flags_dir)
-      expect(USPSFlags.configuration.clear).to eql(false)
+      expect(USPSFlags.configuration.clear).to eql(true)
       expect(USPSFlags.configuration.use_larger_tridents).to eql(true)
     end
   end

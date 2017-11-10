@@ -15,6 +15,7 @@ RSpec.configure do |config|
 
     USPSFlags.configure do |c|
       c.flags_dir = $tmp_flags_dir
+      c.clear = true
     end
   end
 
