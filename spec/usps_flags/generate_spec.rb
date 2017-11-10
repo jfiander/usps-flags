@@ -189,6 +189,9 @@ describe USPSFlags::Generate do
       @svg_ins_flag, @png_ins_flag, @thb_flag = USPSFlags::Helpers.valid_flags(:insignia).sample(3)
       puts "\nSelected test flags: ", "  Sf: #{@svg_flag}", "  Si: #{@svg_ins_flag}", "  Pf: #{@png_flag}", "  Pi: #{@png_ins_flag}", "  Pt: #{@thb_flag}"
 
+      ::FileUtils.rm_rf(USPSFlags.configuration.flags_dir)
+      USPSFlags.prepare_flags_dir
+
       USPSFlags::Generate.svg(@svg_flag, outfile: "#{svg_dir}/#{@svg_flag}.svg")
       USPSFlags::Generate.svg(@svg_ins_flag, field: false, outfile: "#{svg_dir}/insignia/#{@svg_ins_flag}.svg")
       USPSFlags::Generate.png(USPSFlags::Generate.svg(@png_flag, outfile: ""), outfile: "#{png_dir}/#{@png_flag}.png")
