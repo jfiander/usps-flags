@@ -181,11 +181,23 @@ describe USPSFlags::Generate do
   end
 
   describe "static files generation", slow: true do
-    it "should not raise an error while generating all static files" do
+    before(:all) do
+      svg_dir = "#{USPSFlags.configuration.flags_dir}/SVG"
       png_dir = "#{USPSFlags.configuration.flags_dir}/PNG"
-      ::FileUtils.cp("spec/assets/1LT.thumb.png", "#{png_dir}/insignia/1LT.thumb.png")
-      ::FileUtils.cp("spec/assets/LT.png", "#{png_dir}/insignia/LT.png")
-      ::FileUtils.cp("spec/assets/FLT.png", "#{png_dir}/FLT.png")
+
+      @svg_flag, @png_flag = USPSFlags::Helpers.valid_flags(:officer).sample(2)
+      @svg_ins_flag, @png_ins_flag, @thb_flag = USPSFlags::Helpers.valid_flags(:insignia).sample(3)
+      puts "\nSelected test flags: ", "  Sf: #{@svg_flag}", "  Si: #{@svg_ins_flag}", "  Pf: #{@png_flag}", "  Pi: #{@png_ins_flag}", "  Pt: #{@thb_flag}"
+
+      USPSFlags::Generate.svg(@svg_flag, outfile: "#{svg_dir}/#{@svg_flag}.svg")
+      USPSFlags::Generate.svg(@svg_ins_flag, field: false, outfile: "#{svg_dir}/insignia/#{@svg_ins_flag}.svg")
+      USPSFlags::Generate.png(USPSFlags::Generate.svg(@png_flag, outfile: ""), outfile: "#{png_dir}/#{@png_flag}.png")
+      USPSFlags::Generate.png(USPSFlags::Generate.svg(@png_ins_flag, field: false, outfile: ""), trim: true, outfile: "#{png_dir}/insignia/#{@png_ins_flag}.png")
+      USPSFlags::Generate.png(USPSFlags::Generate.svg(@thb_flag, field: false, outfile: ""), trim: true, outfile: "#{png_dir}/insignia/#{@thb_flag}.png")
+      USPSFlags::Helpers.resize_png("#{png_dir}/insignia/#{@thb_flag}.png", file: "insignia/#{@thb_flag}", size: 150, size_key: "thumb")
+    end
+
+    it "should not raise an error while generating all static files" do
       expect { USPSFlags::Generate.all(reset: false) }.to_not raise_error # (USPSFlags::Errors::StaticFilesGenerationError)
     end
 
