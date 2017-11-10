@@ -146,12 +146,16 @@ describe USPSFlags::Generate do
   end
 
   describe "png" do
+    before(:each) do
+      @svg = USPSFlags::Generate.svg("LtC", outfile: "")
+    end
+
     it "should raise PNGGenerationError without an outfile" do
-      expect { USPSFlags::Generate.png(USPSFlags::Generate.svg("LtC", outfile: ""), outfile: "") }.to raise_error(USPSFlags::Errors::PNGGenerationError)
+      expect { USPSFlags::Generate.png(@svg, outfile: "") }.to raise_error(USPSFlags::Errors::PNGGenerationError)
     end
 
     it "should not raise PNGGenerationError when correctly configured" do
-      expect { USPSFlags::Generate.png(USPSFlags::Generate.svg("LtC", outfile: ""), outfile: "lib/output/PNG/LTC.png") }.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
+      expect { USPSFlags::Generate.png(@svg, outfile: "lib/output/PNG/LTC.png") }.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
     end
   end
 
