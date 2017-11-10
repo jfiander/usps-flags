@@ -108,6 +108,18 @@ class USPSFlags::Helpers
       log_file.close if log_file.is_a?(File)
     end
 
+    # Ensures the directory for the specified path exists.
+    #
+    # This should never need to be called directly.
+    # @private
+    def ensure_dir_for_file(path)
+      return false if path.nil? || path.empty? || !path.scan("/")
+
+      dirs = path.split("/")
+      dirs.pop
+      ::FileUtils.mkdir_p(dirs.join("/")).first
+    end
+
     # Prints output to the console or saves to a file, then returns the generated data.
     #
     # This should never need to be called directly.
@@ -116,6 +128,7 @@ class USPSFlags::Helpers
       if outfile.nil?
         puts svg, "\n"
       elsif outfile != ""
+        ensure_dir_for_file(outfile)
         f = ::File.new(outfile, "w+")
         f.write(svg)
         f.close

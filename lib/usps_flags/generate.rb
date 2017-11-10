@@ -10,6 +10,9 @@ class USPSFlags::Generate
     # @return [String] Returns the SVG data.
     def svg(flag, outfile: nil, scale: nil, field: true)
       flag = flag.upcase.delete("/", "_", "PENNANT")
+
+      USPSFlags::Helpers.ensure_dir_for_file(outfile)
+
       if ["CRUISE", "OIC"].include?(flag)
         USPSFlags::Generate::Flag.pennant(type: flag, outfile: outfile, scale: scale)
       elsif flag == "ENSIGN"
@@ -35,6 +38,8 @@ class USPSFlags::Generate
       temp_svg.flush
 
       raise USPSFlags::Errors::PNGGenerationError, svg: svg if outfile.nil? || outfile.empty?
+
+      USPSFlags::Helpers.ensure_dir_for_file(outfile)
 
       MiniMagick::Tool::Convert.new do |convert|
         convert << "-background" << "none"
