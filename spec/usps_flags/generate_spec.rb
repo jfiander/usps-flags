@@ -204,57 +204,70 @@ describe USPSFlags::Generate do
       expect { USPSFlags::Generate.all(reset: false) }.to_not raise_error # (USPSFlags::Errors::StaticFilesGenerationError)
     end
 
-    it "should have generated the correct log output" do
-      correct_log_pattern = <<~LOG
-            Flag | SVG | PNG        | Run time
-        ---------------------------------------
-            PLTC | S-  | F-H-K-D-T- | .*{3,6} s
-              PC | S-  | F-H-K-D-T- | .*{3,6} s
-             1LT | SI  | FIH+K+DiTi | .*{3,6} s
-             LTC | SI  | FIHiKiDiTi | .*{3,6} s
-             CDR | SI  | FIHiKiDiTi | .*{3,6} s
-         PORTCAP | SI  | FIH+K+DiTi | .*{3,6} s
-        FLEETCAP | SI  | FIH+KiDiTi | .*{3,6} s
-              LT | SI  | FIH+K+DiTi | .*{3,6} s
-             FLT | SI  | FIH+K+DiTi | .*{3,6} s
-           PDLTC | S-  | F-H-K-D-T- | .*{3,6} s
-             PDC | S-  | F-H-K-D-T- | .*{3,6} s
-            D1LT | SI  | FIH+K+DiTi | .*{3,6} s
-            DLTC | SI  | FIHiKiDiTi | .*{3,6} s
-              DC | SI  | FIHiKiDiTi | .*{3,6} s
-             DLT | SI  | FIH+K+DiTi | .*{3,6} s
-           DAIDE | SI  | FIH+KiDiTi | .*{3,6} s
-            DFLT | SI  | FIHiKiDiTi | .*{3,6} s
-           PSTFC | S-  | F-H-K-D-T- | .*{3,6} s
-             PRC | S-  | F-H-K-D-T- | .*{3,6} s
-             PVC | S-  | F-H-K-D-T- | .*{3,6} s
-             PCC | S-  | F-H-K-D-T- | .*{3,6} s
-           NAIDE | SI  | FIH+KiDiTi | .*{3,6} s
-            NFLT | SI  | FIHiKiDiTi | .*{3,6} s
-            STFC | SI  | FIH+K+DiTi | .*{3,6} s
-              RC | SI  | FIH+K+DiTi | .*{3,6} s
-              VC | SI  | FIHiKiDiTi | .*{3,6} s
-              CC | SI  | FIHiKiDiTi | .*{3,6} s
-          CRUISE | S-  | F-H-K-D-T- | .*{3,6} s
-             OIC | S-  | F-H-K-D-T- | .*{3,6} s
-          ENSIGN | S-  | F-H-K-D-T- | .*{3,6} s
-           WHEEL | S-  | F-H-K-D-T- | .*{3,6} s
-              US | S-  | F-H-K-D-T- | .*{3,6} s
-          Generated SVG Zip
-          Generated PNG Zip
-      LOG
+    describe "generation logs" do
+      before(:each) do
+        @log_contents = ::File.read("#{USPSFlags.configuration.log_path}/flag.log")
+      end
 
-      correct_log_pattern = correct_log_pattern.
-        gsub('+', '\+').
-        gsub(/#{@svg_flag} | S/, "#{@svg_flag} | .").
-        gsub(/#{@svg_ins_flag} | SI/, "#{@svg_ins_flag} | S.").
-        gsub(/#{@png_flag} | S(.)  | F/, "#{@png_flag} | S\1  | .").
-        gsub(/#{@png_ins_flag} | SI  | FI/, "#{@png_ins_flag} | SI  | F.").
-        gsub(/#{@thm_flag} | SI  | FIH(.)K(.)D(.)Ti/, "#{@thm_flag} | SI  | FIH\1K\2D\3T.")
-      correct_log_regexp = Regexp.new(correct_log_pattern)
+      it "should have generated the correct log output" do
+        correct_log_pattern = <<~LOG
+              Flag | SVG | PNG        | Run time
+          ---------------------------------------
+              PLTC | S-  | F-H-K-D-T- | .*{3,6} s
+                PC | S-  | F-H-K-D-T- | .*{3,6} s
+               1LT | SI  | FIH+K+DiTi | .*{3,6} s
+               LTC | SI  | FIHiKiDiTi | .*{3,6} s
+               CDR | SI  | FIHiKiDiTi | .*{3,6} s
+           PORTCAP | SI  | FIH+K+DiTi | .*{3,6} s
+          FLEETCAP | SI  | FIH+KiDiTi | .*{3,6} s
+                LT | SI  | FIH+K+DiTi | .*{3,6} s
+               FLT | SI  | FIH+K+DiTi | .*{3,6} s
+             PDLTC | S-  | F-H-K-D-T- | .*{3,6} s
+               PDC | S-  | F-H-K-D-T- | .*{3,6} s
+              D1LT | SI  | FIH+K+DiTi | .*{3,6} s
+              DLTC | SI  | FIHiKiDiTi | .*{3,6} s
+                DC | SI  | FIHiKiDiTi | .*{3,6} s
+               DLT | SI  | FIH+K+DiTi | .*{3,6} s
+             DAIDE | SI  | FIH+KiDiTi | .*{3,6} s
+              DFLT | SI  | FIHiKiDiTi | .*{3,6} s
+             PSTFC | S-  | F-H-K-D-T- | .*{3,6} s
+               PRC | S-  | F-H-K-D-T- | .*{3,6} s
+               PVC | S-  | F-H-K-D-T- | .*{3,6} s
+               PCC | S-  | F-H-K-D-T- | .*{3,6} s
+             NAIDE | SI  | FIH+KiDiTi | .*{3,6} s
+              NFLT | SI  | FIHiKiDiTi | .*{3,6} s
+              STFC | SI  | FIH+K+DiTi | .*{3,6} s
+                RC | SI  | FIH+K+DiTi | .*{3,6} s
+                VC | SI  | FIHiKiDiTi | .*{3,6} s
+                CC | SI  | FIHiKiDiTi | .*{3,6} s
+            CRUISE | S-  | F-H-K-D-T- | .*{3,6} s
+               OIC | S-  | F-H-K-D-T- | .*{3,6} s
+            ENSIGN | S-  | F-H-K-D-T- | .*{3,6} s
+             WHEEL | S-  | F-H-K-D-T- | .*{3,6} s
+                US | S-  | F-H-K-D-T- | .*{3,6} s
+            Generated SVG Zip
+            Generated PNG Zip
+        LOG
 
-      log_contents = ::File.read("#{USPSFlags.configuration.log_path}/flag.log")
-      expect(log_contents).to match(correct_log_regexp)
+        correct_log_pattern = correct_log_pattern.
+          gsub('+', '\+').gsub('|', '\|').
+          gsub(/#{@svg_flag} | S/, "#{@svg_flag} | \\.").
+          gsub(/#{@svg_ins_flag} | SI/, "#{@svg_ins_flag} | S\\.").
+          gsub(/#{@png_flag} | S(.)  | F/, "#{@png_flag} | S\1  | \\.").
+          gsub(/#{@png_ins_flag} | SI  | FI/, "#{@png_ins_flag} | SI  | F\\.").
+          gsub(/#{@thm_flag} | SI  | FIH(.)K(.)D(.)Ti/, "#{@thm_flag} | SI  | FIH\1K\2D\3T\\.")
+        correct_log_regexp = Regexp.new(correct_log_pattern)
+
+        expect(@log_contents).to match(correct_log_regexp)
+      end
+
+      it "should not match an incorrect log output" do
+        incorrect_log_pattern = 'PLTC \| --  \| ---------- \| .*{3,6} s'
+
+        incorrect_log_regexp = Regexp.new(incorrect_log_pattern)
+
+        expect(@log_contents.match(incorrect_log_regexp)).to be_nil
+      end
     end
 
     it "should not raise an error while clearing all static files" do
