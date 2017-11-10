@@ -152,7 +152,6 @@ class USPSFlags::Generate
 
     def generate_static_images_for(flag, svg: true, png: true)
       start_time = Time.now
-      # USPSFlags::Helpers.log " |     |  _ _ _ _ _  |         \r".rjust(USPSFlags::Helpers.max_flag_name_length+31, " ")
       @flag = flag.upcase
       USPSFlags::Helpers.log "#{@flag.rjust(USPSFlags::Helpers.max_flag_name_length)} |"
 
