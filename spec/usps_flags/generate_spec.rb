@@ -205,45 +205,53 @@ describe USPSFlags::Generate do
       correct_log_pattern = <<~LOG
             Flag | SVG | PNG        | Run time
         ---------------------------------------
-            PLTC | S-  | F-H-K-D-T- | .*? s
-              PC | S-  | F-H-K-D-T- | .*? s
-             1LT | SI  | FIH\\+K\\+DiT\\. | .*? s
-             LTC | SI  | FIHiKiDiTi | .*? s
-             CDR | SI  | FIHiKiDiTi | .*? s
-         PORTCAP | SI  | FIH\\+K\\+DiTi | .*? s
-        FLEETCAP | SI  | FIH\\+KiDiTi | .*? s
-              LT | SI  | F\\.H\\+K\\+DiTi | .*? s
-             FLT | SI  | \\.IH\\+K\\+DiTi | .*? s
-           PDLTC | S-  | F-H-K-D-T- | .*? s
-             PDC | S-  | F-H-K-D-T- | .*? s
-            D1LT | SI  | FIH\\+K\\+DiTi | .*? s
-            DLTC | SI  | FIHiKiDiTi | .*? s
-              DC | SI  | FIHiKiDiTi | .*? s
-             DLT | SI  | FIH\\+K\\+DiTi | .*? s
-           DAIDE | SI  | FIH\\+KiDiTi | .*? s
-            DFLT | SI  | FIHiKiDiTi | .*? s
-           PSTFC | S-  | F-H-K-D-T- | .*? s
-             PRC | S-  | F-H-K-D-T- | .*? s
-             PVC | S-  | F-H-K-D-T- | .*? s
-             PCC | S-  | F-H-K-D-T- | .*? s
-           NAIDE | SI  | FIH\\+KiDiTi | .*? s
-            NFLT | SI  | FIHiKiDiTi | .*? s
-            STFC | SI  | FIH\\+K\\+DiTi | .*? s
-              RC | SI  | FIH\\+K\\+DiTi | .*? s
-              VC | SI  | FIHiKiDiTi | .*? s
-              CC | SI  | FIHiKiDiTi | .*? s
-          CRUISE | S-  | F-H-K-D-T- | .*? s
-             OIC | S-  | F-H-K-D-T- | .*? s
-          ENSIGN | S-  | F-H-K-D-T- | .*? s
-           WHEEL | S-  | F-H-K-D-T- | .*? s
-              US | S-  | F-H-K-D-T- | .*? s
+            PLTC | S-  | F-H-K-D-T- | .*{3,6} s
+              PC | S-  | F-H-K-D-T- | .*{3,6} s
+             1LT | SI  | FIH+K+DiTi | .*{3,6} s
+             LTC | SI  | FIHiKiDiTi | .*{3,6} s
+             CDR | SI  | FIHiKiDiTi | .*{3,6} s
+         PORTCAP | SI  | FIH+K+DiTi | .*{3,6} s
+        FLEETCAP | SI  | FIH+KiDiTi | .*{3,6} s
+              LT | SI  | FIH+K+DiTi | .*{3,6} s
+             FLT | SI  | FIH+K+DiTi | .*{3,6} s
+           PDLTC | S-  | F-H-K-D-T- | .*{3,6} s
+             PDC | S-  | F-H-K-D-T- | .*{3,6} s
+            D1LT | SI  | FIH+K+DiTi | .*{3,6} s
+            DLTC | SI  | FIHiKiDiTi | .*{3,6} s
+              DC | SI  | FIHiKiDiTi | .*{3,6} s
+             DLT | SI  | FIH+K+DiTi | .*{3,6} s
+           DAIDE | SI  | FIH+KiDiTi | .*{3,6} s
+            DFLT | SI  | FIHiKiDiTi | .*{3,6} s
+           PSTFC | S-  | F-H-K-D-T- | .*{3,6} s
+             PRC | S-  | F-H-K-D-T- | .*{3,6} s
+             PVC | S-  | F-H-K-D-T- | .*{3,6} s
+             PCC | S-  | F-H-K-D-T- | .*{3,6} s
+           NAIDE | SI  | FIH+KiDiTi | .*{3,6} s
+            NFLT | SI  | FIHiKiDiTi | .*{3,6} s
+            STFC | SI  | FIH+K+DiTi | .*{3,6} s
+              RC | SI  | FIH+K+DiTi | .*{3,6} s
+              VC | SI  | FIHiKiDiTi | .*{3,6} s
+              CC | SI  | FIHiKiDiTi | .*{3,6} s
+          CRUISE | S-  | F-H-K-D-T- | .*{3,6} s
+             OIC | S-  | F-H-K-D-T- | .*{3,6} s
+          ENSIGN | S-  | F-H-K-D-T- | .*{3,6} s
+           WHEEL | S-  | F-H-K-D-T- | .*{3,6} s
+              US | S-  | F-H-K-D-T- | .*{3,6} s
           Generated SVG Zip
           Generated PNG Zip
       LOG
 
-      log_contents = ::File.read("#{USPSFlags.configuration.log_path}/flag.log")
+      correct_log_pattern = correct_log_pattern.
+        gsub('+', '\+').
+        gsub(/#{@svg_flag} | S/, "#{@svg_flag} | .").
+        gsub(/#{@svg_ins_flag} | SI/, "#{@svg_ins_flag} | S.").
+        gsub(/#{@png_flag} | S(.)  | F/, "#{@png_flag} | S\1  | .").
+        gsub(/#{@png_ins_flag} | SI  | FI/, "#{@png_ins_flag} | SI  | F.").
+        gsub(/#{@thm_flag} | SI  | FIH(.)K(.)D(.)Ti/, "#{@thm_flag} | SI  | FIH\1K\2D\3T.")
+      correct_log_regexp = Regexp.new(correct_log_pattern)
 
-      expect(log_contents).to match(Regexp.new(correct_log_pattern))
+      log_contents = ::File.read("#{USPSFlags.configuration.log_path}/flag.log")
+      expect(log_contents).to match(correct_log_regexp)
     end
 
     it "should not raise an error while clearing all static files" do
