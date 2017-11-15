@@ -50,7 +50,7 @@ class USPSFlags::Core::Headers
 
   private
   def set_pennant_height(height)
-    height = height/4
+    @height = height/4
     @view_height = USPSFlags::Config::BASE_HOIST/4
   end
 end
