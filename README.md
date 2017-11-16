@@ -134,10 +134,13 @@ flag.png #=> Generates PNG file at "/path/to/png/output.png"
   to console/log.
 - Calling `.png` requires `png_file` to be set.
 
-## Burgees Extension
+## Extensions
 
 There is an extension to this gem for handling squadron burgees:
 [USPSFlags::Burgees](https://github.com/jfiander/usps-flags_burgees)
+
+There is an extension to this gem for handling grade insignia:
+[USPSFlags::Grades](https://github.com/jfiander/usps-flags_grades)
 
 ## Security
 
