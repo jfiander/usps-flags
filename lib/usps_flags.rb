@@ -40,7 +40,7 @@ class USPSFlags
 
   # Configuration constructor.
   def self.configure
-    yield(configuration)
+    yield(configuration) if block_given?
     self.ensure_directories
     @configuration
   end
