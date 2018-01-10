@@ -1,7 +1,10 @@
 # Container class for configuration values.
 class USPSFlags::Config
-  BLUE ||= "#041E42" # Old Glory Blue
-  RED ||= "#BF0D3E"  # Old Glory Red
+  BLUE ||= "#012169"
+  RED ||= "#E4002B"
+  GOLD ||= "#FFBF3F"
+  OLD_GLORY_BLUE ||= "#041E42"
+  OLD_GLORY_RED ||= "#BF0D3E"
 
   # Base measurements for most flags, before scaling
   BASE_FLY ||= 3072
