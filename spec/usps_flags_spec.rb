@@ -24,31 +24,31 @@ describe USPSFlags do
       l 0 -896
       l -40 8
       l 80 -136
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       <path d="M 1296 1024
       l 480 0
       l 0 80
       l -480 0
       l 0 -80
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       <path d="M 1296 1025
       l 0 -432
       l 120 136
       l -40 0
       l 0 296
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       <path d="M 1776 1025
       l 0 -432
       l -120 136
       l 40 0
       l 0 296
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       <path d="M 1392 1184
       l 288 0
       l 0 80
       l -288 0
       l 0 -80
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       </g>
       <g transform="translate(512)">
       <path d="M 1536 512
@@ -59,31 +59,31 @@ describe USPSFlags do
       l 0 -896
       l -40 8
       l 80 -136
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       <path d="M 1296 1024
       l 480 0
       l 0 80
       l -480 0
       l 0 -80
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       <path d="M 1296 1025
       l 0 -432
       l 120 136
       l -40 0
       l 0 296
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       <path d="M 1776 1025
       l 0 -432
       l -120 136
       l 40 0
       l 0 296
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       <path d="M 1392 1184
       l 288 0
       l 0 80
       l -288 0
       l 0 -80
-      " fill="#BF0D3E" />
+      " fill="#E4002B" />
       </g>
       </svg>
     SVG

@@ -16,7 +16,7 @@ describe USPSFlags::Generate do
             l 0 2048
             l -3072 0
             l 0 -2048
-          " fill="#BF0D3E" />
+          " fill="#E4002B" />
         SVG
       )
     end
