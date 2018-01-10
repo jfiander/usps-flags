@@ -146,14 +146,15 @@ class USPSFlags::Helpers
       @district_elected = %w[D1LT DLTC DC]
       @district_swallowtail = %w[DLT DAIDE DFLT]
       @national_past = %w[PSTFC PRC PVC PCC]
-      @national_elected = %w[NAIDE NFLT STFC RC VC CC]
+      @national_elected = %w[STFC RC VC CC]
+      @national_swallowtail = %w[NAIDE NFLT]
       @special = %w[CRUISE OIC ENSIGN WHEEL]
       @us = %w[US]
 
       @past = @squadron_past + @district_past + @national_past
       @squadron = @squadron_past + @squadron_elected + @squadron_swallowtail
       @district = @district_past + @district_elected + @district_swallowtail
-      @national = @national_past + @national_elected
+      @national = @national_past + @national_elected + @national_swallowtail
       @officer = @squadron + @district + @national
     end
 
@@ -170,7 +171,7 @@ class USPSFlags::Helpers
         all: @officer + @special + @us,
         officer: @officer,
         insignia: @officer - @past,
-        swallowtail: @past + @squadron_swallowtail + @district_swallowtail,
+        swallowtail: @past + @squadron_swallowtail + @district_swallowtail + @national_swallowtail,
 
         bridge: @squadron_elected.last(2) + @squadron_past.last(2) + 
           @district_elected.last(2) + @district_past.last(2) + 
