@@ -6,7 +6,7 @@ class USPSFlags::Core::Anchor
   def initialize(color: :red)
     @color_code = case color
     when :red
-      "#BF0D3E"
+      USPSFlags::Config::RED
     when :white
       "#FFFFFF"
     end
