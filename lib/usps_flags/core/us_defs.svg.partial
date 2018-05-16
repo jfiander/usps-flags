@@ -1,0 +1,13 @@
+<defs>
+  <g id="star" transform="scale(0.31)">
+    STAR
+  </g>
+
+  <g id="red-stripe">
+    <rect x="0" y="0" width="3820.0" height="153.84615384615384" fill="#BF0D3E" />
+  </g>
+
+  <g id="white-stripe">
+    <rect x="0" y="0" width="3820.0" height="153.84615384615384" fill="#FFFFFF" />
+  </g>
+</defs>
