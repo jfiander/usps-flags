@@ -161,7 +161,7 @@ gem install usps_flags -P HighSecurity
 ## License
 
 Actual images generated (other than the US Ensign) are
-[registered trademarks](http://www.usps.org/national/itcom/trademark.html) of
+[registered trademarks](https://www.usps.org/images/secretary/itcom/trademark.pdf) of
 United States Power Squadrons.
 
 This project is released under the

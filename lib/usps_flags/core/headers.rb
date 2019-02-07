@@ -37,7 +37,7 @@ class USPSFlags::Core::Headers
     unless @title == "US Ensign"
       svg << <<~SVG
         <desc id="trademark-desc">This image is a registered trademark of United States Power Squadrons.</desc>
-        <desc id="trademark-link">http://www.usps.org/national/itcom/trademark.html</desc>
+        <desc id="trademark-link">https://www.usps.org/images/secretary/itcom/trademark.pdf</desc>
       SVG
     end
 
