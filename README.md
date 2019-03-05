@@ -22,7 +22,7 @@ Create the file `config/initializers/usps_flags.rb`:
 
 ```ruby
 USPSFlags.configure do |config|
-  config.flags_dir "#{Rails.root}/app/assets/images/flags"
+  config.flags_dir = "#{Rails.root}/app/assets/images/flags"
 end
 ```
 
