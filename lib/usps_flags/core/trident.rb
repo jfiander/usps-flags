@@ -48,7 +48,7 @@ class USPSFlags::Core::Trident
     @crossbar_top = @top_point + @trident_config[:crossbar_from_top]
     @hash_from_top = @trident_config[:crossbar_from_top] + (@trident_config[:bar_width] * 2)
     @circle_from_top = @trident_config[:crossbar_from_top] + @trident_config[:bar_width]*123/128 + @trident_config[:width]/2
-    @main_length = @trident_config[:height][@type] - (@trident_config[:point_height] - @trident_config[:main_point_barb])
+    @main_length = @trident_config[:height][@type] - (@trident_config[:center_point_height] - @trident_config[:main_point_barb])
   end
 
   def configure_trident_segments
@@ -60,13 +60,13 @@ class USPSFlags::Core::Trident
     {
       [@trident_config[:center_point], @top_point] =>
       [
-        [@trident_config[:bar_width], @trident_config[:point_height]],
+        [@trident_config[:bar_width], @trident_config[:center_point_height]],
         [-@main_spike_overhang,  -@trident_config[:main_point_barb]],
         [0, @main_length],
         [-(@trident_config[:bar_width]), 0],
         [0, -@main_length],
         [-@main_spike_overhang, @trident_config[:main_point_barb]],
-        [@trident_config[:bar_width], -@trident_config[:point_height]]
+        [@trident_config[:bar_width], -@trident_config[:center_point_height]]
       ]
     }
   end
@@ -87,8 +87,8 @@ class USPSFlags::Core::Trident
     {
       [(@trident_config[:center_point] - @trident_config[:width]/2), (@crossbar_top + 1)] =>
       [
-        [0, -(@trident_config[:side_spike_height]+@trident_config[:point_height])],
-        [(@trident_config[:bar_width]+@side_spike_overhang), @trident_config[:point_height]],
+        [0, -(@trident_config[:side_spike_height]+@trident_config[:side_point_height])],
+        [(@trident_config[:bar_width]+@side_spike_overhang), @trident_config[:side_point_height]],
         [-@side_spike_overhang, 0],
         [0, @trident_config[:side_spike_height]]
       ]
@@ -99,8 +99,8 @@ class USPSFlags::Core::Trident
     {
       [(@trident_config[:center_point] + @trident_config[:width]/2), (@crossbar_top + 1)] =>
       [
-        [0, -(@trident_config[:side_spike_height]+@trident_config[:point_height])],
-        [-(@trident_config[:bar_width]+@side_spike_overhang), @trident_config[:point_height]],
+        [0, -(@trident_config[:side_spike_height]+@trident_config[:side_point_height])],
+        [-(@trident_config[:bar_width]+@side_spike_overhang), @trident_config[:side_point_height]],
         [@side_spike_overhang, 0],
         [0, @trident_config[:side_spike_height]]
       ]
@@ -143,8 +143,8 @@ class USPSFlags::Core::Trident
           <rect x="0" y="0" width="#{USPSFlags::Config::BASE_FLY}" height="#{USPSFlags::Config::BASE_FLY}" fill="#FFFFFF" />
           <polyline transform="scale(#{@trident_config[:delta_gap_scale]}) translate(#{@trident_config[:delta_gap_x]},#{@trident_config[:delta_gap_y]})" fill="#000000" points="
             #{@trident_config[:center_point]}, #{@top_point + @trident_config[:height][:d] - @trident_config[:delta_from_bottom] - @trident_config[:delta_height]}
-            #{@trident_config[:center_point] + @trident_config[:width]/2}, #{@top_point + @trident_config[:height][:d] - @trident_config[:delta_from_bottom]}
-            #{@trident_config[:center_point] - @trident_config[:width]/2}, #{@top_point + @trident_config[:height][:d] - @trident_config[:delta_from_bottom]}
+            #{@trident_config[:center_point] + @trident_config[:width]/2}, #{@top_point + @trident_config[:height][:d] - @trident_config[:delta_from_bottom]*17/20}
+            #{@trident_config[:center_point] - @trident_config[:width]/2}, #{@top_point + @trident_config[:height][:d] - @trident_config[:delta_from_bottom]*17/20}
             #{@trident_config[:center_point]}, #{@top_point + @trident_config[:height][:d] - @trident_config[:delta_from_bottom] - @trident_config[:delta_height]}" />
         </g>
       </mask>

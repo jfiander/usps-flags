@@ -11,10 +11,6 @@ describe USPSFlags::Config do
       expect(USPSFlags.configuration.log_path).to eql(default_log_path)
     end
 
-    it "should return a Boolean from use_larger_tridents" do
-      expect([true, false]).to include(USPSFlags.configuration.use_larger_tridents)
-    end
-
     it "should return a Boolean from clear" do
       expect([true, false]).to include(USPSFlags.configuration.clear)
     end
@@ -34,7 +30,6 @@ describe USPSFlags::Config do
 
       expect(USPSFlags.configuration.flags_dir).to eql($tmp_flags_dir)
       expect(USPSFlags.configuration.clear).to eql(true)
-      expect(USPSFlags.configuration.use_larger_tridents).to eql(true)
     end
   end
 

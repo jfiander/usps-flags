@@ -11,12 +11,11 @@ class USPSFlags::Config
   BASE_HOIST ||= BASE_FLY*2/3
   FRACTION_SCALE ||= 85
 
-  attr_accessor :flags_dir, :clear, :use_larger_tridents
+  attr_accessor :flags_dir, :clear
   
   # Configuration constructor
   #
   # @param [String] flag_dir The path to the flags directory.
-  # @param [Boolean] use_larger_tridents Whether to use the larger trident configuration.
   # @param [Boolean] clear Whether to clear out the specified flags_dir.
   def initialize
     get_defaults
@@ -29,9 +28,9 @@ class USPSFlags::Config
   #
   # @return [Hash] RThe configuration values for tridents.
   def trident
-    point_height = USPSFlags::Config::BASE_FLY/48*17/8
-    bar_width = USPSFlags::Config::BASE_FLY/48
-    bar_width = bar_width*5/4 if USPSFlags.configuration.use_larger_tridents
+    center_point_height = USPSFlags::Config::BASE_FLY/48*23/8
+    side_point_height = USPSFlags::Config::BASE_FLY/48*21/8
+    bar_width = USPSFlags::Config::BASE_FLY/48*5/4
     {
       height: trident_heights,
 
@@ -41,21 +40,22 @@ class USPSFlags::Config
 
       bar_width: bar_width,
 
-      point_height: point_height,
+      center_point_height: center_point_height,
+      side_point_height: side_point_height,
 
-      main_point_barb: USPSFlags::Config::BASE_HOIST/240,
+      main_point_barb: USPSFlags::Config::BASE_HOIST/82,
 
-      crossbar_from_top: USPSFlags::Config::BASE_HOIST/4,
+      crossbar_from_top: USPSFlags::Config::BASE_HOIST/4 + bar_width/5,
 
-      side_spike_height: USPSFlags::Config::BASE_HOIST/4-point_height-bar_width,
+      side_spike_height: USPSFlags::Config::BASE_HOIST/4-side_point_height-bar_width*3/5,
 
-      hash_width: USPSFlags::Config::BASE_FLY*3/32,
+      hash_width: USPSFlags::Config::BASE_FLY*47/528,
 
-      delta_height: USPSFlags::Config::BASE_FLY*2/15,
-      delta_gap_height: USPSFlags.configuration.use_larger_tridents ? USPSFlags::Config::BASE_FLY*14/256 : USPSFlags::Config::BASE_FLY*17/256,
-      delta_gap_width: USPSFlags.configuration.use_larger_tridents ? bar_width*5/4 : bar_width*7/4,
+      delta_height: USPSFlags::Config::BASE_FLY*33/240,
+      delta_gap_height: USPSFlags::Config::BASE_FLY/16,
+      delta_gap_width: bar_width*5/4,
       delta_width: USPSFlags::Config::BASE_FLY*43/768,
-      delta_from_bottom: USPSFlags::Config::BASE_HOIST*11/64,
+      delta_from_bottom: USPSFlags::Config::BASE_HOIST*10/64,
       delta_gap_scale: 0.40,
       delta_gap_x: USPSFlags::Config::BASE_HOIST*144/128,
       delta_gap_y: USPSFlags::Config::BASE_HOIST*221/256,
