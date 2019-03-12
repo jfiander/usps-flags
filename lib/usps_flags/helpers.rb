@@ -226,7 +226,7 @@ class USPSFlags::Helpers
     end
 
     def flag_type(rank) # Complexity
-      specifics = {"PORTCAP" => :pc, "FLEETCAP" => :fc, "STFC" => :stf}
+      specifics = { 'PORTCAP' => :pc, 'FLEETCAP' => :fc, 'STFC' => :stf, 'PSTFC' => :stf }
       if specifics.keys.include?(rank)
         specifics[rank]
       elsif rank.match /.AIDE/

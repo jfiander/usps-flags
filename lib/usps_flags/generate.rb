@@ -102,6 +102,24 @@ class USPSFlags::Generate
       USPSFlags::Helpers.output(svg, outfile: outfile)
     end
 
+    def flair(outfile:)
+      images = []
+      USPSFlags::Helpers.valid_flags(:officer).each do |rank|
+        svg = USPSFlags::Generate.svg(rank, outfile: '', scale: 1)
+        png = "./#{rank}.png"
+        USPSFlags::Generate.png(svg, outfile: png)
+        USPSFlags::Helpers.resize_png(png, size: 50, outfile: png)
+        images << png
+      end
+
+      processed_image = MiniMagick::Tool::Montage.new do |image|
+        image.geometry 'x50+0+0'
+        image.tile "1x#{images.size}"
+        images.each { |i| image << i }
+        image << outfile
+      end
+    end
+
     private
     def remove_static_files
       ["SVG", "PNG", "ZIP"].each do |dir|
