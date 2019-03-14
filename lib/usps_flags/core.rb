@@ -3,8 +3,8 @@
 # These methods should never need to be called directly.
 # @private
 class USPSFlags::Core
-  def self.trident_spec(fly: 24, unit: "in")
-    USPSFlags::Core::TridentSpec.new(fly: fly, unit: unit).svg
+  def self.trident_spec(fly: 24, unit: "in", scaled_border: false)
+    USPSFlags::Core::TridentSpec.new(fly: fly, unit: unit, scaled_border: scaled_border).svg
   end
 
   def self.headers(width: nil, height: nil, pennant: false, scale: nil, title: "USPS Flag")

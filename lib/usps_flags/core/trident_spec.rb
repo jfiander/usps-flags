@@ -3,8 +3,9 @@
 # This class should never need to be called directly.
 # @private
 class USPSFlags::Core::TridentSpec
-  def initialize(fly: 24, unit: "in")
+  def initialize(fly: 24, unit: "in", scaled_border: false)
     @trident_config = USPSFlags.configuration.trident
+    @scaled_border = scaled_border
     configure_sizes(fly)
     configure_labels(unit)
   end
@@ -104,6 +105,15 @@ class USPSFlags::Core::TridentSpec
         <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST*4/19}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/40}px" fill="#041E42" text-anchor="middle">fly of #{@fly} <tspan class="title">#{@fly_fraction}</tspan> #{@unit_text} and hoist of #{@hoist} <tspan class="title">#{@hoist_fraction}</tspan> #{@unit_text}.</text>
       </g>
       <text x="#{USPSFlags::Config::BASE_FLY/2}" y="#{USPSFlags::Config::BASE_HOIST/4}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/40}px" fill="#041E42" text-anchor="middle">Measurements not specified are the same as on the short trident.</text>
+      #{scaled_border if @scaled_border}
+    SVG
+  end
+
+  def scaled_border
+    <<~SVG
+      <!-- Flag border scaled to spec trident size -->
+      <rect x="#{USPSFlags::Config::BASE_FLY*0.41}" y="#{USPSFlags::Config::BASE_HOIST*0.38}" width="#{USPSFlags::Config::BASE_FLY}" height="#{USPSFlags::Config::BASE_HOIST}" transform="scale(0.7)" style="fill: none; stroke: #E0E0E0; stroke-width: 5px;" />
+      <text x="#{USPSFlags::Config::BASE_FLY*0.64}" y="#{USPSFlags::Config::BASE_HOIST*0.96}" font-family="sans-serif" font-size="#{USPSFlags::Config::BASE_HOIST/60}px" fill="#CCCCCC" text-anchor="middle">Scale size of a flag.</text>
     SVG
   end
 
