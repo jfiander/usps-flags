@@ -43,12 +43,7 @@ class USPSFlags::Generate::Flag
     def pennant(type: "CRUISE", outfile: nil, scale: nil)
       type = type.upcase
       svg = ""
-      title = case type
-      when "CRUISE"
-        "Cruise Pennant"
-      when "OIC"
-        "Officer-in-Charge Pennant"
-      end
+      title = { "CRUISE" => "Cruise Pennant", "OIC" => "Officer-in-Charge Pennant" }[type]
       svg << USPSFlags::Core.headers(pennant: true, scale: scale, title: title)
       svg << USPSFlags::Core.pennant(type)
       svg << USPSFlags::Core.footer
