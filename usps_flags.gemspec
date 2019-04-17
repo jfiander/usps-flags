@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name          = 'usps_flags'
-  s.version       = '0.3.23'
-  s.date          = '2019-03-14'
+  s.version       = '0.3.24'
+  s.date          = '2019-04-17'
   s.summary       = 'Flag generator for United States Power Squadrons'
   s.description   = 'A flag image (PNG, SVG) generator for United States Power Squadrons.'
   s.homepage      = 'http://rubygems.org/gems/usps_flags'
