@@ -194,8 +194,7 @@ class USPSFlags::Generate
     end
 
     def delete_temp_svg?
-      !@temp_svg_path.to_s.empty? &&
-      ::File.exist?(@temp_svg_path)
+      !@temp_svg_path.to_s.empty? && ::File.exist?(@temp_svg_path)
     end
 
     def generate_static_png
