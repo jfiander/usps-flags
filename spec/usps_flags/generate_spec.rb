@@ -4,7 +4,7 @@ describe USPSFlags::Generate do
   describe "general features" do
     it "should generate a flag with the correct size" do
       expect(USPSFlags::Generate.svg("LtC", outfile: "")).to include(
-        "width=\"1024pt\" height=\"682pt\" viewBox=\"0 0 3072 2048\""
+        'width="1024" height="682" viewBox="0 0 3072 2048"'
       )
     end
 

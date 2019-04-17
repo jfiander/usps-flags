@@ -61,11 +61,11 @@ describe USPSFlags::Core do
     it "should correctly generate the swallowtail field" do
       expect(USPSFlags::Core.field(style: :swallowtail)).to eql(
         <<~SVG
-          <path d="M 0 0
+          <path d="M 2 1
             l #{@fly} #{@hoist/6}
             l -#{@fly/5} #{@hoist/3}
             l #{@fly/5} #{@hoist/3}
-            l -#{@fly} #{@hoist/6}
+            l -#{@fly} #{@hoist/6} z
           " fill="#FFFFFF" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" />
         SVG
       )
@@ -74,28 +74,30 @@ describe USPSFlags::Core do
     it "should correctly generate the blue past field" do
       expect(USPSFlags::Core.field(style: :past, color: :blue)).to eql(
         <<~SVG
-          <path d="M 0 0
-            l #{@fly/2} #{@hoist*1/12}
-            l 0 #{@hoist*10/12}
-            l -#{@fly/2} #{@hoist*1/12}
-          " fill="#{@blue}" />
-          <path d="M #{@fly/2} #{@hoist*1/12}
-            l #{@fly/4} #{@hoist*1/24}
-            l 0 #{@hoist*9/12}
-            l -#{@fly/4} #{@hoist*1/24}
-          " fill="#FFFFFF" />
-          <path d="M #{@fly*3/4} #{@hoist*3/24}
-            l #{@fly/4} #{@hoist*1/24}
-            l -#{@fly/5} #{@hoist/3}
-            l #{@fly/5} #{@hoist/3}
-            l -#{@fly/4} #{@hoist*1/24}
-          " fill="#{@red}" />
-          <path d="M 0 0
-            l #{@fly} #{@hoist/6}
-            l -#{@fly/5} #{@hoist/3}
-            l #{@fly/5} #{@hoist/3}
-            l -#{@fly} #{@hoist/6}
-          " fill="none" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" />
+          <g transform="translate(2, 1)">
+            <path d="M 0 5
+              l #{@fly/2} #{@hoist*1/12}
+              l 0 #{@hoist*10/12}
+              l -#{@fly/2} #{@hoist*1/12}
+            " fill="#{@blue}" />
+            <path d="M #{@fly/2} #{@hoist*1/12}
+              l #{@fly/4} #{@hoist*1/24}
+              l 0 #{@hoist*9/12}
+              l -#{@fly/4} #{@hoist*1/24}
+            " fill="#FFFFFF" />
+            <path d="M #{@fly*3/4} #{@hoist*3/24}
+              l #{@fly/4} #{@hoist*1/24}
+              l -#{@fly/5} #{@hoist/3}
+              l #{@fly/5} #{@hoist/3}
+              l -#{@fly/4} #{@hoist*1/24}
+            " fill="#{@red}" />
+            <path d="M 0 0
+              l #{@fly} #{@hoist/6}
+              l -#{@fly/5} #{@hoist/3}
+              l #{@fly/5} #{@hoist/3}
+              l -#{@fly} #{@hoist/6} z
+            " fill="none" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY/600}" />
+          </g>
         SVG
       )
     end
