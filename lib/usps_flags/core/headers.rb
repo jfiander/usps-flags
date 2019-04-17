@@ -27,7 +27,7 @@ class USPSFlags::Core::Headers
     svg << <<~SVG
       <?xml version="1.0" standalone="no"?>
       <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-      <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="#{@width}pt" height="#{@height}pt" viewBox="0 0 #{@view_width} #{@view_height}" preserveAspectRatio="xMidYMid meet">
+      <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="#{@width}" height="#{@height}" viewBox="0 0 #{@view_width} #{@view_height}" preserveAspectRatio="xMidYMid meet">
       <title>#{@title}</title>
       <metadata>
       <desc id="created-by">Julian Fiander</desc>
