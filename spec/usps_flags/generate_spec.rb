@@ -72,6 +72,10 @@ describe USPSFlags::Generate do
       expect(USPSFlags::Generate.spec(outfile: "")).to include("<title>USPS Trident Specifications</title>")
     end
 
+    it "should generate the trident specification sheet with a scaled border" do
+      expect(USPSFlags::Generate.spec(outfile: "", scaled_border: true)).to include("<title>USPS Trident Specifications</title>")
+    end
+
     it "should generate the trident specification sheet with a fractional field size" do
       expect(USPSFlags::Generate.spec(outfile: "", fly: 23.5)).to include("<title>USPS Trident Specifications</title>")
     end
