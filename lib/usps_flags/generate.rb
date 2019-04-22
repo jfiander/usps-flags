@@ -31,7 +31,8 @@ class USPSFlags::Generate
     # @param [String] svg The SVG data.
     # @param [String] outfile The path to save the PNG file to. (Required because the file is not accessible if this is left blank.)
     # @param [Boolean] trim Whether to trim the generated PNG file of excess transparency.
-    def png(svg, outfile: nil, trim: false)
+    # @param [String] background Background color. Defaults to 'none' (transparent).
+    def png(svg, outfile: nil, trim: false, background: 'none')
       raise USPSFlags::Errors::PNGGenerationError, svg: svg if outfile.nil? || outfile.empty?
 
       set_temp_svg(svg)
@@ -39,7 +40,7 @@ class USPSFlags::Generate
       USPSFlags::Helpers.ensure_dir_for_file(outfile)
 
       MiniMagick::Tool::Convert.new do |convert|
-        convert << "-background" << "none"
+        convert << "-background" << background
         convert << "-format" << "png"
         convert << "-trim" if trim
         convert << @temp_svg_path
