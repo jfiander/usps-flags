@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 # Core SVG data for the binoculars insignia.
 #
 # This class should never need to be called directly.
@@ -5,10 +7,10 @@
 class USPSFlags::Core::Binoculars
   def initialize(type: :d)
     @color = case type
-    when :d
-      USPSFlags::Config::RED
-    when :n
-      USPSFlags::Config::BLUE
+             when :d
+               USPSFlags::Config::RED
+             when :n
+               USPSFlags::Config::BLUE
     end
   end
 

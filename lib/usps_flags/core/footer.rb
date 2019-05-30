@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 # Core SVG data for the file footer.
 #
 # This class should never need to be called directly.

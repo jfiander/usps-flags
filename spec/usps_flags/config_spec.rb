@@ -1,29 +1,31 @@
+# frozen_string_literal: false
+
 require 'spec_helper'
 
 describe USPSFlags::Config do
-  describe "class variable accessors" do
-    it "should return the current flags directory" do
+  describe 'class variable accessors' do
+    it 'should return the current flags directory' do
       expect(USPSFlags.configuration.flags_dir).to eql($tmp_flags_dir)
     end
 
-    it "should return the current flags directory" do
-      default_log_path = $tmp_flags_dir + "/log"
+    it 'should return the current flags directory' do
+      default_log_path = $tmp_flags_dir + '/log'
       expect(USPSFlags.configuration.log_path).to eql(default_log_path)
     end
 
-    it "should return a Boolean from clear" do
+    it 'should return a Boolean from clear' do
       expect([true, false]).to include(USPSFlags.configuration.clear)
     end
   end
 
-  describe "trident" do
-    it "should return a Hash from trident" do
+  describe 'trident' do
+    it 'should return a Hash from trident' do
       expect(USPSFlags.configuration.trident).to be_a(Hash)
     end
   end
 
-  describe "configuration constructor" do
-    it "should return a properly constructed configuration" do
+  describe 'configuration constructor' do
+    it 'should return a properly constructed configuration' do
       USPSFlags.configure do |config|
         config.flags_dir = $tmp_flags_dir
       end
@@ -33,11 +35,11 @@ describe USPSFlags::Config do
     end
   end
 
-  describe "Rails configuration" do
+  describe 'Rails configuration' do
     before(:each) do
       class Rails
         def self.root
-          "tmp/rails_app"
+          'tmp/rails_app'
         end
       end
 
@@ -46,8 +48,8 @@ describe USPSFlags::Config do
       end
     end
 
-    it "should use the default Rails log directory" do
-      expect(@config.log_path).to eql("tmp/rails_app/log")
+    it 'should use the default Rails log directory' do
+      expect(@config.log_path).to eql('tmp/rails_app/log')
     end
   end
 end

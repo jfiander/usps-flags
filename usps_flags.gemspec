@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 Gem::Specification.new do |s|
   s.name          = 'usps_flags'
   s.version       = '0.3.26'

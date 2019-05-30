@@ -1,5 +1,7 @@
+# frozen_string_literal: false
+
 # Base class for the namespace. Provides a constructor DSL.
-# 
+#
 # @author Julian Fiander
 # @since 0.1.5
 class USPSFlags
@@ -8,25 +10,24 @@ class USPSFlags
   require 'mini_magick'
   require 'rational'
 
-  require 'usps_flags/config'
-  require 'usps_flags/helpers'
-  require 'usps_flags/core'
-  require 'usps_flags/generate'
-  require 'usps_flags/errors'
+  # Dir['./lib/usps_flags/**'].map { |d| d.split("/").last.split(".rb").first }
+  %w[config helpers core generate errors].each do |d|
+    require "usps_flags/#{d}"
+  end
+
+  # Dir['./lib/usps_flags/helpers/**'].map { |d| d.split("/").last.split(".rb").first }
+  %w[builders spec_arrows].each do |d|
+    require "usps_flags/helpers/#{d}"
+  end
 
   # Dir['./lib/usps_flags/core/**'].map { |d| d.split("/").last.split(".rb").first }
-  %w[anchor binoculars ensign field footer headers lighthouse pennant star trident tridents trident_spec trumpet us wheel].each do |d|
+  %w[anchor binoculars ensign field footer headers lighthouse pennant star trident tridents trident_specs trident_spec trumpet us wheel].each do |d|
     require "usps_flags/core/#{d}"
   end
 
   # Dir['./lib/usps_flags/generate/**'].map { |d| d.split("/").last.split(".rb").first }
   %w[flag].each do |d|
     require "usps_flags/generate/#{d}"
-  end
-
-  # Dir['./lib/usps_flags/helpers/**'].map { |d| d.split("/").last.split(".rb").first }
-  %w[builders spec_arrows].each do |d|
-    require "usps_flags/helpers/#{d}"
   end
 
   class << self
@@ -126,7 +127,7 @@ class USPSFlags
   # @return [String] Returns the SVG file output path, or the svg data if no path was specified.
   def svg
     svg = USPSFlags::Generate.svg(self.type, outfile: self.svg_file, scale: self.scale, field: self.field)
-    (self.svg_file.nil? || self.svg_file == "") ? svg : self.svg_file
+    (self.svg_file.nil? || self.svg_file == '') ? svg : self.svg_file
   end
 
   # Generates the constructed file as PNG.
@@ -135,9 +136,10 @@ class USPSFlags
   #
   # @return [String] Returns the SVG file output path.
   def png
-    raise USPSFlags::Errors::PNGGenerationError, "A path must be set with png_file." if self.png_file.nil?
+    raise USPSFlags::Errors::PNGGenerationError, 'A path must be set with png_file.' if self.png_file.nil?
+
     svg_file_storage = self.svg_file
-    self.svg_file = ""
+    self.svg_file = ''
     USPSFlags::Generate.png(self.svg, outfile: self.png_file, trim: self.trim)
     self.svg_file = svg_file_storage
     self.png_file

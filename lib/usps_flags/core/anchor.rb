@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 # Core SVG data for the anchor insignia.
 #
 # This class should never need to be called directly.
@@ -5,10 +7,10 @@
 class USPSFlags::Core::Anchor
   def initialize(color: :red)
     @color_code = case color
-    when :red
-      USPSFlags::Config::RED
-    when :white
-      "#FFFFFF"
+                  when :red
+                    USPSFlags::Config::RED
+                  when :white
+                    '#FFFFFF'
     end
   end
 

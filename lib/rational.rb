@@ -1,5 +1,7 @@
+# frozen_string_literal: false
+
 # Monkey patch to add some formatting methods to Rational.
-# 
+#
 # @author Julian Fiander
 # @since 0.1.5
 class Rational

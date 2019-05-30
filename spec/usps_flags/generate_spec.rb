@@ -1,15 +1,17 @@
+# frozen_string_literal: false
+
 require 'spec_helper'
 
 describe USPSFlags::Generate do
-  describe "general features" do
-    it "should generate a flag with the correct size" do
-      expect(USPSFlags::Generate.svg("LtC", outfile: "")).to include(
+  describe 'general features' do
+    it 'should generate a flag with the correct size' do
+      expect(USPSFlags::Generate.svg('LtC', outfile: '')).to include(
         'width="1024" height="682" viewBox="0 0 3072 2048"'
       )
     end
 
-    it "should generate a flag with the correct field" do
-      expect(USPSFlags::Generate.svg("LtC", outfile: "")).to include(
+    it 'should generate a flag with the correct field' do
+      expect(USPSFlags::Generate.svg('LtC', outfile: '')).to include(
         <<~SVG
           <path d="M 0 0
             l 3072 0
@@ -21,102 +23,102 @@ describe USPSFlags::Generate do
       )
     end
 
-    it "should generate a flag with the correct starting position" do
-      expect(USPSFlags::Generate.svg("LtC", outfile: "")).to include("<path d=\"M 1536 512")
+    it 'should generate a flag with the correct starting position' do
+      expect(USPSFlags::Generate.svg('LtC', outfile: '')).to include('<path d="M 1536 512')
     end
 
-    it "should generate a flag with the correct trident transformations" do
-      expect(USPSFlags::Generate.svg("LtC", outfile: "")).to include("<g transform=\"translate(-512)\">")
-      expect(USPSFlags::Generate.svg("LtC", outfile: "")).to include("<g transform=\"translate(512)\">")
+    it 'should generate a flag with the correct trident transformations' do
+      expect(USPSFlags::Generate.svg('LtC', outfile: '')).to include('<g transform="translate(-512)">')
+      expect(USPSFlags::Generate.svg('LtC', outfile: '')).to include('<g transform="translate(512)">')
     end
   end
 
-  describe "officer flags" do
+  describe 'officer flags' do
     [
-      "PLTC", "PC", "PDLTC", "PDC", "PSTFC", "PRC", "PVC", "PCC",
-      "PORTCAP", "FLEETCAP", "FLT", "DAIDE", "DFLT", "NAIDE", "NFLT",
-      "LT", "1LT", "LTC", "CDR", "DLT", "D1LT", "DLTC", "DC", "STFC", "RC", "VC", "CC"
+      'PLTC', 'PC', 'PDLTC', 'PDC', 'PSTFC', 'PRC', 'PVC', 'PCC',
+      'PORTCAP', 'FLEETCAP', 'FLT', 'DAIDE', 'DFLT', 'NAIDE', 'NFLT',
+      'LT', '1LT', 'LTC', 'CDR', 'DLT', 'D1LT', 'DLTC', 'DC', 'STFC', 'RC', 'VC', 'CC'
     ].each do |flag|
       it "should generate #{flag}" do
-        expect(USPSFlags::Generate.svg(flag, outfile: "")).to include("<title>#{flag}</title>")
+        expect(USPSFlags::Generate.svg(flag, outfile: '')).to include("<title>#{flag}</title>")
       end
     end
   end
 
-  describe "pennants" do
-    it "should generate the cruise pennant" do
-      expect(USPSFlags::Generate.svg("Cruise", outfile: "")).to include("<title>Cruise Pennant</title>")
+  describe 'pennants' do
+    it 'should generate the cruise pennant' do
+      expect(USPSFlags::Generate.svg('Cruise', outfile: '')).to include('<title>Cruise Pennant</title>')
     end
 
-    it "should generate the officer-in-charge pennant" do
-      expect(USPSFlags::Generate.svg("OIC", outfile: "")).to include("<title>Officer-in-Charge Pennant</title>")
-    end
-  end
-
-  describe "other flags" do
-    it "should generate US" do
-      expect(USPSFlags::Generate.svg("US", outfile: "")).to include("<title>US Ensign</title>")
-    end
-
-    it "should generate USPS Ensign" do
-      expect(USPSFlags::Generate.svg("Ensign", outfile: "")).to include("<title>USPS Ensign</title>")
-    end
-
-    it "should generate the USPS Wheel logo" do
-      expect(USPSFlags::Generate.svg("Wheel", outfile: "")).to include("<title>USPS Ensign Wheel</title>")
+    it 'should generate the officer-in-charge pennant' do
+      expect(USPSFlags::Generate.svg('OIC', outfile: '')).to include('<title>Officer-in-Charge Pennant</title>')
     end
   end
 
-  describe "trident specifications" do
-    it "should generate the trident specification sheet" do
-      expect(USPSFlags::Generate.spec(outfile: "")).to include("<title>USPS Trident Specifications</title>")
+  describe 'other flags' do
+    it 'should generate US' do
+      expect(USPSFlags::Generate.svg('US', outfile: '')).to include('<title>US Ensign</title>')
     end
 
-    it "should generate the trident specification sheet with a scaled border" do
-      expect(USPSFlags::Generate.spec(outfile: "", scaled_border: true)).to include("<title>USPS Trident Specifications</title>")
+    it 'should generate USPS Ensign' do
+      expect(USPSFlags::Generate.svg('Ensign', outfile: '')).to include('<title>USPS Ensign</title>')
     end
 
-    it "should generate the trident specification sheet with a fractional field size" do
-      expect(USPSFlags::Generate.spec(outfile: "", fly: 23.5)).to include("<title>USPS Trident Specifications</title>")
+    it 'should generate the USPS Wheel logo' do
+      expect(USPSFlags::Generate.svg('Wheel', outfile: '')).to include('<title>USPS Ensign Wheel</title>')
     end
   end
 
-  describe "png" do
+  describe 'trident specifications' do
+    it 'should generate the trident specification sheet' do
+      expect(USPSFlags::Generate.spec(outfile: '')).to include('<title>USPS Trident Specifications</title>')
+    end
+
+    it 'should generate the trident specification sheet with a scaled border' do
+      expect(USPSFlags::Generate.spec(outfile: '', scaled_border: true)).to include('<title>USPS Trident Specifications</title>')
+    end
+
+    it 'should generate the trident specification sheet with a fractional field size' do
+      expect(USPSFlags::Generate.spec(outfile: '', fly: 23.5)).to include('<title>USPS Trident Specifications</title>')
+    end
+  end
+
+  describe 'png' do
     before(:each) do
-      @svg = USPSFlags::Generate.svg("LtC", outfile: "")
+      @svg = USPSFlags::Generate.svg('LtC', outfile: '')
     end
 
-    it "should raise PNGGenerationError without an outfile" do
-      expect { USPSFlags::Generate.png(@svg, outfile: "") }.to raise_error(USPSFlags::Errors::PNGGenerationError)
+    it 'should raise PNGGenerationError without an outfile' do
+      expect { USPSFlags::Generate.png(@svg, outfile: '') }.to raise_error(USPSFlags::Errors::PNGGenerationError)
     end
 
-    it "should not raise PNGGenerationError when correctly configured" do
-      expect { USPSFlags::Generate.png(@svg, outfile: "lib/output/PNG/LTC.png") }.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
-    end
-  end
-
-  describe "without an outfile set" do
-    it "should print SVG data to the console" do
-      expect(STDOUT).to receive(:puts).with(USPSFlags::Generate.svg("Lt", outfile: ""), "\n")
-      USPSFlags::Generate.svg("Lt")
+    it 'should not raise PNGGenerationError when correctly configured' do
+      expect { USPSFlags::Generate.png(@svg, outfile: 'lib/output/PNG/LTC.png') }.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
     end
   end
 
-  describe "static files errors" do
-    it "should raise USPSFlags::Errors::StaticFilesGenerationError when not given any true arguments" do
+  describe 'without an outfile set' do
+    it 'should print SVG data to the console' do
+      expect(STDOUT).to receive(:puts).with(USPSFlags::Generate.svg('Lt', outfile: ''), "\n")
+      USPSFlags::Generate.svg('Lt')
+    end
+  end
+
+  describe 'static files errors' do
+    it 'should raise USPSFlags::Errors::StaticFilesGenerationError when not given any true arguments' do
       expect { USPSFlags::Generate.all(svg: false, png: false, zips: false, reset: false) }.to raise_error(
-        USPSFlags::Errors::StaticFilesGenerationError, "At least one argument switch must be true out of [svg, png, zips, reset]."
+        USPSFlags::Errors::StaticFilesGenerationError, 'At least one argument switch must be true out of [svg, png, zips, reset].'
       )
     end
 
-    it "should raise USPSFlags::Errors::ZipGenerationError when not given any true arguments" do
+    it 'should raise USPSFlags::Errors::ZipGenerationError when not given any true arguments' do
       expect { USPSFlags::Generate.zips(svg: false, png: false) }.to raise_error(
-        USPSFlags::Errors::ZipGenerationError, "At least one argument switch must be true out of [svg, png]."
+        USPSFlags::Errors::ZipGenerationError, 'At least one argument switch must be true out of [svg, png].'
       )
     end
   end
 
-  describe "static files generation", slow: true do
+  describe 'static files generation', slow: true do
     before(:all) do
       svg_dir = "#{USPSFlags.configuration.flags_dir}/SVG"
       png_dir = "#{USPSFlags.configuration.flags_dir}/PNG"
@@ -130,22 +132,22 @@ describe USPSFlags::Generate do
 
       USPSFlags::Generate.svg(@svg_flag, outfile: "#{svg_dir}/#{@svg_flag}.svg")
       USPSFlags::Generate.svg(@svg_ins_flag, field: false, outfile: "#{svg_dir}/insignia/#{@svg_ins_flag}.svg")
-      USPSFlags::Generate.png(USPSFlags::Generate.svg(@png_flag, outfile: ""), outfile: "#{png_dir}/#{@png_flag}.png")
-      USPSFlags::Generate.png(USPSFlags::Generate.svg(@png_ins_flag, field: false, outfile: ""), trim: true, outfile: "#{png_dir}/insignia/#{@png_ins_flag}.png")
-      USPSFlags::Generate.png(USPSFlags::Generate.svg(@thb_flag, field: false, outfile: ""), trim: true, outfile: "#{png_dir}/insignia/#{@thb_flag}.png")
-      USPSFlags::Helpers.resize_png("#{png_dir}/insignia/#{@thb_flag}.png", file: "insignia/#{@thb_flag}", size: 150, size_key: "thumb")
+      USPSFlags::Generate.png(USPSFlags::Generate.svg(@png_flag, outfile: ''), outfile: "#{png_dir}/#{@png_flag}.png")
+      USPSFlags::Generate.png(USPSFlags::Generate.svg(@png_ins_flag, field: false, outfile: ''), trim: true, outfile: "#{png_dir}/insignia/#{@png_ins_flag}.png")
+      USPSFlags::Generate.png(USPSFlags::Generate.svg(@thb_flag, field: false, outfile: ''), trim: true, outfile: "#{png_dir}/insignia/#{@thb_flag}.png")
+      USPSFlags::Helpers.resize_png("#{png_dir}/insignia/#{@thb_flag}.png", file: "insignia/#{@thb_flag}", size: 150, size_key: 'thumb')
     end
 
-    it "should not raise an error while generating all static files" do
+    it 'should not raise an error while generating all static files' do
       expect { USPSFlags::Generate.all(reset: false) }.to_not raise_error # (USPSFlags::Errors::StaticFilesGenerationError)
     end
 
-    describe "generation logs" do
+    describe 'generation logs' do
       before(:each) do
         @log_contents = ::File.read("#{USPSFlags.configuration.log_path}/flag.log")
       end
 
-      it "should have generated the correct log output" do
+      it 'should have generated the correct log output' do
         correct_log_pattern = <<~LOG
               Flag | SVG | PNG        | Run time
           ---------------------------------------
@@ -197,7 +199,7 @@ describe USPSFlags::Generate do
         expect(@log_contents).to match(correct_log_regexp)
       end
 
-      it "should not match an incorrect log output" do
+      it 'should not match an incorrect log output' do
         incorrect_log_pattern = 'PLTC \| --  \| ---------- \| .*{3,6} s'
 
         incorrect_log_regexp = Regexp.new(incorrect_log_pattern)
@@ -206,11 +208,11 @@ describe USPSFlags::Generate do
       end
     end
 
-    it "should not raise an error while clearing all static files" do
+    it 'should not raise an error while clearing all static files' do
       expect { USPSFlags::Generate.all(svg: false, png: false, zips: false, reset: true) }.to_not raise_error # (USPSFlags::Errors::StaticFilesGenerationError)
     end
 
-    it "should not raise an error while generating zip files" do
+    it 'should not raise an error while generating zip files' do
       expect { USPSFlags::Generate.zips }.to_not raise_error # (USPSFlags::Errors::ZipGenerationError)
     end
   end

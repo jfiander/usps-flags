@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 # Container class for helper methods.
 class USPSFlags::Helpers
   class << self
@@ -30,11 +32,12 @@ class USPSFlags::Helpers
     def resize_png(png_file, file: nil, outfile: nil, size:, size_key: nil)
       raise USPSFlags::Errors::PNGConversionError if outfile.nil? && file.nil?
       raise USPSFlags::Errors::PNGConversionError if outfile.nil? && size_key.nil?
+
       output_file_name = outfile || "#{USPSFlags.configuration.flags_dir}/PNG/#{file}.#{size_key}.png"
       MiniMagick::Tool::Convert.new do |convert|
-        convert << "-background" << "none"
-        convert << "-format" << "png"
-        convert << "-resize" << "#{size}"
+        convert << '-background' << 'none'
+        convert << '-format' << 'png'
+        convert << '-resize' << "#{size}"
         convert << png_file
         convert << output_file_name
       end
@@ -67,7 +70,7 @@ class USPSFlags::Helpers
     # This is used USPSFlags::Generate, and should never need to be called directly.
     # @private
     def png_sizes
-      {1500 => "H", 1000 => "K", 500 => "D", "thumb" => "T"}
+      { 1500 => 'H', 1000 => 'K', 500 => 'D', 'thumb' => 'T' }
     end
 
     # Gets size key for saving PNG images.
@@ -75,18 +78,18 @@ class USPSFlags::Helpers
     # This is used USPSFlags::Generate, and should never need to be called directly.
     # @private
     def size_and_key(size:, flag:)
-      return [size, size] unless size == "thumb"
+      return [size, size] unless size == 'thumb'
 
       size = case flag
-      when "ENSIGN"
-        200
-      when "US"
-        300
-      else
-        150
+             when 'ENSIGN'
+               200
+             when 'US'
+               300
+             else
+               150
       end
 
-      [size, "thumb"]
+      [size, 'thumb']
     end
 
     # Prints message(s) to the console and logs them.
@@ -114,11 +117,11 @@ class USPSFlags::Helpers
     # This should never need to be called directly.
     # @private
     def ensure_dir_for_file(path)
-      return false if path.nil? || path.empty? || !path.scan("/")
+      return false if path.nil? || path.empty? || !path.scan('/')
 
-      dirs = path.split("/")
+      dirs = path.split('/')
       dirs.pop
-      ::FileUtils.mkdir_p(dirs.join("/")).first
+      ::FileUtils.mkdir_p(dirs.join('/')).first
     end
 
     # Prints output to the console or saves to a file, then returns the generated data.
@@ -128,16 +131,17 @@ class USPSFlags::Helpers
     def output(svg, outfile: nil)
       if outfile.nil?
         puts svg, "\n"
-      elsif outfile != ""
+      elsif outfile != ''
         ensure_dir_for_file(outfile)
-        f = ::File.new(outfile, "w+")
+        f = ::File.new(outfile, 'w+')
         f.write(svg)
         f.close
       end
       svg
     end
 
-    private
+  private
+
     def load_valid_flags
       @squadron_past = %w[PLTC PC]
       @squadron_elected = %w[1LT LTC CDR]
@@ -148,7 +152,7 @@ class USPSFlags::Helpers
       @national_past = %w[PSTFC PRC PVC PCC]
       @national_elected = %w[STFC RC VC CC]
       @national_swallowtail = %w[NAIDE NFLT]
-      @special = %w[CRUISE OIC ENSIGN WHEEL]
+      @special = %w[CRUISE OIC ENSIGN] # WHEEL
       @us = %w[US]
 
       @past = @squadron_past + @district_past + @national_past
@@ -173,65 +177,50 @@ class USPSFlags::Helpers
         insignia: @officer - @past,
         swallowtail: @past + @squadron_swallowtail + @district_swallowtail + @national_swallowtail,
 
-        bridge: @squadron_elected.last(2) + @squadron_past.last(2) + 
-          @district_elected.last(2) + @district_past.last(2) + 
+        bridge: @squadron_elected.last(2) + @squadron_past.last(2) +
+          @district_elected.last(2) + @district_past.last(2) +
           @national_elected.last(2) + @national_past.last(2),
 
         command: [@squadron_elected.last, @squadron_past.last,
-          @district_elected.last, @district_past.last,
-          @national_elected.last, @national_past.last]
+                  @district_elected.last, @district_past.last,
+                  @national_elected.last, @national_past.last]
       }[type]
     end
 
     def flag_style(rank)
-      if valid_flags(:past).include?(rank)
-        :past
-      elsif valid_flags(:swallowtail).include?(rank)
-        :swallowtail
-      else
-        :regular
-      end
+      return :past if valid_flags(:past).include?(rank)
+      return :swallowtail if valid_flags(:swallowtail).include?(rank)
+
+      :regular
     end
 
     def flag_color(rank)
-      if valid_flags(:command).include?(rank)
-        count = 3
-        :blue
-      elsif valid_flags(:bridge).include?(rank)
-        count = 2
-        :red
-      else
-        :white
-      end
+      return :blue if valid_flags(:command).include?(rank)
+      return :red if valid_flags(:bridge).include?(rank)
+
+      :white
     end
 
     def flag_level(rank)
-      if rank.match /N.*/
-        :n
-      elsif rank.match /D.*/
-        :d
-      elsif rank == "FLT"
-        :s
-      end
+      return :n if rank.match? /N.*/
+      return :d if rank.match? /D.*/
+      return :s if rank == 'FLT'
     end
 
     def flag_count(rank)
-      if valid_flags(:command).include?(rank)
-        3
-      elsif valid_flags(:bridge).include?(rank)
-        2
-      else
-        1
-      end
+      return 3 if valid_flags(:command).include?(rank)
+      return 2 if valid_flags(:bridge).include?(rank)
+
+      1
     end
 
     def flag_type(rank) # Complexity
-      specifics = {"PORTCAP" => :pc, "FLEETCAP" => :fc, "STFC" => :stf}
+      specifics = { 'PORTCAP' => :pc, 'FLEETCAP' => :fc, 'STFC' => :stf }
       if specifics.keys.include?(rank)
         specifics[rank]
-      elsif rank.match /.AIDE/
+      elsif rank.match? /.AIDE/
         :a
-      elsif rank.match /.?FLT/
+      elsif rank.match? /.?FLT/
         :f
       else
         get_line_flag_level(rank)
@@ -239,13 +228,9 @@ class USPSFlags::Helpers
     end
 
     def get_line_flag_level(rank)
-      if valid_flags(:squadron).include?(rank)
-        :s
-      elsif valid_flags(:district).include?(rank)
-        :d
-      elsif valid_flags(:national).include?(rank)
-        :n
-      end
+      return :s if valid_flags(:squadron).include?(rank)
+      return :d if valid_flags(:district).include?(rank)
+      return :n if valid_flags(:national).include?(rank)
     end
   end
 end
