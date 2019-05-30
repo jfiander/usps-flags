@@ -6,26 +6,19 @@
 # @private
 class USPSFlags::Core::TridentSpecs::Circle < USPSFlags::Core::TridentSpecs::Long
   def p
-    <<~SVG
-      <!-- Circle Trident -->
-      <g transform="translate(#{BF * 23 / 80},#{BH * 9 / 32})"><g transform="scale(0.7)">
-        #{@heading}
-
-        #{USPSFlags::Core::Icons::Trident.new(:stf).svg}
-
-        #{boundary_box}
-
-        <!-- Right -->
-          #{inner_diameter} <!-- Inner circle diameter -->
-          #{outer_diameter} <!-- Outer circle diameter -->
-          #{circle_to_bottom} <!-- Circle to bottom -->
-
-        #{left_arrow}
-      </g></g>
-    SVG
+    output('Circle', 23, :stf)
   end
 
 private
+
+  def right
+    <<~SVG
+      <!-- Right -->
+        #{inner_diameter} <!-- Inner circle diameter -->
+        #{outer_diameter} <!-- Outer circle diameter -->
+        #{circle_to_bottom} <!-- Circle to bottom -->
+    SVG
+  end
 
   def inner_diameter
     <<~SVG

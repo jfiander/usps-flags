@@ -5,28 +5,17 @@
 # This class should never need to be called directly.
 # @private
 class USPSFlags::Core::TridentSpecs::Short < USPSFlags::Core::TridentSpecs::Base
-  def initialize(options = {})
-    super
-    @box_top = options[:bt]
-    @box_bottom = options[:bb]
-    @box_left = options[:bl]
-    @box_right = options[:br]
-    @fly = options[:fly]
-    @unit = options[:unit]
-    @heading = options[:heading]
-  end
-
   def p
-    <<~SVG
-      <!-- Short Trident -->
-      <g transform="translate(-#{BF * 14 / 80},#{BH * 9 / 32})"><g transform="scale(0.7)">
-        #{@heading}
-
-        #{USPSFlags::Core::Icons::Trident.new(:s).svg}
-
-        #{boundary_box}#{right}#{left}#{bottom}#{top}#{overlay}
-      </g></g>
-    SVG
+    output('Short', 14, :s) do
+      <<~SVG
+        #{boundary_box}
+        #{right}
+        #{left}
+        #{bottom}
+        #{top}
+        #{overlay}
+      SVG
+    end
   end
 
 private
