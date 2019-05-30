@@ -35,7 +35,7 @@ class USPSFlags::Generate
     # @param [Boolean] trim Whether to trim the generated PNG file of excess transparency.
     # @param [String] background Background color. Defaults to 'none' (transparent).
     def png(svg, outfile: nil, trim: false, background: 'none')
-      raise USPSFlags::Errors::PNGGenerationError, svg: svg if outfile.nil? || outfile.empty?
+      raise USPSFlags::Errors::PNGGenerationError.new(svg: svg) if outfile.nil? || outfile.empty?
 
       set_temp_svg(svg)
 

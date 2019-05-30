@@ -92,6 +92,14 @@ describe USPSFlags::Generate do
       expect { USPSFlags::Generate.png(@svg, outfile: '') }.to raise_error(USPSFlags::Errors::PNGGenerationError)
     end
 
+    it 'should contain the SVG when raising PNGGenerationError without an outfile' do
+      begin
+        USPSFlags::Generate.png(@svg, outfile: '')
+      rescue => e
+        expect(e.svg).to eql(@svg)
+      end
+    end
+
     it 'should not raise PNGGenerationError when correctly configured' do
       expect { USPSFlags::Generate.png(@svg, outfile: 'lib/output/PNG/LTC.png') }.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
     end
