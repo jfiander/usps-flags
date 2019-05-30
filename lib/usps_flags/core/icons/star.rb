@@ -4,7 +4,7 @@
 #
 # This class should never need to be called directly.
 # @private
-class USPSFlags::Core::Star
+class USPSFlags::Core::Icons::Star
   def svg
     points = [
       [117.555,   81.805],

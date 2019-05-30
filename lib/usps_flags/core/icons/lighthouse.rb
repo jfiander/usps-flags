@@ -4,7 +4,7 @@
 #
 # This class should never need to be called directly.
 # @private
-class USPSFlags::Core::Lighthouse
+class USPSFlags::Core::Icons::Lighthouse
   def svg
     <<~SVG
       <mask id="lighthouse-mask">

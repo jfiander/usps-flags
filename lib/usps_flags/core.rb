@@ -22,23 +22,23 @@ class USPSFlags::Core
   end
 
   def self.trident(type, color: :blue, field_color: nil)
-    USPSFlags::Core::Trident.new(type, color: color, field_color: field_color).svg
+    USPSFlags::Core::Icons::Trident.new(type, color: color, field_color: field_color).svg
   end
 
   def self.anchor(color = :red)
-    USPSFlags::Core::Anchor.new(color: color).svg
+    USPSFlags::Core::Icons::Anchor.new(color: color).svg
   end
 
   def self.lighthouse
-    USPSFlags::Core::Lighthouse.new.svg
+    USPSFlags::Core::Icons::Lighthouse.new.svg
   end
 
   def self.binoculars(type = :d)
-    USPSFlags::Core::Binoculars.new(type: type).svg
+    USPSFlags::Core::Icons::Binoculars.new(type: type).svg
   end
 
   def self.trumpet(type = :s)
-    USPSFlags::Core::Trumpet.new(type: type).svg
+    USPSFlags::Core::Icons::Trumpet.new(type: type).svg
   end
 
   def self.pennant(type = 'cruise')
@@ -50,7 +50,7 @@ class USPSFlags::Core
   end
 
   def self.star
-    USPSFlags::Core::Star.new.svg
+    USPSFlags::Core::Icons::Star.new.svg
   end
 
   def self.wheel

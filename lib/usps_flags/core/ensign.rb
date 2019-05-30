@@ -11,7 +11,7 @@ class USPSFlags::Core::Ensign
       <g transform="scale(0.3675)">
         <g transform="translate(1200, 600)">
           <g transform="rotate(-45, 693, 1500)">
-            #{USPSFlags::Core::Anchor.new(color: :white).svg}
+            #{USPSFlags::Core::Icons::Anchor.new(color: :white).svg}
           </g>
         </g>
       </g>

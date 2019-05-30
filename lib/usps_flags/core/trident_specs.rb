@@ -1,5 +1,9 @@
 # frozen_string_literal: false
 
+# Base module for TridentSpec.
+#
+# These methods should never need to be called directly.
+# @private
 module USPSFlags::Core::TridentSpecs
   require 'usps_flags/core/trident_specs/base'
   require 'usps_flags/core/trident_specs/header'

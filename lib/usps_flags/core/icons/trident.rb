@@ -4,7 +4,7 @@
 #
 # This class should never need to be called directly.
 # @private
-class USPSFlags::Core::Trident
+class USPSFlags::Core::Icons::Trident
   def initialize(type, color: :blue, field_color: nil)
     valid_types = [:s, :d, :stf, :n]
     raise "Error: Invalid trident type. Options are #{valid_types}." unless valid_types.include? type

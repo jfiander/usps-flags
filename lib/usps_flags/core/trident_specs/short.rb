@@ -22,7 +22,7 @@ class USPSFlags::Core::TridentSpecs::Short < USPSFlags::Core::TridentSpecs::Base
       <g transform="translate(-#{BF * 14 / 80},#{BH * 9 / 32})"><g transform="scale(0.7)">
         #{@heading}
 
-        #{USPSFlags::Core::Trident.new(:s).svg}
+        #{USPSFlags::Core::Icons::Trident.new(:s).svg}
 
         #{boundary_box}#{right}#{left}#{bottom}#{top}#{overlay}
       </g></g>

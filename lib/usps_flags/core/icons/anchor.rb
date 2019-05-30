@@ -4,7 +4,7 @@
 #
 # This class should never need to be called directly.
 # @private
-class USPSFlags::Core::Anchor
+class USPSFlags::Core::Icons::Anchor
   def initialize(color: :red)
     @color_code = case color
                   when :red

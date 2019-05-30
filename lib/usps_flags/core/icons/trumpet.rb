@@ -4,7 +4,7 @@
 #
 # This class should never need to be called directly.
 # @private
-class USPSFlags::Core::Trumpet
+class USPSFlags::Core::Icons::Trumpet
   def initialize(type: :s)
     @color = type == :n ? USPSFlags::Config::BLUE : USPSFlags::Config::RED
     @count = type == :s ? 1 : 2

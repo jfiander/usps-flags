@@ -10,22 +10,18 @@ class USPSFlags
   require 'mini_magick'
   require 'rational'
 
-  # Dir['./lib/usps_flags/**'].map { |d| d.split("/").last.split(".rb").first }
   %w[config helpers core generate errors].each do |d|
     require "usps_flags/#{d}"
   end
 
-  # Dir['./lib/usps_flags/helpers/**'].map { |d| d.split("/").last.split(".rb").first }
   %w[builders spec_arrows].each do |d|
     require "usps_flags/helpers/#{d}"
   end
 
-  # Dir['./lib/usps_flags/core/**'].map { |d| d.split("/").last.split(".rb").first }
-  %w[anchor binoculars ensign field footer headers lighthouse pennant star trident tridents trident_specs trident_spec trumpet us wheel].each do |d|
+  %w[icons ensign field footer headers pennant tridents trident_specs trident_spec us wheel].each do |d|
     require "usps_flags/core/#{d}"
   end
 
-  # Dir['./lib/usps_flags/generate/**'].map { |d| d.split("/").last.split(".rb").first }
   %w[flag].each do |d|
     require "usps_flags/generate/#{d}"
   end

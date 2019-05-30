@@ -11,7 +11,7 @@ class USPSFlags::Core::TridentSpecs::Circle < USPSFlags::Core::TridentSpecs::Lon
       <g transform="translate(#{BF * 23 / 80},#{BH * 9 / 32})"><g transform="scale(0.7)">
         #{@heading}
 
-        #{USPSFlags::Core::Trident.new(:stf).svg}
+        #{USPSFlags::Core::Icons::Trident.new(:stf).svg}
 
         #{boundary_box}
 

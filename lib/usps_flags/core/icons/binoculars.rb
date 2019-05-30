@@ -4,7 +4,7 @@
 #
 # This class should never need to be called directly.
 # @private
-class USPSFlags::Core::Binoculars
+class USPSFlags::Core::Icons::Binoculars
   def initialize(type: :d)
     @color = case type
              when :d
