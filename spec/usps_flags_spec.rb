@@ -16,8 +16,7 @@ describe USPSFlags do
     @valid_body = <<~SVG
       <desc id="trademark-desc">This image is a registered trademark of United States Power Squadrons.</desc>
       <desc id="trademark-link">https://www.usps.org/images/secretary/itcom/trademark.pdf</desc>
-      </metadata>
-      <g transform="translate(-512)">
+      </metadata><g transform="translate(-512)">
       <path d="M 1536 512
       l 80 184
       l -40 -24
@@ -143,7 +142,9 @@ describe USPSFlags do
 
       describe 'png' do
         it 'should raise PNGGenerationError without png_file set' do
-          expect { @flag.png }.to raise_error(USPSFlags::Errors::PNGGenerationError, 'A path must be set with png_file.')
+          expect { @flag.png }.to raise_error(
+            USPSFlags::Errors::PNGGenerationError, 'A path must be set with png_file.'
+          )
         end
 
         context 'with png_file set' do
@@ -153,7 +154,7 @@ describe USPSFlags do
           end
 
           it 'should not raise PNGGenerationError with png_file set' do
-            expect { @flag.png }.to_not raise_error(USPSFlags::Errors::PNGGenerationError)
+            expect { @flag.png }.to_not raise_error
           end
 
           it 'should return the value of png_file' do

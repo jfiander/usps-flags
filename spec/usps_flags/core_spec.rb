@@ -4,7 +4,9 @@ require 'spec_helper'
 
 describe USPSFlags::Core do
   describe 'trident_spec' do
-    ['Field', 'Specification Heading Information', 'Short Trident', 'Delta Trident', 'Circle Trident', 'Long Trident'].each do |section|
+    [
+      'Field', 'Specification Heading Information', 'Short Trident', 'Delta Trident', 'Circle Trident', 'Long Trident'
+    ].each do |section|
       it "should contain the #{section} section" do
         expect(USPSFlags::Core.trident_spec).to include("<!-- #{section} -->")
       end
@@ -76,28 +78,24 @@ describe USPSFlags::Core do
       expect(USPSFlags::Core.field(style: :past, color: :blue)).to eql(
         <<~SVG
           <g transform="translate(2, 1)">
-            <path d="M 0 5
-              l #{@fly / 2} #{@hoist * 1 / 12}
-              l 0 #{@hoist * 10 / 12}
-              l -#{@fly / 2} #{@hoist * 1 / 12}
-            " fill="#{@blue}" />
-            <path d="M #{@fly / 2} #{@hoist * 1 / 12}
-              l #{@fly / 4} #{@hoist * 1 / 24}
-              l 0 #{@hoist * 9 / 12}
-              l -#{@fly / 4} #{@hoist * 1 / 24}
-            " fill="#FFFFFF" />
-            <path d="M #{@fly * 3 / 4} #{@hoist * 3 / 24}
-              l #{@fly / 4} #{@hoist * 1 / 24}
-              l -#{@fly / 5} #{@hoist / 3}
-              l #{@fly / 5} #{@hoist / 3}
-              l -#{@fly / 4} #{@hoist * 1 / 24}
-            " fill="#{@red}" />
-            <path d="M 0 0
-              l #{@fly} #{@hoist / 6}
-              l -#{@fly / 5} #{@hoist / 3}
-              l #{@fly / 5} #{@hoist / 3}
-              l -#{@fly} #{@hoist / 6} z
-            " fill="none" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY / 600}" />
+            <path d="M 0 5 l #{@fly / 2} #{@hoist * 1 / 12}
+          l 0 #{@hoist * 10 / 12}
+          l -#{@fly / 2} #{@hoist * 1 / 12}
+          " fill="#{@blue}" />
+            <path d="M #{@fly / 2} #{@hoist * 1 / 12} l #{@fly / 4} #{@hoist * 1 / 24}
+          l 0 #{@hoist * 9 / 12}
+          l -#{@fly / 4} #{@hoist * 1 / 24}
+          " fill="#FFFFFF" />
+            <path d="M #{@fly * 3 / 4} #{@hoist * 3 / 24} l #{@fly / 4} #{@hoist * 1 / 24}
+          l -#{@fly / 5} #{@hoist / 3}
+          l #{@fly / 5} #{@hoist / 3}
+          l -#{@fly / 4} #{@hoist * 1 / 24}
+          " fill="#{@red}" />
+            <path d="M 0 0 l #{@fly} #{@hoist / 6}
+          l -#{@fly / 5} #{@hoist / 3}
+          l #{@fly / 5} #{@hoist / 3}
+          l -#{@fly} #{@hoist / 6}
+           z" fill="none" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY / 600}" />
           </g>
         SVG
       )
@@ -110,11 +108,15 @@ describe USPSFlags::Core do
     end
 
     it 'should correctly generate a delta trident' do
-      expect(USPSFlags::Core.trident(:d)).to include("<g mask=\"url(#delta-mask)\"><path d=\"M #{@fly / 2} #{@hoist * 3 / 16}\n")
+      expect(USPSFlags::Core.trident(:d)).to include(
+        "<g mask=\"url(#delta-mask)\"><path d=\"M #{@fly / 2} #{@hoist * 3 / 16}\n"
+      )
     end
 
     it 'should correctly generate a circle trident' do
-      expect(USPSFlags::Core.trident(:stf)).to include("<g mask=\"url(#circle-mask-for-main-spike)\"><path d=\"M #{@fly / 2} #{@hoist / 8}\n")
+      expect(USPSFlags::Core.trident(:stf)).to include(
+        "<g mask=\"url(#circle-mask-for-main-spike)\"><path d=\"M #{@fly / 2} #{@hoist / 8}\n"
+      )
     end
 
     it 'should correctly generate a long trident' do

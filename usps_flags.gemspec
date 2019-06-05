@@ -2,8 +2,8 @@
 
 Gem::Specification.new do |s|
   s.name          = 'usps_flags'
-  s.version       = '0.4.1'
-  s.date          = '2019-05-30'
+  s.version       = '0.5.0'
+  s.date          = '2019-06-07'
   s.summary       = 'Flag generator for United States Power Squadrons'
   s.description   = 'A flag image (PNG, SVG) generator for United States Power Squadrons.'
   s.homepage      = 'http://rubygems.org/gems/usps_flags'
@@ -22,5 +22,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake',      '~> 12.2', '>= 12.2.1'
   s.add_development_dependency 'rspec',     '~> 3.7',  '>= 3.7.0'
+  s.add_development_dependency 'rubocop',   '~> 0.59', '>= 0.59.2'
   s.add_development_dependency 'simplecov', '~> 0.15', '>= 0.15.1'
 end

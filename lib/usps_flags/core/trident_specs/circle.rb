@@ -22,13 +22,13 @@ private
 
   def inner_diameter
     <<~SVG
-      #{SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:crossbar_from_top] + @config[:bar_width] * 2, @box_top + @config[:crossbar_from_top] + @config[:width], @config[:center_point], @config[:center_point], fly: @fly, unit: @unit)} <!-- Inner circle diameter -->
+      #{SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:crossbar_from_top] + @config[:bar_width] * 2, @box_top + @config[:crossbar_from_top] + @config[:width], pointer_top: @config[:center_point], pointer_bottom: @config[:center_point], fly: @fly, unit: @unit)} <!-- Inner circle diameter -->
     SVG
   end
 
   def outer_diameter
     <<~SVG
-      #{SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:crossbar_from_top] + @config[:width], @box_top + @config[:crossbar_from_top] + @config[:bar_width] + @config[:width], nil, outer_box_right, fly: @fly, unit: @unit)} <!-- Outer circle diameter -->
+      #{SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:crossbar_from_top] + @config[:width], @box_top + @config[:crossbar_from_top] + @config[:bar_width] + @config[:width], pointer_bottom: outer_box_right, fly: @fly, unit: @unit)} <!-- Outer circle diameter -->
     SVG
   end
 
@@ -38,7 +38,7 @@ private
 
   def circle_to_bottom
     <<~SVG
-      #{SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:crossbar_from_top] + @config[:bar_width] + @config[:width], @box_bottom, nil, @box_right, fly: @fly, unit: @unit)} <!-- Circle to bottom -->
+      #{SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:crossbar_from_top] + @config[:bar_width] + @config[:width], @box_bottom, pointer_bottom: @box_right, fly: @fly, unit: @unit)} <!-- Circle to bottom -->
     SVG
   end
 end

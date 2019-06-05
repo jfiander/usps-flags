@@ -22,13 +22,13 @@ private
     <<~SVG
       <!-- Right -->
         #{gap_height} <!-- Delta gap height -->
-        #{SA.vertical(@box_right + @config[:bar_width], @box_bottom - @config[:delta_from_bottom] - @config[:bar_width], @box_bottom - @config[:delta_from_bottom], nil, @box_right, fly: @fly, unit: @unit)} <!-- Delta width -->
-        #{SA.vertical(@box_right + @config[:bar_width], @box_bottom - @config[:delta_from_bottom], @box_bottom, nil, @box_right, fly: @fly, unit: @unit)} <!-- Delta to bottom -->
+        #{SA.vertical(@box_right + @config[:bar_width], @box_bottom - @config[:delta_from_bottom] - @config[:bar_width], @box_bottom - @config[:delta_from_bottom], pointer_bottom: @box_right, fly: @fly, unit: @unit)} <!-- Delta width -->
+        #{SA.vertical(@box_right + @config[:bar_width], @box_bottom - @config[:delta_from_bottom], @box_bottom, pointer_bottom: @box_right, fly: @fly, unit: @unit)} <!-- Delta to bottom -->
     SVG
   end
 
   def gap_height
-    SA.vertical(@box_right + @config[:bar_width], gap_height_top, @box_bottom - @config[:delta_from_bottom] - @config[:bar_width], @config[:center_point], @config[:center_point] + @config[:delta_gap_width], fly: @fly, unit: @unit)
+    SA.vertical(@box_right + @config[:bar_width], gap_height_top, @box_bottom - @config[:delta_from_bottom] - @config[:bar_width], pointer_top: @config[:center_point], pointer_bottom: @config[:center_point] + @config[:delta_gap_width], fly: @fly, unit: @unit)
   end
 
   def gap_height_top
@@ -38,7 +38,7 @@ private
   def left
     <<~SVG
       <!-- Left -->
-        #{SA.vertical(@box_left - @config[:bar_width] * 1.5, @box_top, @box_bottom, @box_left, @box_left, label_offset: -BF / 30, label_offset_y: -BF * 2 / 11, label_align: "middle", fly: @fly, unit: @unit)} <!-- Boundary height -->
+        #{SA.vertical(@box_left - @config[:bar_width] * 1.5, @box_top, @box_bottom, pointer_top: @box_left, pointer_bottom: @box_left, label_offset: -BF / 30, label_offset_y: -BF * 2 / 11, label_align: "middle", fly: @fly, unit: @unit)} <!-- Boundary height -->
     SVG
   end
 end

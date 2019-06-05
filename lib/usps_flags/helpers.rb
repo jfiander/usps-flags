@@ -2,6 +2,8 @@
 
 # Container class for helper methods.
 class USPSFlags::Helpers
+  require 'usps_flags/helpers/valid_flags'
+
   class << self
     # Valid options for flag generation.
     #
@@ -16,8 +18,10 @@ class USPSFlags::Helpers
     # @option type [Symbol] :us US flag
     # @return [Array] Valid options for flag generation (based on the provided type).
     def valid_flags(type = :all)
-      load_valid_flags
-      valid_flags_for(type)
+      USPSFlags::Helpers::ValidFlags.load_valid_flags
+      USPSFlags::Helpers::ValidFlags.load_special_flags
+      USPSFlags::Helpers::ValidFlags.load_valid_flag_groups
+      USPSFlags::Helpers::ValidFlags.valid_flags_for(type)
     end
 
     # Resizes and saves a PNG image.
@@ -34,13 +38,7 @@ class USPSFlags::Helpers
       raise USPSFlags::Errors::PNGConversionError if outfile.nil? && size_key.nil?
 
       output_file_name = outfile || "#{USPSFlags.configuration.flags_dir}/PNG/#{file}.#{size_key}.png"
-      MiniMagick::Tool::Convert.new do |convert|
-        convert << '-background' << 'none'
-        convert << '-format' << 'png'
-        convert << '-resize' << "#{size}"
-        convert << png_file
-        convert << output_file_name
-      end
+      resize_convert(size, png_file, output_file_name)
     end
 
     # Gets the maximum length among valid flags.
@@ -142,49 +140,14 @@ class USPSFlags::Helpers
 
   private
 
-    def load_valid_flags
-      @squadron_past = %w[PLTC PC]
-      @squadron_elected = %w[1LT LTC CDR]
-      @squadron_swallowtail = %w[PORTCAP FLEETCAP LT FLT]
-      @district_past = %w[PDLTC PDC]
-      @district_elected = %w[D1LT DLTC DC]
-      @district_swallowtail = %w[DLT DAIDE DFLT]
-      @national_past = %w[PSTFC PRC PVC PCC]
-      @national_elected = %w[STFC RC VC CC]
-      @national_swallowtail = %w[NAIDE NFLT]
-      @special = %w[CRUISE OIC ENSIGN] # WHEEL
-      @us = %w[US]
-
-      @past = @squadron_past + @district_past + @national_past
-      @squadron = @squadron_past + @squadron_elected + @squadron_swallowtail
-      @district = @district_past + @district_elected + @district_swallowtail
-      @national = @national_past + @national_elected + @national_swallowtail
-      @officer = @squadron + @district + @national
-    end
-
-    def valid_flags_for(type)
-      {
-        special: @special,
-        us: @us,
-
-        squadron: @squadron,
-        district: @district,
-        national: @national,
-        past: @past,
-
-        all: @officer + @special + @us,
-        officer: @officer,
-        insignia: @officer - @past,
-        swallowtail: @past + @squadron_swallowtail + @district_swallowtail + @national_swallowtail,
-
-        bridge: @squadron_elected.last(2) + @squadron_past.last(2) +
-          @district_elected.last(2) + @district_past.last(2) +
-          @national_elected.last(2) + @national_past.last(2),
-
-        command: [@squadron_elected.last, @squadron_past.last,
-                  @district_elected.last, @district_past.last,
-                  @national_elected.last, @national_past.last]
-      }[type]
+    def resize_convert(size, png_file, output_file_name)
+      MiniMagick::Tool::Convert.new do |convert|
+        convert << '-background' << 'none'
+        convert << '-format' << 'png'
+        convert << '-resize' << "#{size}"
+        convert << png_file
+        convert << output_file_name
+      end
     end
 
     def flag_style(rank)

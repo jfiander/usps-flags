@@ -12,16 +12,8 @@ class USPSFlags::Core::Pennant
   end
 
   def svg
-    if @type == 'OIC'
-      oic
-    elsif @type == 'CRUISE'
-      <<~SVG
-        #{cruise}
-        <g transform=\"translate(385, 340)\">
-          #{USPSFlags::Core.star}
-        </g>"
-      SVG
-    end
+    return oic if @type == 'OIC'
+    return cruise if @type == 'CRUISE'
   end
 
 private
@@ -34,24 +26,29 @@ private
 
   def cruise
     <<~SVG
-      <path d="M 0 0
-        l #{@fly * 10 / 36} #{@hoist * 5 / 36}
-        l 0 #{@hoist * 26 / 36}
-        l -#{@fly * 10 / 36} #{@hoist * 5 / 36}
-      " fill="#{USPSFlags::Config::RED}" />
-      <path d="M #{@fly * 10 / 36} #{@hoist * 5 / 36}
-        l #{@fly * 11 / 36} #{@hoist * 5.5 / 36}
-        l 0 #{@hoist * 15 / 36}
-        l -#{@fly * 11 / 36} #{@hoist * 5.5 / 36}
-      " fill="#FFFFFF" />
-      <path d="M #{@fly * 21 / 36} #{@hoist * 10.5 / 36}
-        l #{@fly * 15 / 36} #{@hoist * 7.5 / 36}
-        l -#{@fly * 15 / 36} #{@hoist * 7.5 / 36}
-      " fill="#{USPSFlags::Config::BLUE}" />
-      <path d="M 0 0
-        l #{@fly} #{@hoist / 2}
-        l -#{@fly} #{@hoist / 2}
-      " fill="none" stroke="#000000" stroke-width="2" />
+      #{cruise_red}#{cruise_white}#{cruise_blue}
+      <path d="M 0 0 l #{@fly} #{@hoist / 2} l -#{@fly} #{@hoist / 2}" fill="none" stroke="#000000" stroke-width="2" />
+      <g transform=\"translate(385, 340)\">
+        #{USPSFlags::Core.star}
+      </g>"
+    SVG
+  end
+
+  def cruise_red
+    <<~SVG
+      <path d="M 0 0 l #{@fly * 10 / 36} #{@hoist * 5 / 36} l 0 #{@hoist * 26 / 36} l -#{@fly * 10 / 36} #{@hoist * 5 / 36}" fill="#{USPSFlags::Config::RED}" />
+    SVG
+  end
+
+  def cruise_white
+    <<~SVG
+      <path d="M #{@fly * 10 / 36} #{@hoist * 5 / 36} l #{@fly * 11 / 36} #{@hoist * 5.5 / 36} l 0 #{@hoist * 15 / 36} l -#{@fly * 11 / 36} #{@hoist * 5.5 / 36}" fill="#FFFFFF" />
+    SVG
+  end
+
+  def cruise_blue
+    <<~SVG
+      <path d="M #{@fly * 21 / 36} #{@hoist * 10.5 / 36} l #{@fly * 15 / 36} #{@hoist * 7.5 / 36} l -#{@fly * 15 / 36} #{@hoist * 7.5 / 36}" fill="#{USPSFlags::Config::BLUE}" />
     SVG
   end
 end

@@ -33,23 +33,21 @@ private
   end
 
   def stars
-    rows = {
-      odd: (1..9).step(2).to_a,
-      even: (2..8).step(2).to_a
-    }
-    columns = {
-      odd: (1..11).step(2).to_a,
-      even: (2..10).step(2).to_a
-    }
+    rows = { odd: (1..9).step(2).to_a, even: (2..8).step(2).to_a }
+    columns = { odd: (1..11).step(2).to_a, even: (2..10).step(2).to_a }
 
-    svg = ''
-    %i[odd even].each do |type|
-      rows[type].each do |r|
-        columns[type].each do |c|
-          svg << <<~SVG
-            <g transform="translate(#{@canton_fly * c / 12}, #{@star_offset + @canton_hoist * r / 10})"><g><use href="#star" /></g></g>
-          SVG
-        end
+    svg = +''
+    %i[odd even].each { |type| svg << star_set(rows, columns, type) }
+    svg
+  end
+
+  def star_set(rows, columns, type)
+    svg = +''
+    rows[type].each do |r|
+      columns[type].each do |c|
+        svg << <<~SVG
+          <g transform="translate(#{@canton_fly * c / 12}, #{@star_offset + @canton_hoist * r / 10})"><g><use href="#star" /></g></g>
+        SVG
       end
     end
     svg

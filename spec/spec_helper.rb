@@ -4,11 +4,9 @@ require 'bundler/setup'
 Bundler.setup
 require 'simplecov'
 SimpleCov.start
+SimpleCov.minimum_coverage(100)
 
 require 'usps_flags'
-
-# Some specs contain examples that check for the custom examples from USPSFlags::Errors
-RSpec::Expectations.configuration.on_potential_false_positives = :nothing
 
 RSpec.configure do |config|
   config.before(:suite) do

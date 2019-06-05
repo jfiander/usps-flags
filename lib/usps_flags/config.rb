@@ -30,40 +30,11 @@ class USPSFlags::Config
   #
   # @return [Hash] RThe configuration values for tridents.
   def trident
-    center_point_height = USPSFlags::Config::BASE_FLY / 48 * 23 / 8
-    side_point_height = USPSFlags::Config::BASE_FLY / 48 * 21 / 8
-    bar_width = USPSFlags::Config::BASE_FLY / 48 * 5 / 4
     {
-      height: trident_heights,
-
-      center_point: BASE_FLY / 2,
-
-      width: USPSFlags::Config::BASE_FLY * 5 / 32,
-
-      bar_width: bar_width,
-
-      center_point_height: center_point_height,
-      side_point_height: side_point_height,
-
-      main_point_barb: USPSFlags::Config::BASE_HOIST / 82,
-
-      crossbar_from_top: USPSFlags::Config::BASE_HOIST / 4 + bar_width / 5,
-
-      side_spike_height: USPSFlags::Config::BASE_HOIST / 4 - side_point_height - bar_width * 3 / 5,
-
-      hash_width: USPSFlags::Config::BASE_FLY * 47 / 528,
-
-      delta_height: USPSFlags::Config::BASE_FLY * 33 / 240,
-      delta_gap_height: USPSFlags::Config::BASE_FLY / 16,
-      delta_gap_width: bar_width * 5 / 4,
-      delta_width: USPSFlags::Config::BASE_FLY * 43 / 768,
-      delta_from_bottom: USPSFlags::Config::BASE_HOIST * 10 / 64,
-      delta_gap_scale: 0.40,
-      delta_gap_x: USPSFlags::Config::BASE_HOIST * 144 / 128,
-      delta_gap_y: USPSFlags::Config::BASE_HOIST * 221 / 256,
-
-      circle_height_adj: USPSFlags::Config::BASE_FLY / 800
-    }
+      height: trident_heights, center_point: BASE_FLY / 2,
+      width: USPSFlags::Config::BASE_FLY * 5 / 32, bar_width: bar_width,
+      hash_width: USPSFlags::Config::BASE_FLY * 47 / 528
+    }.merge(spikes_config).merge(delta_config).merge(circle_config)
   end
 
   # Height values for trident insignia.
@@ -99,5 +70,39 @@ private
     end
     @use_larger_tridents = true
     @clear = false
+  end
+
+  def center_point_height
+    USPSFlags::Config::BASE_FLY / 48 * 23 / 8
+  end
+
+  def side_point_height
+    USPSFlags::Config::BASE_FLY / 48 * 21 / 8
+  end
+
+  def bar_width
+    USPSFlags::Config::BASE_FLY / 48 * 5 / 4
+  end
+
+  def spikes_config
+    {
+      center_point_height: center_point_height, side_point_height: side_point_height,
+      main_point_barb: USPSFlags::Config::BASE_HOIST / 82,
+      crossbar_from_top: USPSFlags::Config::BASE_HOIST / 4 + bar_width / 5,
+      side_spike_height: USPSFlags::Config::BASE_HOIST / 4 - side_point_height - bar_width * 3 / 5
+    }
+  end
+
+  def delta_config
+    {
+      delta_height: USPSFlags::Config::BASE_FLY * 33 / 240, delta_gap_height: USPSFlags::Config::BASE_FLY / 16,
+      delta_gap_width: bar_width * 5 / 4, delta_width: USPSFlags::Config::BASE_FLY * 43 / 768,
+      delta_from_bottom: USPSFlags::Config::BASE_HOIST * 10 / 64, delta_gap_scale: 0.40,
+      delta_gap_x: USPSFlags::Config::BASE_HOIST * 144 / 128, delta_gap_y: USPSFlags::Config::BASE_HOIST * 221 / 256
+    }
+  end
+
+  def circle_config
+    { circle_height_adj: USPSFlags::Config::BASE_FLY / 800 }
   end
 end

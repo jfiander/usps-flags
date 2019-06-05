@@ -8,6 +8,7 @@ class USPSFlags::Core::Ensign
   def svg
     <<~SVG
       #{stripes}
+      #{canton}
       <g transform="scale(0.3675)">
         <g transform="translate(1200, 600)">
           <g transform="rotate(-45, 693, 1500)">
@@ -22,39 +23,46 @@ class USPSFlags::Core::Ensign
 private
 
   def stripes
+    (0..12).map do |index|
+      index.odd? ? white_stripe(index) : blue_stripe(index)
+    end.join
+  end
+
+  def canton
     <<~SVG
-      <rect x="0" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#{USPSFlags::Config::BLUE}" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 1 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#FFFFFF" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 2 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#{USPSFlags::Config::BLUE}" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 3 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#FFFFFF" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 4 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#{USPSFlags::Config::BLUE}" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 5 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#FFFFFF" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 6 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#{USPSFlags::Config::BLUE}" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 7 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#FFFFFF" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 8 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#{USPSFlags::Config::BLUE}" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 9 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#FFFFFF" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 10 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#{USPSFlags::Config::BLUE}" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 11 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#FFFFFF" />
-      <rect x="#{USPSFlags::Config::BASE_FLY * 12 / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#{USPSFlags::Config::BLUE}" />
       <rect x="0" y="0" width="#{USPSFlags::Config::BASE_FLY * 6 / 13}" height="1000" fill="#{USPSFlags::Config::RED}" />
     SVG
-    # <circle cx="#{USPSFlags::Config::BASE_FLY*3/13}" cy="#{USPSFlags::Config::BASE_HOIST/4}" r="#{USPSFlags::Config::BASE_FLY*6/13*5/16}" fill="#FFFFFF" fill-opacity="0.6" />
+  end
+
+  def white_stripe(index)
+    <<~SVG
+      <rect x="#{USPSFlags::Config::BASE_FLY * index / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#FFFFFF" />
+    SVG
+  end
+
+  def blue_stripe(index)
+    <<~SVG
+      <rect x="#{USPSFlags::Config::BASE_FLY * index / 13}" y="0" width="#{USPSFlags::Config::BASE_FLY / 13}" height="#{USPSFlags::Config::BASE_HOIST}" fill="#{USPSFlags::Config::BLUE}" />
+    SVG
   end
 
   def star_circle
-    svg = ''
-    (0..13).each do |i|
-      rotation = i * (360.0 / 13)
-      svg << <<~SVG
-        <g transform="scale(0.375)">
-          <g transform="translate(1885, 465)">
-            <g transform="rotate(#{rotation}, 0, 900)">
-              #{USPSFlags::Core.star}
-            </g>
+    svg = +''
+
+    (0..13).each { |i| svg << rotated_star(i * (360.0 / 13)) }
+
+    svg
+  end
+
+  def rotated_star(rotation)
+    <<~SVG
+      <g transform="scale(0.375)">
+        <g transform="translate(1885, 465)">
+          <g transform="rotate(#{rotation}, 0, 900)">
+            #{USPSFlags::Core.star}
           </g>
         </g>
-      SVG
-    end
-    svg
+      </g>
+    SVG
   end
 end

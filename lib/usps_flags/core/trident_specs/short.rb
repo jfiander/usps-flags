@@ -30,7 +30,7 @@ private
   def right
     <<~SVG
       <!-- Right -->
-        #{SA.vertical(@box_right + @config[:bar_width], @box_top, @box_top + @config[:bar_width] * 4 / 5, @box_right, @box_right, fly: @fly, unit: @unit)} <!-- Side spike top gap -->
+        #{SA.vertical(@box_right + @config[:bar_width], @box_top, @box_top + @config[:bar_width] * 4 / 5, pointer_top: @box_right, pointer_bottom: @box_right, fly: @fly, unit: @unit)} <!-- Side spike top gap -->
         #{right_top_gap_to_hash_gap} <!-- Top gap to hash gap -->
         #{right_crossbar_to_hash_gap} <!-- Crossbar to hash gap -->
 
@@ -40,7 +40,7 @@ private
   end
 
   def right_top_gap_to_hash_gap
-    SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:bar_width] * 4 / 5, right_top_gap_bottom, nil, @box_right, fly: @fly, unit: @unit)
+    SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:bar_width] * 4 / 5, right_top_gap_bottom, pointer_bottom: @box_right, fly: @fly, unit: @unit)
   end
 
   def right_top_gap_bottom
@@ -48,7 +48,7 @@ private
   end
 
   def right_crossbar_to_hash_gap
-    SA.vertical(@box_right + @config[:bar_width], right_crossbar_top, right_crossbar_bottom, nil, @config[:center_point] + @config[:hash_width] / 2, fly: @fly, unit: @unit)
+    SA.vertical(@box_right + @config[:bar_width], right_crossbar_top, right_crossbar_bottom, pointer_bottom: @config[:center_point] + @config[:hash_width] / 2, fly: @fly, unit: @unit)
   end
 
   def right_crossbar_top
@@ -60,7 +60,7 @@ private
   end
 
   def right_hash
-    SA.vertical(@box_right + @config[:bar_width], right_hash_top, right_hash_bottom, nil, @config[:center_point] + @config[:hash_width] / 2, fly: @fly, unit: @unit)
+    SA.vertical(@box_right + @config[:bar_width], right_hash_top, right_hash_bottom, pointer_bottom: @config[:center_point] + @config[:hash_width] / 2, fly: @fly, unit: @unit)
   end
 
   def right_hash_top
@@ -72,24 +72,24 @@ private
   end
 
   def right_hash_to_bottom
-    SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:bar_width] * 38 / 10 + @config[:side_point_height] + @config[:side_spike_height], @box_bottom, nil, @box_right, fly: @fly, unit: @unit)
+    SA.vertical(@box_right + @config[:bar_width], @box_top + @config[:bar_width] * 38 / 10 + @config[:side_point_height] + @config[:side_spike_height], @box_bottom, pointer_bottom: @box_right, fly: @fly, unit: @unit)
   end
 
   def left
     <<~SVG
       <!-- Left -->
-        #{SA.vertical(@box_left - @config[:bar_width] * 5.25, @box_top, @box_bottom, @box_left, @box_left, fly: @fly, unit: @unit)} <!-- Boundary height -->
+        #{SA.vertical(@box_left - @config[:bar_width] * 5.25, @box_top, @box_bottom, pointer_top: @box_left, pointer_top: @box_left, fly: @fly, unit: @unit)} <!-- Boundary height -->
         #{left_main_point_height} <!-- Main point height -->
         #{left_side_point_height} <!-- Side point height -->
     SVG
   end
 
   def left_main_point_height
-    SA.vertical(@box_left - @config[:bar_width] * 0.75, @box_top, @box_top + @config[:center_point_height], nil, @config[:center_point] - @config[:bar_width], label_offset: -BF / 24, label_offset_y: -BF / 60, label_align: 'middle', fly: @fly, unit: @unit)
+    SA.vertical(@box_left - @config[:bar_width] * 0.75, @box_top, @box_top + @config[:center_point_height], pointer_bottom: @config[:center_point] - @config[:bar_width], label_offset: -BF / 24, label_offset_y: -BF / 60, label_align: 'middle', fly: @fly, unit: @unit)
   end
 
   def left_side_point_height
-    SA.vertical(@box_left - @config[:bar_width] * 1.5, @box_top + @config[:bar_width] * 4 / 5, left_side_point_bottom, @box_left, @box_left + @config[:bar_width], label_offset: -BF / 24, label_align: 'middle', fly: @fly, unit: @unit)
+    SA.vertical(@box_left - @config[:bar_width] * 1.5, @box_top + @config[:bar_width] * 4 / 5, left_side_point_bottom, pointer_top: @box_left, pointer_bottom: @box_left + @config[:bar_width], label_offset: -BF / 24, label_align: 'middle', fly: @fly, unit: @unit)
   end
 
   def left_side_point_bottom
@@ -101,16 +101,16 @@ private
       <!-- Bottom -->
         #{bottom_bar_width} <!-- Bar width -->
         #{bottom_hash_width} <!-- Hash width -->
-        #{SA.horizontal(@box_bottom + @config[:bar_width] * 4, @box_left, @box_right, @box_bottom, @box_bottom, fly: @fly, unit: @unit)} <!-- Boundary width -->
+        #{SA.horizontal(@box_bottom + @config[:bar_width] * 4, @box_left, @box_right, pointer_left: @box_bottom, pointer_right: @box_bottom, fly: @fly, unit: @unit)} <!-- Boundary width -->
     SVG
   end
 
   def bottom_bar_width
-    SA.horizontal(@box_bottom + @config[:bar_width], @config[:center_point] - @config[:bar_width] / 2, @config[:center_point] + @config[:bar_width] / 2, @box_bottom, @box_bottom, fly: @fly, unit: @unit)
+    SA.horizontal(@box_bottom + @config[:bar_width], @config[:center_point] - @config[:bar_width] / 2, @config[:center_point] + @config[:bar_width] / 2, pointer_left: @box_bottom, pointer_right: @box_bottom, fly: @fly, unit: @unit)
   end
 
   def bottom_hash_width
-    SA.horizontal(@box_bottom + @config[:bar_width] * 2.5, @config[:center_point] - @config[:hash_width] / 2, @config[:center_point] + @config[:hash_width] / 2, bottom_hash_width_pointer_left, bottom_hash_width_pointer_right, fly: @fly, unit: @unit)
+    SA.horizontal(@box_bottom + @config[:bar_width] * 2.5, @config[:center_point] - @config[:hash_width] / 2, @config[:center_point] + @config[:hash_width] / 2, pointer_left: bottom_hash_width_pointer_left, pointer_right: bottom_hash_width_pointer_right, fly: @fly, unit: @unit)
   end
 
   def bottom_hash_width_pointer_left
@@ -130,11 +130,11 @@ private
   end
 
   def top_side_point_width
-    SA.horizontal(@box_top - @config[:bar_width], @box_left, @box_left + @config[:bar_width] * 3 / 2, @box_top, @box_top + @config[:bar_width] * 4 / 5 + @config[:side_point_height], label_offset: -BF / 60, fly: @fly, unit: @unit)
+    SA.horizontal(@box_top - @config[:bar_width], @box_left, @box_left + @config[:bar_width] * 3 / 2, pointer_left: @box_top, pointer_right: @box_top + @config[:bar_width] * 4 / 5 + @config[:side_point_height], label_offset: -BF / 60, fly: @fly, unit: @unit)
   end
 
   def top_main_point_width
-    SA.horizontal(@box_top - @config[:bar_width] * 2.5, top_main_point_top, @config[:center_point] + @config[:bar_width], @box_top + @config[:center_point_height], @box_top + @config[:center_point_height], label_offset: -BF / 60, fly: @fly, unit: @unit)
+    SA.horizontal(@box_top - @config[:bar_width] * 2.5, top_main_point_top, @config[:center_point] + @config[:bar_width], pointer_left: @box_top + @config[:center_point_height], pointer_right: @box_top + @config[:center_point_height], label_offset: -BF / 60, fly: @fly, unit: @unit)
   end
 
   def top_main_point_top

@@ -11,7 +11,20 @@ class USPSFlags::Core::Icons::Trumpet
   end
 
   def svg
-    trumpet = <<~SVG
+    if @count == 2
+      <<~SVG
+        <g transform="translate(1100,-600)"><g transform="rotate(45)">#{trumpet}</g></g>
+        <g transform="translate(-300,1100)"><g transform="rotate(-45)">#{trumpet}</g></g>
+      SVG
+    else
+      trumpet
+    end
+  end
+
+private
+
+  def trumpet
+    <<~SVG
       <path d="M1139.9999958974363,480.00000000000006
       c-44.15476410256406,-6.5910035897434796,-116.84910635897381,-20.41065056410247,-114.87185282051291,-47.179479230769175
       c4.028547230769618,-65.74318056410249,367.85434817948703,-61.23149248717954,369.23087128205134,-2.051282051282101
@@ -22,14 +35,5 @@ class USPSFlags::Core::Icons::Trumpet
       c106.18124384615362,-96.7690410256414,99.88082358974339,-91.1716969230772,229.74356769230792,-141.53843102564088"
       fill="#{@color}" />
     SVG
-
-    if @count == 2
-      <<~SVG
-        <g transform="translate(1100,-600)"><g transform="rotate(45)">#{trumpet}</g></g>
-        <g transform="translate(-300,1100)"><g transform="rotate(-45)">#{trumpet}</g></g>
-      SVG
-    else
-      trumpet
-    end
   end
 end

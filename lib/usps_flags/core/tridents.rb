@@ -53,7 +53,7 @@ class USPSFlags::Core::Tridents
     def offset(type, field_color:, field: true)
       # Swallowtail tridents need to move towards the hoist due to the tails
       x_distance = USPSFlags::Config::BASE_FLY / 10 if field
-      svg = ''
+      svg = +''
       svg << "<g transform=\"translate(-#{x_distance})\">" if field
       svg << USPSFlags::Core.trident(type, field_color: field_color, color: :red)
       svg << '</g>' if field

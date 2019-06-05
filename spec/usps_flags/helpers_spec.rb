@@ -16,17 +16,24 @@ describe USPSFlags::Helpers do
     end
 
     it 'should correctly generate the grid helper' do
-      expect(USPSFlags::Helpers::Builders.grid).to include("<circle cx=\"0\" cy=\"0\" r=\"#{USPSFlags::Config::BASE_FLY / 60}\" fill=\"#000000\" fill-opacity=\"0.4\" />")
+      expect(USPSFlags::Helpers::Builders.grid).to include(
+        "<circle cx=\"0\" cy=\"0\" r=\"#{USPSFlags::Config::BASE_FLY / 60}\" fill=\"#000000\" fill-opacity=\"0.4\" />"
+      )
     end
 
     it 'should correctly generate the locator helper' do
-      expect(USPSFlags::Helpers::Builders.locator).to include("<rect x=\"0\" y=\"0\" width=\"#{USPSFlags::Config::BASE_FLY / 30}\" height=\"#{USPSFlags::Config::BASE_FLY / 30}\" fill=\"#333333\" fill-opacity=\"0.6\" />")
+      expect(USPSFlags::Helpers::Builders.locator).to include(
+        "<rect x=\"0\" y=\"0\" width=\"#{USPSFlags::Config::BASE_FLY / 30}\" " \
+        "height=\"#{USPSFlags::Config::BASE_FLY / 30}\" fill=\"#333333\" fill-opacity=\"0.6\" />"
+      )
     end
   end
 
   describe 'resize_png' do
     it 'should raise USPSFlags::Errors::PNGConversionError with invalid parameters' do
-      expect { USPSFlags::Helpers.resize_png('path/to/image.png', size: 100, size_key: 'thumb') }.to raise_error(USPSFlags::Errors::PNGConversionError)
+      expect do
+        USPSFlags::Helpers.resize_png('path/to/image.png', size: 100, size_key: 'thumb')
+      end.to raise_error(USPSFlags::Errors::PNGConversionError)
     end
   end
 end
