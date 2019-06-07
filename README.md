@@ -125,6 +125,12 @@ flag = USPSFlags.new do |f|
   f.png_file = "/path/to/png/output.png"
 end
 
+flag = USPSFlags.new(
+  type: "LtC", scale: 3, field: false, trim: true,
+  svg_file: "/path/to/svg/output.svg",
+  png_file: "/path/to/png/output.png"
+)
+
 flag.svg #=> Generates SVG file at "/path/to/svg/output.svg"
 flag.png #=> Generates PNG file at "/path/to/png/output.png"
 ```

@@ -1,33 +1,28 @@
 # frozen_string_literal: false
 
-# Base class for the namespace. Provides a constructor DSL.
+# Main module for the namespace.
 #
 # @author Julian Fiander
 # @since 0.1.5
 class USPSFlags
+  MODULES ||= {
+    'usps_flags' => %w[rational config helpers core generate errors],
+    'usps_flags/helpers' => %w[builders spec_arrows],
+    'usps_flags/core' => %w[
+      icons ensign field footer headers pennant tridents trident_specs trident_spec us wheel
+    ],
+    'usps_flags/generate' => %w[flag]
+  }.freeze
+
   require 'fileutils'
   require 'zip'
   require 'mini_magick'
-  require 'rational'
 
-  %w[config helpers core generate errors].each do |d|
-    require "usps_flags/#{d}"
-  end
-
-  %w[builders spec_arrows].each do |d|
-    require "usps_flags/helpers/#{d}"
-  end
-
-  %w[icons ensign field footer headers pennant tridents trident_specs trident_spec us wheel].each do |d|
-    require "usps_flags/core/#{d}"
-  end
-
-  %w[flag].each do |d|
-    require "usps_flags/generate/#{d}"
-  end
-
-  class << self
-    attr_accessor :configuration
+  MODULES.each do |parent, bases|
+    bases.each do |base|
+      res = require("#{parent}/#{base}")
+      puts "#{parent}/#{base}: #{res}" if ENV['VERBOSE_REQUIRE'] == 'true'
+    end
   end
 
   # Configuration accessor.
@@ -38,7 +33,7 @@ class USPSFlags
   # Configuration constructor.
   def self.configure
     yield(configuration) if block_given?
-    self.ensure_directories
+    ensure_directories
     @configuration
   end
 
@@ -46,9 +41,9 @@ class USPSFlags
   #
   # @private
   def self.ensure_directories
-    self.get_dir_configs
-    self.prepare_dir_configs
-    self.prepare_flags_dir
+    get_dir_configs
+    prepare_dir_configs
+    prepare_flags_dir
     ::FileUtils.mkdir_p(USPSFlags.configuration.log_path)
   end
 
@@ -56,12 +51,8 @@ class USPSFlags
   #
   # @private
   def self.get_dir_configs
-    @dirs = USPSFlags.configuration.
-      instance_variables.
-      map(&:to_s).
-      map { |v| v.match(/.*?_dir/) }.
-      reject! { |v| v.nil? }.
-      map(&:to_s)
+    @dirs = USPSFlags.configuration.instance_variables.map(&:to_s)
+                     .map { |v| v.match(/.*?_dir/) }.compact.map(&:to_s)
   end
 
   # Ensures that directories exist (and are cleared, if configured).
@@ -98,14 +89,14 @@ class USPSFlags
   #
   #  flag.svg #=> Generates SVG file at "/path/to/svg/output.svg"
   #  flag.png #=> Generates PNG file at "/path/to/png/output.png"
-  def initialize
-    @type = nil
-    @svg_file = nil
-    @png_file = nil
-    @scale = nil
-    @field = nil
-    @trim = nil
-    yield self if block_given?
+  def initialize(options = {})
+    @type = options[:type]
+    @svg_file = options[:svg_file]
+    @png_file = options[:png_file]
+    @scale = options[:scale]
+    @field = options[:field]
+    @trim = options[:trim]
+    yield(self) if block_given?
   end
 
   # Constructor accessors.
@@ -122,8 +113,8 @@ class USPSFlags
   #
   # @return [String] Returns the SVG file output path, or the svg data if no path was specified.
   def svg
-    svg = USPSFlags::Generate.svg(self.type, outfile: self.svg_file, scale: self.scale, field: self.field)
-    (self.svg_file.nil? || self.svg_file == '') ? svg : self.svg_file
+    svg = USPSFlags::Generate.svg(type, outfile: svg_file, scale: scale, field: field)
+    svg_file.nil? || svg_file == '' ? svg : svg_file
   end
 
   # Generates the constructed file as PNG.
@@ -132,12 +123,12 @@ class USPSFlags
   #
   # @return [String] Returns the SVG file output path.
   def png
-    raise USPSFlags::Errors::PNGGenerationError, 'A path must be set with png_file.' if self.png_file.nil?
+    raise USPSFlags::Errors::PNGGenerationError, 'A path must be set with png_file.' if png_file.nil?
 
-    svg_file_storage = self.svg_file
+    svg_file_storage = svg_file
     self.svg_file = ''
-    USPSFlags::Generate.png(self.svg, outfile: self.png_file, trim: self.trim)
+    USPSFlags::Generate.png(svg, outfile: png_file, trim: trim)
     self.svg_file = svg_file_storage
-    self.png_file
+    png_file
   end
 end

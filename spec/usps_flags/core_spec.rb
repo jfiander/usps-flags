@@ -3,12 +3,19 @@
 require 'spec_helper'
 
 describe USPSFlags::Core do
+  before do
+    @fly = USPSFlags::Config::BASE_FLY
+    @hoist = USPSFlags::Config::BASE_HOIST
+    @red = USPSFlags::Config::RED
+    @blue = USPSFlags::Config::BLUE
+  end
+
   describe 'trident_spec' do
     [
       'Field', 'Specification Heading Information', 'Short Trident', 'Delta Trident', 'Circle Trident', 'Long Trident'
     ].each do |section|
       it "should contain the #{section} section" do
-        expect(USPSFlags::Core.trident_spec).to include("<!-- #{section} -->")
+        expect(described_class.trident_spec).to include("<!-- #{section} -->")
       end
     end
   end
@@ -16,27 +23,20 @@ describe USPSFlags::Core do
   describe 'headers' do
     ['?xml ', '!DOCTYPE', 'svg ', 'metadata'].each do |tag|
       it "should contain the #{tag} tag" do
-        expect(USPSFlags::Core.headers).to include("<#{tag}")
+        expect(described_class.headers).to include("<#{tag}")
       end
     end
   end
 
   describe 'footer' do
-    it 'should contain the closing tag' do
-      expect(USPSFlags::Core.footer).to include('</svg>')
+    it 'contains the closing tag' do
+      expect(described_class.footer).to include('</svg>')
     end
   end
 
-  before(:all) do
-    @fly = USPSFlags::Config::BASE_FLY
-    @hoist = USPSFlags::Config::BASE_HOIST
-    @red = USPSFlags::Config::RED
-    @blue = USPSFlags::Config::BLUE
-  end
-
   describe 'field' do
-    it 'should correctly generate the basic field' do
-      expect(USPSFlags::Core.field).to eql(
+    it 'correctlies generate the basic field' do
+      expect(described_class.field).to eql(
         <<~SVG
           <path d="M 0 0
             l #{@fly} 0
@@ -48,8 +48,8 @@ describe USPSFlags::Core do
       )
     end
 
-    it 'should correctly generate the red field' do
-      expect(USPSFlags::Core.field(color: :red)).to eql(
+    it 'correctlies generate the red field' do
+      expect(described_class.field(color: :red)).to eql(
         <<~SVG
           <path d="M 0 0
             l #{@fly} 0
@@ -61,8 +61,8 @@ describe USPSFlags::Core do
       )
     end
 
-    it 'should correctly generate the swallowtail field' do
-      expect(USPSFlags::Core.field(style: :swallowtail)).to eql(
+    it 'correctlies generate the swallowtail field' do
+      expect(described_class.field(style: :swallowtail)).to eql(
         <<~SVG
           <path d="M 2 1
             l #{@fly} #{@hoist / 6}
@@ -74,8 +74,8 @@ describe USPSFlags::Core do
       )
     end
 
-    it 'should correctly generate the blue past field' do
-      expect(USPSFlags::Core.field(style: :past, color: :blue)).to eql(
+    it 'correctlies generate the blue past field' do
+      expect(described_class.field(style: :past, color: :blue)).to eql(
         <<~SVG
           <g transform="translate(2, 1)">
             <path d="M 0 5 l #{@fly / 2} #{@hoist * 1 / 12}
@@ -103,36 +103,36 @@ describe USPSFlags::Core do
   end
 
   describe 'trident' do
-    it 'should correctly generate a short trident' do
-      expect(USPSFlags::Core.trident(:s)).to include("<path d=\"M #{@fly / 2} #{@hoist / 4}\n")
+    it 'correctlies generate a short trident' do
+      expect(described_class.trident(:s)).to include("<path d=\"M #{@fly / 2} #{@hoist / 4}\n")
     end
 
-    it 'should correctly generate a delta trident' do
-      expect(USPSFlags::Core.trident(:d)).to include(
+    it 'correctlies generate a delta trident' do
+      expect(described_class.trident(:d)).to include(
         "<g mask=\"url(#delta-mask)\"><path d=\"M #{@fly / 2} #{@hoist * 3 / 16}\n"
       )
     end
 
-    it 'should correctly generate a circle trident' do
-      expect(USPSFlags::Core.trident(:stf)).to include(
+    it 'correctlies generate a circle trident' do
+      expect(described_class.trident(:stf)).to include(
         "<g mask=\"url(#circle-mask-for-main-spike)\"><path d=\"M #{@fly / 2} #{@hoist / 8}\n"
       )
     end
 
-    it 'should correctly generate a long trident' do
-      expect(USPSFlags::Core.trident(:n)).to include("<path d=\"M #{@fly / 2} #{@hoist / 8}\n")
+    it 'correctlies generate a long trident' do
+      expect(described_class.trident(:n)).to include("<path d=\"M #{@fly / 2} #{@hoist / 8}\n")
     end
   end
 
   describe 'anchor' do
-    it 'should correctly generate an anchor' do
-      expect(USPSFlags::Core.anchor).to include('<mask id="anchor-mask">')
+    it 'correctlies generate an anchor' do
+      expect(described_class.anchor).to include('<mask id="anchor-mask">')
     end
   end
 
   describe 'lighthouse' do
-    it 'should correctly generate a lighthouse' do
-      expect(USPSFlags::Core.lighthouse).to include('<mask id="lighthouse-mask">')
+    it 'correctlies generate a lighthouse' do
+      expect(described_class.lighthouse).to include('<mask id="lighthouse-mask">')
     end
   end
 end

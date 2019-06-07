@@ -4,10 +4,14 @@
 #
 # This class should never need to be called directly.
 # @private
-class USPSFlags::Core::Footer
-  def svg
-    <<~SVG
-      </svg>
-    SVG
+class USPSFlags
+  class Core
+    class Footer
+      def svg
+        <<~SVG
+          </svg>
+        SVG
+      end
+    end
   end
 end
