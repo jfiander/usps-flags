@@ -12,9 +12,9 @@ class USPSFlags
         require 'usps_flags/core/trident_specs/horizontal'
         require 'usps_flags/core/trident_specs/overlay'
 
-        SA = USPSFlags::Helpers::SpecArrows
-        BF = USPSFlags::Config::BASE_FLY
-        BH = USPSFlags::Config::BASE_HOIST
+        # SA = USPSFlags::Helpers::SpecArrows
+        # BF = USPSFlags::Config::BASE_FLY
+        # BH = USPSFlags::Config::BASE_HOIST
 
         def initialize(options = {})
           @config = options[:config]

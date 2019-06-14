@@ -18,7 +18,7 @@ class USPSFlags
             <!-- Overlay -->
               <!-- Main point barb -->
                 #{overlay_lines}
-                <text x="#{@config[:center_point] + @config[:bar_width] * 9 / 8}" y="#{@box_top + @config[:center_point_height] - @config[:main_point_barb]}" font-family="sans-serif" font-size="#{Base::BF / 100}px" fill="#041E42" text-anchor="left">#{@barb_label}</text>
+                <text x="#{@config[:center_point] + @config[:bar_width] * 9 / 8}" y="#{@box_top + @config[:center_point_height] - @config[:main_point_barb]}" font-family="sans-serif" font-size="#{BF / 100}px" fill="#041E42" text-anchor="left">#{@barb_label}</text>
           SVG
         end
 
