@@ -5,18 +5,12 @@
 # @author Julian Fiander
 # @since 0.1.5
 class USPSFlags
-  MODULES ||= {
-    'usps_flags' => %w[rational config helpers core generate errors],
-    'usps_flags/helpers' => %w[builders spec_arrows],
-    'usps_flags/core' => %w[
-      icons ensign field footer headers pennant tridents trident_specs trident_spec us wheel
-    ],
-    'usps_flags/generate' => %w[flag]
-  }.freeze
-
   require 'fileutils'
   require 'zip'
   require 'mini_magick'
+  require 'yaml'
+
+  MODULES ||= ::YAML.safe_load(File.read('lib/modules.yml')).freeze
 
   MODULES.each do |parent, bases|
     bases.each do |base|

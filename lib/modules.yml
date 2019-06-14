@@ -1,0 +1,24 @@
+usps_flags:
+  - rational
+  - config
+  - configuration
+  - helpers
+  - core
+  - generate
+  - errors
+usps_flags/helpers:
+  - builders
+  - spec_arrows
+usps_flags/core:
+  - icons
+  - ensign
+  - field
+  - footer
+  - headers
+  - pennant
+  - tridents
+  - trident_specs
+  - us
+  - wheel
+usps_flags/generate:
+  - flag
