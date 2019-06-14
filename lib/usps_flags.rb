@@ -25,54 +25,8 @@ class USPSFlags
     end
   end
 
-  # Configuration accessor.
-  def self.configuration
-    @configuration ||= USPSFlags::Config.new
-  end
-
-  # Configuration constructor.
-  def self.configure
-    yield(configuration) if block_given?
-    ensure_directories
-    @configuration
-  end
-
-  # Ensures the directory structure exists.
-  #
-  # @private
-  def self.ensure_directories
-    get_dir_configs
-    prepare_dir_configs
-    prepare_flags_dir
-    ::FileUtils.mkdir_p(USPSFlags.configuration.log_path)
-  end
-
-  # Gets all configuration variables that specify a dir.
-  #
-  # @private
-  def self.get_dir_configs
-    @dirs = USPSFlags.configuration.instance_variables.map(&:to_s)
-                     .map { |v| v.match(/.*?_dir/) }.compact.map(&:to_s)
-  end
-
-  # Ensures that directories exist (and are cleared, if configured).
-  #
-  # @private
-  def self.prepare_dir_configs
-    @dirs.each do |dir|
-      dir_path = @configuration.instance_variable_get(dir)
-      ::FileUtils.rm_rf(dir_path) if @configuration.clear
-      ::FileUtils.mkdir_p(dir_path)
-    end
-  end
-
-  # Ensures that the flags_dir subdirectories exist.
-  #
-  # @private
-  def self.prepare_flags_dir
-    ::FileUtils.mkdir_p("#{@configuration.flags_dir}/PNG/insignia")
-    ::FileUtils.mkdir_p("#{@configuration.flags_dir}/SVG/insignia")
-    ::FileUtils.mkdir_p("#{@configuration.flags_dir}/ZIP")
+  class << self
+    include USPSFlags::Configuration
   end
 
   # Constructor for individual flags.
