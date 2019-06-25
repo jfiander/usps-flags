@@ -19,9 +19,7 @@ class USPSFlags
     end
   end
 
-  class << self
-    include USPSFlags::Configuration
-  end
+  extend USPSFlags::Configuration
 
   # Constructor for individual flags.
   #
