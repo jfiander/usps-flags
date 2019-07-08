@@ -10,7 +10,7 @@ class USPSFlags
   require 'mini_magick'
   require 'yaml'
 
-  MODULES ||= ::YAML.safe_load(File.read('lib/modules.yml')).freeze
+  MODULES ||= ::YAML.safe_load(File.read("#{__dir__}/modules.yml")).freeze
 
   MODULES.each do |parent, bases|
     bases.each do |base|
