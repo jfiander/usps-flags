@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    usps_flags (0.5.4)
+    usps_flags (0.5.5)
       file_utils (~> 1.1, >= 1.1.2)
-      mini_magick (~> 4.8, >= 4.8.0)
+      mini_magick (~> 4.9, >= 4.9.4)
       rubyzip (~> 1.2, >= 1.2.1)
 
 GEM
@@ -15,7 +15,7 @@ GEM
     file_utils (1.1.2)
     jaro_winkler (1.5.2)
     json (2.1.0)
-    mini_magick (4.9.3)
+    mini_magick (4.9.5)
     parallel (1.17.0)
     parser (2.6.3.0)
       ast (~> 2.4.0)
