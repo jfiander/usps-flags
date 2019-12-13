@@ -14,7 +14,7 @@ describe USPSFlags::Core do
     [
       'Field', 'Specification Heading Information', 'Short Trident', 'Delta Trident', 'Circle Trident', 'Long Trident'
     ].each do |section|
-      it "should contain the #{section} section" do
+      it "contains the #{section} section" do
         expect(described_class.trident_spec).to include("<!-- #{section} -->")
       end
     end
@@ -22,7 +22,7 @@ describe USPSFlags::Core do
 
   describe 'headers' do
     ['?xml ', '!DOCTYPE', 'svg ', 'metadata'].each do |tag|
-      it "should contain the #{tag} tag" do
+      it "contains the #{tag} tag" do
         expect(described_class.headers).to include("<#{tag}")
       end
     end

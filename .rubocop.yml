@@ -6,15 +6,15 @@ AllCops:
     - tmp/**/*
     - vendor/**/*
 
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 Layout/EmptyLinesAroundAccessModifier:
   Enabled: true
-Layout/AlignArray:
+Layout/ArrayAlignment:
   Enabled: true
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: true
 Layout/EmptyLineAfterGuardClause:
   Enabled: true
@@ -51,7 +51,7 @@ Metrics/CyclomaticComplexity:
 Metrics/AbcSize:
   Enabled: true
 
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false
 Naming/AccessorMethodName:
   Enabled: false
@@ -63,6 +63,8 @@ RSpec/InstanceVariable:
 RSpec/NestedGroups:
   Enabled: false
 RSpec/ExampleLength:
+  Enabled: false
+RSpec/LeakyConstantDeclaration:
   Enabled: false
 
 Style/Documentation:

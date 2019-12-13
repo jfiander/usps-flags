@@ -44,7 +44,7 @@ describe USPSFlags::Generate do
       PORTCAP FLEETCAP FLT DAIDE DFLT NAIDE NFLT
       LT 1LT LTC CDR DLT D1LT DLTC DC STFC RC VC CC
     ].each do |flag|
-      it "should generate #{flag}" do
+      it "generates #{flag}" do
         expect(described_class.svg(flag, outfile: '')).to include("<title>#{flag}</title>")
       end
     end
