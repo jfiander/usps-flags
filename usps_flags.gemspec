@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'file_utils',    '~> 1.1',  '>= 1.1.2'
   s.add_runtime_dependency 'mini_magick',   '~> 4.9',  '>= 4.9.4'
-  s.add_runtime_dependency 'rubyzip',       '~> 1.3',  '>= 1.3.0'
+  s.add_runtime_dependency 'rubyzip',       '>= 1.3.0', '< 3.0'
 
   s.add_development_dependency 'rake',          '~> 12.2', '>= 12.2.1'
   s.add_development_dependency 'rspec',         '~> 3.7',  '>= 3.7.0'
