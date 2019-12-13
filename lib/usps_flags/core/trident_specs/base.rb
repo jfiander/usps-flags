@@ -24,6 +24,7 @@ class USPSFlags
           @box_right = options[:br]
           @fly = options[:fly]
           @unit = options[:unit]
+          @barb_label = options[:barb_label]
           @heading = options[:heading]
         end
 

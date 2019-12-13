@@ -121,7 +121,8 @@ class USPSFlags
 
           Object.const_get("USPSFlags::Core::TridentSpecs::#{type}").new(
             bt: box_top, bb: box_bottom, bl: box_left, br: box_right,
-            fly: @fly, unit: @unit, heading: heading(sym), config: @config
+            fly: @fly, unit: @unit, heading: heading(sym), config: @config,
+            barb_label: @barb_label
           ).p
         end
 
