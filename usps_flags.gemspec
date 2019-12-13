@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name          = 'usps_flags'
-  s.version       = '0.5.6'
+  s.version       = '0.5.7'
   s.date          = '2019-12-12'
   s.summary       = 'Flag generator for United States Power Squadrons'
   s.description   = 'A flag image (PNG, SVG) generator for United States Power Squadrons.'
@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake',          '~> 12.2', '>= 12.2.1'
   s.add_development_dependency 'rspec',         '~> 3.7',  '>= 3.7.0'
-  s.add_development_dependency 'rubocop',       '~> 0.71', '>= 0.71.0'
+  s.add_development_dependency 'rubocop',       '~> 0.77', '>= 0.77.0'
   s.add_development_dependency 'rubocop-rspec', '~> 1.30', '>= 1.30.0'
   s.add_development_dependency 'simplecov',     '~> 0.15', '>= 0.15.1'
 end
