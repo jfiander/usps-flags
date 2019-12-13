@@ -13,7 +13,7 @@ class USPSFlags
         include USPSFlags::Core::TridentSpecs::Overlay
 
         def p
-          output('Short', 14, :s) do
+          output('Short', -14, :s) do
             <<~SVG
               #{boundary_box}
               #{right}
