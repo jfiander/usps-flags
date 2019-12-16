@@ -26,11 +26,11 @@ class USPSFlags
         def special(type, level:, field: true)
           # Paths were designed for a base fly of 3000 pixels, but the base was changed for more useful fractions.
           svg = +''
-          svg << "<g transform=\"translate(#{USPSFlags::Config::BASE_FLY / 10})\">" unless field
+          svg << "<g transform=\"translate(#{USPSFlags::Config::BASE_FLY / 10})\">" if (type == :f && level == :n) || !field
           svg << "<g transform=\"scale(#{Rational(USPSFlags::Config::BASE_FLY, 3000).to_f})\">"
           svg << special_icon(type, level)
           svg << '</g>'
-          svg << '</g>' unless field
+          svg << "</g>" if (type == :f && level == :n) || !field
 
           svg
         end

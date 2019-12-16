@@ -15,7 +15,7 @@ class USPSFlags
           @district_past = %w[PDLTC PDC]
           @district_elected = %w[D1LT DLTC DC]
           @district_swallowtail = %w[DLT DAIDE DFLT]
-          @national_past = %w[PSTFC PRC PVC PCC]
+          @national_past = %w[PNFLT PSTFC PRC PVC PCC]
           @national_elected = %w[STFC RC VC CC]
           @national_swallowtail = %w[NAIDE NFLT]
         end
