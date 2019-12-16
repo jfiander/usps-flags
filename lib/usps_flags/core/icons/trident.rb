@@ -13,7 +13,7 @@ class USPSFlags
 
         def initialize(type, color: :blue, field_color: nil)
           valid_types = %i[s d stf n]
-          raise "Error: Invalid trident type. Options are #{valid_types}." unless valid_types.include?(type)
+          raise "Error: Invalid trident type: #{type}. Options are #{valid_types}." unless valid_types.include?(type)
 
           @type = type
 
