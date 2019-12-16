@@ -179,7 +179,7 @@ class USPSFlags
       end
 
       def flag_type(rank)
-        specifics = { 'PORTCAP' => :pc, 'FLEETCAP' => :fc, 'STFC' => :stf }
+        specifics = { 'PORTCAP' => :pc, 'FLEETCAP' => :fc, 'STFC' => :stf, 'PSTFC' => :stf }
         return specifics[rank] if specifics.key?(rank)
         return :a if rank.match?(/.AIDE/)
         return :f if rank.match?(/.?FLT/)
