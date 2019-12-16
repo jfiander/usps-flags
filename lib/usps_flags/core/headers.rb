@@ -54,7 +54,7 @@ class USPSFlags
         <<~SVG
           <?xml version="1.0" standalone="no"?>
           <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-          <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="#{@width}" height="#{@height}" viewBox="-#{@view_width*0.001} -#{@view_height*0.002} #{@view_width*1.004} #{@view_height*1.005}" preserveAspectRatio="xMidYMid meet">
+          <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="#{@width}" height="#{@height}" viewBox="-#{@view_width * 0.001} -#{@view_height * 0.002} #{@view_width * 1.004} #{@view_height * 1.005}" preserveAspectRatio="xMidYMid meet">
           <title>#{@title}</title>
           <metadata>
           <desc id="created-by">Julian Fiander</desc>
