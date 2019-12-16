@@ -52,7 +52,7 @@ class USPSFlags
             l #{@fly} 0
             l 0 #{@hoist}
             l -#{@fly} 0
-            l 0 -#{@hoist}
+            l 0 -#{@hoist} z
           " fill="#{@color_code}" #{@border_svg}/>
         SVG
       end
@@ -71,7 +71,7 @@ class USPSFlags
       def past_field
         <<~SVG
           <g transform="translate(#{USPSFlags::Config::BASE_FLY / 1200}, #{USPSFlags::Config::BASE_FLY / 1800})">
-            <path d="M 0 #{USPSFlags::Config::BASE_FLY / 600} #{past_line_one}" fill="#{@color_code}" />
+            <path d="M 0 #{USPSFlags::Config::BASE_FLY / 1200} #{past_line_one}" fill="#{@color_code}" />
             <path d="M #{@fly / 2} #{@hoist / 12} #{past_line_two}" fill="#{@past_mid_color}" />
             <path d="M #{@fly * 3 / 4} #{@hoist * 3 / 24} #{past_line_three}" fill="#{@past_tail_color}" />
             <path d="M 0 0 #{past_line_four} z" fill="none" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY / 600}" />
