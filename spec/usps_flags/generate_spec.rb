@@ -6,7 +6,7 @@ describe USPSFlags::Generate do
   describe 'general features' do
     it 'generates a flag with the correct size' do
       expect(described_class.svg('LtC', outfile: '')).to include(
-        'width="1024" height="682" viewBox="0 0 3072 2048"'
+        'width="1024" height="682" viewBox="-3.072 -4.096 3084.288 2058.24"'
       )
     end
 
@@ -17,7 +17,7 @@ describe USPSFlags::Generate do
             l 3072 0
             l 0 2048
             l -3072 0
-            l 0 -2048
+            l 0 -2048 z
           " fill="#E4002B" />
         SVG
       )
@@ -40,7 +40,7 @@ describe USPSFlags::Generate do
 
   describe 'officer flags' do
     %w[
-      PLTC PC PDLTC PDC PSTFC PRC PVC PCC
+      PLTC PC PDLTC PDC PNFLT PSTFC PRC PVC PCC
       PORTCAP FLEETCAP FLT DAIDE DFLT NAIDE NFLT
       LT 1LT LTC CDR DLT D1LT DLTC DC STFC RC VC CC
     ].each do |flag|

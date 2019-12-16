@@ -42,7 +42,7 @@ describe USPSFlags::Core do
             l #{@fly} 0
             l 0 #{@hoist}
             l -#{@fly} 0
-            l 0 -#{@hoist}
+            l 0 -#{@hoist} z
           " fill="#FFFFFF" stroke="#000000" stroke-width="#{USPSFlags::Config::BASE_FLY / 600}" />
         SVG
       )
@@ -55,7 +55,7 @@ describe USPSFlags::Core do
             l #{@fly} 0
             l 0 #{@hoist}
             l -#{@fly} 0
-            l 0 -#{@hoist}
+            l 0 -#{@hoist} z
           " fill="#{@red}" />
         SVG
       )
@@ -78,7 +78,7 @@ describe USPSFlags::Core do
       expect(described_class.field(style: :past, color: :blue)).to eql(
         <<~SVG
           <g transform="translate(2, 1)">
-            <path d="M 0 5 l #{@fly / 2} #{@hoist * 1 / 12}
+            <path d="M 0 2 l #{@fly / 2} #{@hoist * 1 / 12}
           l 0 #{@hoist * 10 / 12}
           l -#{@fly / 2} #{@hoist * 1 / 12}
           " fill="#{@blue}" />
