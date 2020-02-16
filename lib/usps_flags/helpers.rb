@@ -120,6 +120,7 @@ class USPSFlags
 
         dirs = path.split('/')
         dirs.pop
+        dirs = ['.'] if dirs.empty?
         ::FileUtils.mkdir_p(dirs.join('/')).first
       end
 
