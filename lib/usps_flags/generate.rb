@@ -39,7 +39,7 @@ class USPSFlags
 
         USPSFlags::Helpers.ensure_dir_for_file(outfile)
 
-        generate_png(background, trim, outfile)
+        generate_png(background, trim, outfile, [5, 4, 4])
       ensure
         ::File.delete(@temp_svg_path) if delete_temp_svg?
       end
@@ -118,14 +118,25 @@ class USPSFlags
         end
       end
 
-      def generate_png(background, trim, outfile)
+      def generate_png(background, trim, outfile, compression = nil)
         MiniMagick::Tool::Convert.new do |convert|
           convert << '-background' << background
           convert << '-format' << 'png'
           convert << '-trim' if trim
+          compress(convert, compression) if compression
           convert << @temp_svg_path
           convert << outfile
         end
+      end
+
+      def compress(convert, compression)
+        filter = (0..5).include?(compression[0]) ? compression[0] : 5
+        level = (0..9).include?(compression[1]) ? compression[1] : 9
+        strategy = (0..4).include?(compression[4]) ? compression[2] : 4
+
+        convert << '-define' << "png:compression-filter=#{filter}"
+        convert << '-define' << "png:compression-level=#{level}"
+        convert << '-define' << "png:compression-strategy=#{strategy}"
       end
     end
   end
