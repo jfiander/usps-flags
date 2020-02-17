@@ -118,7 +118,7 @@ class USPSFlags
         end
       end
 
-      def generate_png(background, trim, outfile, compression = nil)
+      def generate_png(background, trim, outfile, compression = [0, 0, 0])
         MiniMagick::Tool::Convert.new do |convert|
           convert << '-background' << background
           convert << '-format' << 'png'
