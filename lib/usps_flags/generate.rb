@@ -130,13 +130,17 @@ class USPSFlags
       end
 
       def compress(convert, compression)
-        filter = (0..5).include?(compression[0]) ? compression[0] : 5
-        level = (0..9).include?(compression[1]) ? compression[1] : 9
-        strategy = (0..4).include?(compression[4]) ? compression[2] : 4
+        filter = enforce_range(compression[0], 0..5)
+        level = enforce_range(compression[1], 0..9)
+        strategy = enforce_range(compression[2], 0..4)
 
         convert << '-define' << "png:compression-filter=#{filter}"
         convert << '-define' << "png:compression-level=#{level}"
         convert << '-define' << "png:compression-strategy=#{strategy}"
+      end
+
+      def enforce_range(value, range)
+        range.include?(value) ? value : range.max
       end
     end
   end
