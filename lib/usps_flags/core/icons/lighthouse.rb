@@ -8,6 +8,10 @@ class USPSFlags
   class Core
     module Icons
       class Lighthouse
+        def initialize(white: false)
+          @color = white ? '#FFFFFF' : USPSFlags::Config::RED
+        end
+
         def svg
           <<~SVG
             <mask id="lighthouse-mask">
@@ -23,11 +27,11 @@ class USPSFlags
             </mask>
 
             <g mask="url(#lighthouse-mask)">
-              <polyline fill="#{USPSFlags::Config::RED}" points="1100 475 1100 450 1200 400 1200 350 1300 350 1300 400 1400 450 1400 475" />
-              <polyline fill="#{USPSFlags::Config::RED}" points="1050 800 1050 675 1100 675 1100 500 1400 500 1400 675 1450 675 1450 800" />
-              <polyline fill="#{USPSFlags::Config::RED}" points="1050 825 1075 875 1425 875 1450 825" />
-              <polyline fill="#{USPSFlags::Config::RED}" points="900 1500 1075 900 1425 900 1600 1500" />
-              <polyline fill="#{USPSFlags::Config::RED}" points="900 1525 925 1575 1575 1575 1600 1525" />
+              <polyline fill="#{@color}" points="1100 475 1100 450 1200 400 1200 350 1300 350 1300 400 1400 450 1400 475" />
+              <polyline fill="#{@color}" points="1050 800 1050 675 1100 675 1100 500 1400 500 1400 675 1450 675 1450 800" />
+              <polyline fill="#{@color}" points="1050 825 1075 875 1425 875 1450 825" />
+              <polyline fill="#{@color}" points="900 1500 1075 900 1425 900 1600 1500" />
+              <polyline fill="#{@color}" points="900 1525 925 1575 1575 1575 1600 1525" />
             </g>
           SVG
         end

@@ -16,13 +16,15 @@ class USPSFlags
       # @param [Boolean] field Whether to generate the flag field (including any border).
       # @param [String] scale The image scale divisor factor.
       # @return [String] Returns the SVG data.
-      def svg(flag, outfile: nil, scale: nil, field: true)
+      def svg(flag, outfile: nil, scale: nil, field: true, white: false)
         flag = flag.upcase.delete('/', '_', 'PENNANT')
 
         USPSFlags::Helpers.ensure_dir_for_file(outfile)
 
         output = special_flag(flag, outfile, scale)
-        output ||= USPSFlags::Generate::Flag.officer(rank: flag, outfile: outfile, scale: scale, field: field)
+        output ||= USPSFlags::Generate::Flag.officer(
+          rank: flag, outfile: outfile, scale: scale, field: field, white: white
+        )
         output
       end
 

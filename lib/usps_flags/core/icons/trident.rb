@@ -133,6 +133,8 @@ class USPSFlags
             @color_code, @field_color_code = [USPSFlags::Config::RED, '#FFFFFF']
           elsif color == :blue
             @color_code, @field_color_code = [USPSFlags::Config::BLUE, '#FFFFFF']
+          elsif color == :white
+            @color_code, @field_color_code = ['#FFFFFF', '#000000']
           elsif field_color == :red
             @field_color_code = USPSFlags::Config::RED
           elsif field_color == :blue

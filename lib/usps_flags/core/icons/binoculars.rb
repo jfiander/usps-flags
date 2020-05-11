@@ -8,12 +8,13 @@ class USPSFlags
   class Core
     module Icons
       class Binoculars
-        def initialize(type: :d)
-          @color = case type
-                   when :d
-                     USPSFlags::Config::RED
-                   when :n
-                     USPSFlags::Config::BLUE
+        def initialize(type: :d, white: false)
+          @color = if white
+            '#FFFFFF'
+          elsif type == :n
+            USPSFlags::Config::BLUE
+          else
+            USPSFlags::Config::RED
           end
         end
 

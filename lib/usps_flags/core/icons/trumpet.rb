@@ -8,8 +8,15 @@ class USPSFlags
   class Core
     module Icons
       class Trumpet
-        def initialize(type: :s)
-          @color = type == :n ? USPSFlags::Config::BLUE : USPSFlags::Config::RED
+        def initialize(type: :s, white: false)
+          @color = if white
+            '#FFFFFF'
+          elsif type == :n
+            USPSFlags::Config::BLUE
+          else
+            USPSFlags::Config::RED
+          end
+
           @count = type == :s ? 1 : 2
         end
 

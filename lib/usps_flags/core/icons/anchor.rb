@@ -8,12 +8,18 @@ class USPSFlags
   class Core
     module Icons
       class Anchor
-        def initialize(color: :red)
-          @color_code = case color
-                        when :red
-                          USPSFlags::Config::RED
-                        when :white
-                          '#FFFFFF'
+        def initialize(color: :red, white: false)
+          if white
+            @color = '#FFFFFF'
+            @mask_color = '#000000'
+          else
+            @mask_color = '#FFFFFF'
+            @color = case color
+                     when :red
+                       USPSFlags::Config::RED
+                     when :white
+                       '#FFFFFF'
+            end
           end
         end
 
@@ -21,7 +27,7 @@ class USPSFlags
           <<~SVG
             <mask id="anchor-mask">
               <g>
-                <rect x="0" y="0" width="#{USPSFlags::Config::BASE_FLY}" height="#{USPSFlags::Config::BASE_FLY}" fill="#FFFFFF" />
+                <rect x="0" y="0" width="#{USPSFlags::Config::BASE_FLY}" height="#{USPSFlags::Config::BASE_FLY}" fill="#{@mask_color}" />
                 <path fill="#000000" d="M1252.3076435897437 462.05128846153843
                 c-55.62957153846173-45.08196512820513-96.39672312820517 23.744812948717993-88.20503230769259 51.79489025641044 6.653223282051158 27.53726679487147 50.02959307692299 72.62890461538461 98.46155051282062 25.641023846153644-27.978308974358924-21.85968564102552-43.491535897435824-37.83963128205124-8.717984871794897-76.4102912820511
                 M1270.7816162109375 632.2105102539062
@@ -35,7 +41,7 @@ class USPSFlags
               </g>
             </mask>
 
-            <path mask="url(#anchor-mask)" fill="#{@color_code}" d="M1182.0512562460422,634.8718105128619
+            <path mask="url(#anchor-mask)" fill="#{@color}" d="M1182.0512562460422,634.8718105128619
             c-127.50414031806645,-57.87980084448043,-98.33494194360924,-157.05652261543366,-81.0255763281848,-194.8718025641362
             c38.84781387183102,-83.96914338466655,157.00304879489136,-82.85448702564872,195.89744384618598,-47.17948923074607
             c24.53542477435849,21.316034000046102,60.18456838981683,51.05085879482306,57.435807435916786,113.84615205126914

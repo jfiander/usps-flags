@@ -8,7 +8,7 @@ class USPSFlags
   class Generate
     class Flag
       class << self
-        def officer(rank: nil, outfile: nil, scale: nil, field: true)
+        def officer(rank: nil, outfile: nil, scale: nil, field: true, white: false)
           raise ArgumentError, 'No rank specified.' if rank.nil?
 
           @rank = rank.to_s.upcase
@@ -17,19 +17,19 @@ class USPSFlags
           svg = USPSFlags::Core.headers(scale: scale, title: @rank)
           modify_rank_for_insignia
           @flag_details = USPSFlags::Helpers.flag_details(@rank)
-          @trident_color = @field ? :white : @flag_details[:color]
-          svg << officer_flag_body(@flag_details[:style])
+          @trident_color = determine_trident_color(white: white)
+          svg << officer_flag_body(@flag_details[:style], white: white)
 
           USPSFlags::Helpers.output(svg, outfile: outfile)
         end
 
-        def special(type, level:, field: true)
+        def special(type, level:, field: true, white: false)
           translate = (type == :f && level == :n) || !field
           # Paths were designed for a base fly of 3000 pixels, but the base was changed for more useful fractions.
           svg = +''
           svg << "<g transform=\"translate(#{USPSFlags::Config::BASE_FLY / 10})\">" if translate
           svg << "<g transform=\"scale(#{Rational(USPSFlags::Config::BASE_FLY, 3000).to_f})\">"
-          svg << special_icon(type, level)
+          svg << special_icon(type, level, white: white)
           svg << '</g>'
           svg << '</g>' if translate
 
@@ -77,16 +77,19 @@ class USPSFlags
 
       private
 
-        def special_icon(type, level)
+        def special_icon(type, level, white: false)
           {
-            a: USPSFlags::Core.binoculars(level), f: USPSFlags::Core.trumpet(level),
-            fc: USPSFlags::Core.anchor, pc: USPSFlags::Core.lighthouse
+            a: USPSFlags::Core.binoculars(level, white: white),
+            f: USPSFlags::Core.trumpet(level, white: white),
+            fc: USPSFlags::Core.anchor(white: white),
+            pc: USPSFlags::Core.lighthouse(white: white)
           }[type]
         end
 
-        def get_officer_flag
+        def get_officer_flag(white: false)
           [
-            get_national_bridge_flag, get_bridge_flag, get_offset_flag, get_special_flag
+            get_national_bridge_flag, get_bridge_flag, get_offset_flag,
+            get_special_flag(white: white)
           ].compact.first || get_trident_flag
         end
 
@@ -127,11 +130,11 @@ class USPSFlags
           USPSFlags::Core.trident(@flag_details[:type], field_color: @flag_details[:color])
         end
 
-        def officer_flag_body(style)
+        def officer_flag_body(style, white: false)
           svg = +''
           svg << USPSFlags::Core.field(style: style, color: @flag_details[:color]) if @field
           svg << '<g transform="translate(-150, 400)"><g transform="scale(0.58333)">' if style == :past
-          svg << get_officer_flag
+          svg << get_officer_flag(white: white)
           svg << '</g></g>' if style == :past
           svg << USPSFlags::Core.footer
           svg
@@ -164,6 +167,12 @@ class USPSFlags
 
         def special?
           %i[a f fc pc].include?(@flag_details[:type])
+        end
+
+        def determine_trident_color(white: false)
+          return :white if @field || white
+
+          @flag_details[:color]
         end
       end
     end
