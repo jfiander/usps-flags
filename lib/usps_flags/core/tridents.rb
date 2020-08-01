@@ -18,16 +18,16 @@ class USPSFlags
         # <circle cx="#{cc_center[:x]}" cy="#{cc_center[:y]}" r="#{radius}" fill="red" />
         def cc(type, trident_color:)
           trident = USPSFlags::Core.trident(type, color: trident_color)
+          x_distance = USPSFlags::Config::BASE_FLY * 28 / 39 # 4/39
+          y_distance = USPSFlags::Config::BASE_FLY * 27 / 156 # 5/78
           <<~SVG
-            <g transform="translate(132, 130)">
-              <g transform="rotate(-45, #{cc_center[:x]}, #{cc_center[:y]})">
-                #{trident}
-              </g>
-              <g transform="rotate(45, #{cc_center[:x]}, #{cc_center[:y]})">
-                #{trident}
-              </g>
+            <g transform="translate(-#{x_distance}, #{y_distance})">
+              <g transform="rotate(-45, #{USPSFlags::Config::BASE_FLY / 2}, #{USPSFlags::Config::BASE_HOIST / 2})">\n#{trident}</g>
             </g>
-            #{trident}
+            \n#{trident}
+            <g transform="translate(#{x_distance / 1.25}, -#{y_distance})">
+              <g transform="rotate(15)" transform-origin="center">\n#{trident}</g>
+            </g>
           SVG
         end
 
