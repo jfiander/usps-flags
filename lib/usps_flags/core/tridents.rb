@@ -10,38 +10,32 @@ class USPSFlags
       class << self
         # The side C/C tridents are angled 45 degrees, and intersect the central one at 1/3 up from the bottom
         #
-        # Note: translate(132, 130) corrects the center of rotation for each angled trident due to the (transparent)
-        #   field size of the include trident SVG
-        #
         # Center of rotation:
         # # radius = USPSFlags.configuration.trident[:bar_width] / 2
         # <circle cx="#{cc_center[:x]}" cy="#{cc_center[:y]}" r="#{radius}" fill="red" />
-        def cc(type, trident_color:)
-          trident = USPSFlags::Core.trident(type, color: trident_color)
+        def cc(_ = nil, trident_color:)
+          trident = USPSFlags::Core.trident(:n, color: trident_color)
+          x_distance = USPSFlags::Config::BASE_FLY * 4 / 39 # 4/39 or 28/39
+          y_distance = USPSFlags::Config::BASE_FLY * 2 / 39 # 5/78 or 27/156
           <<~SVG
-            <g transform="translate(132, 130)">
-              <g transform="rotate(-45, #{cc_center[:x]}, #{cc_center[:y]})">
-                #{trident}
-              </g>
-              <g transform="rotate(45, #{cc_center[:x]}, #{cc_center[:y]})">
-                #{trident}
-              </g>
+            <g transform="translate(-#{x_distance * 1.25}, #{y_distance})">
+              <g transform="rotate(-45, #{USPSFlags::Config::BASE_FLY / 2}, #{USPSFlags::Config::BASE_HOIST / 2})">\n#{trident}</g>
             </g>
-            #{trident}
+            \n#{trident}
+            <g transform="translate(#{x_distance * 1.25}, #{y_distance})">
+              <g transform="rotate(45)" transform-origin="center">\n#{trident}</g>
+            </g>
           SVG
         end
 
         # V/C tridents are angled 45 degrees, and intersect at 15/32 up from the bottom
-        #
-        # Note: translate(132, 50) corrects the center of rotation for each angled trident due to the (transparent)
-        #   field size of the include trident SVG
-        def vc(type, trident_color:)
-          trident = USPSFlags::Core.trident(type, color: trident_color)
+        def vc(_ = nil, trident_color:)
+          trident = USPSFlags::Core.trident(:n, color: trident_color)
           <<~SVG
-            <g transform="translate(132, 50) rotate(-45, #{vc_center[:x]}, #{vc_center[:y]})">
+            <g transform="rotate(-45, #{vc_center[:x]}, #{vc_center[:y]})">
               #{trident}
             </g>
-            <g transform="translate(132, 50) rotate(45, #{vc_center[:x]}, #{vc_center[:y]})">
+            <g transform="rotate(45, #{vc_center[:x]}, #{vc_center[:y]})">
               #{trident}
             </g>
           SVG
@@ -84,12 +78,8 @@ class USPSFlags
         def rotation_center(height_fraction)
           {
             x: USPSFlags::Config::BASE_FLY / 2,
-            y: (USPSFlags::Config::BASE_HOIST * 7 / 8) - (n_staff_height * height_fraction)
+            y: (USPSFlags::Config::BASE_HOIST * 7 / 8) - (n_staff_height * height_fraction).to_f
           }
-        end
-
-        def cc_center
-          rotation_center(Rational(1, 3))
         end
 
         def vc_center
