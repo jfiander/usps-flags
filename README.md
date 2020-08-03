@@ -1,7 +1,7 @@
 # United States Power Squadrons® Flag Generator
 
 [![Gem Version](https://img.shields.io/gem/v/usps_flags.svg)](https://rubygems.org/gems/usps_flags)
-[![Build Status](https://travis-ci.org/jfiander/usps-flags.svg)](https://travis-ci.org/jfiander/usps-flags)
+[![Build Status](https://img.shields.io/travis/jfiander/usps-flags/master.svg)](https://travis-ci.org/jfiander/usps-flags)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/760b824f0edac3316a11/test_coverage)](https://codeclimate.com/github/jfiander/usps-flags/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/760b824f0edac3316a11/maintainability)](https://codeclimate.com/github/jfiander/usps-flags/maintainability)
 
