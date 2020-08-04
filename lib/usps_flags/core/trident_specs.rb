@@ -18,6 +18,7 @@ class USPSFlags
       require 'usps_flags/core/trident_specs/long'
       require 'usps_flags/core/trident_specs/circle'
       require 'usps_flags/core/trident_specs/build'
+      require 'usps_flags/core/trident_specs/build_intersections'
     end
   end
 end
