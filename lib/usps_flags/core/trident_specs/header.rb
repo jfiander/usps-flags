@@ -15,6 +15,7 @@ class USPSFlags
           @hoist_fraction = options[:hoist_fraction]
           @unit_text = options[:unit_text]
           @scaled_border = options[:scaled_border]
+          @no_measurements = options.key?(:no_measurements) && options[:no_measurements]
         end
 
         def p
@@ -43,11 +44,21 @@ class USPSFlags
               <text x="#{BF / 2}" y="#{BH * 3 / 40}" font-family="sans-serif" font-size="#{BH / 20}px" font-weight="bold" fill="#041E42" text-anchor="middle">United States Power Squadrons<tspan class="heading" dy ="-#{BH / 50}">®</tspan></text>
             </g>
             <text x="#{BF / 2}" y="#{BH / 8}" font-family="sans-serif" font-size="#{BH / 30}px" fill="#041E42" text-anchor="middle">Officer Flag Trident Specification</text>
+            #{measurements_are_relative}
+          SVG
+        end
+
+        def measurements_are_relative
+          return if @no_measurements
+
+          <<~SVG
             <text x="#{BF / 2}" y="#{BH * 2 / 11}" font-family="sans-serif" font-size="#{BH / 40}px" fill="#041E42" text-anchor="middle">All measurements are relative to a field with</text>
           SVG
         end
 
         def units
+          return angles if @no_measurements
+
           <<~SVG
             <g>
               <style><![CDATA[tspan.title{font-size: #{USPSFlags::Config::FRACTION_SCALE * 9 / 10}%;}]]></style>
@@ -55,6 +66,12 @@ class USPSFlags
             </g>
             <text x="#{BF / 2}" y="#{BH / 4}" font-family="sans-serif" font-size="#{BH / 40}px" fill="#041E42" text-anchor="middle">Measurements not specified are the same as on the short trident.</text>
             #{scaled_border if @scaled_border}
+          SVG
+        end
+
+        def angles
+          <<~SVG
+            <text x="#{BF / 2}" y="#{BH * 4 / 19}" font-family="sans-serif" font-size="#{BH / 40}px" fill="#041E42" text-anchor="middle">Angled tridents are 45 degrees from vertical.</text>
           SVG
         end
 

@@ -88,6 +88,10 @@ describe USPSFlags::Generate do
     it 'generates the trident specification sheet with a fractional field size' do
       expect(described_class.spec(outfile: '', fly: 23.5)).to include('<title>USPS Trident Specifications</title>')
     end
+
+    it 'generates the intersection specification sheet' do
+      expect(described_class.intersection_spec(outfile: '')).to include('CC Intersection')
+    end
   end
 
   describe 'png' do

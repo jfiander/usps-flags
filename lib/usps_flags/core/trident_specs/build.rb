@@ -24,6 +24,17 @@ class USPSFlags
           svg
         end
 
+        def intersections
+          # Static labeling
+          @fly = Rational(2048, 5)
+          @unit = ''
+
+          svg = spec_header(no_measurements: true)
+          svg << add_intersections
+
+          svg
+        end
+
       private
 
         def box_left
@@ -51,6 +62,71 @@ class USPSFlags
           box_bottom = BH * 7 / 8
           add_trident(:Circle, box_top, box_bottom, box_left, box_right) +
             add_trident(:Long, box_top, box_bottom, box_left, box_right)
+        end
+
+        def add_intersections
+          svg = +''
+
+          svg += "<g transform=\"translate(-#{BF * 1 / 16}, #{BH / 4}) scale(0.6)\">"
+          svg += USPSFlags::Core::Tridents.cc(trident_color: :blue)
+          svg += cc_label
+          svg += '</g>'
+
+          svg += "<g transform=\"translate(#{BF * 7 / 16}, #{BH / 4}) scale(0.6)\">"
+          svg += USPSFlags::Core::Tridents.vc(trident_color: :red)
+          svg += vc_label
+          svg += '</g>'
+
+          svg
+        end
+
+        def cc_label
+          offset = BF.to_f * 1 / 32
+          height = BF.to_f * 15 / 64
+
+          small_arrow = SA.vertical(
+            offset, -height / 3, 0,
+            pointer_top: height / 3, pointer_bottom: 0, label_offset: BF / 35,
+            label_offset_y: -BF / 50, label_align: 'middle', fly: @fly, unit: @unit
+          )
+
+          <<~SVG
+            <!-- CC Intersection -->
+              <g transform="translate(#{BF / 2}, #{BH - 200}) rotate(45)">
+                #{big_arrow}
+                #{small_arrow}
+              </g>
+          SVG
+        end
+
+        def vc_label
+          offset = BF.to_f * 1 / 32
+          height = BF.to_f * 15 / 64
+
+          small_arrow = SA.vertical(
+            offset, -height * 15 / 32, 0,
+            pointer_top: height * 15 / 32, pointer_bottom: 0, label_offset: BF / 35,
+            label_offset_y: -BF / 50, label_align: 'middle', fly: @fly, unit: @unit
+          )
+
+          <<~SVG
+            <!-- CC Intersection -->
+              <g transform="translate(#{BF / 2}, #{BH - 200}) rotate(45)">
+                #{big_arrow}
+                #{small_arrow}
+              </g>
+          SVG
+        end
+
+        def big_arrow
+          offset = BF * 1 / 32
+          height = BF * 15 / 64
+
+          SA.vertical(
+            offset * 3, -height, 0,
+            pointer_top: height, pointer_bottom: 0, label_offset: BF / 60,
+            label_offset_y: -BF / 10, label_align: 'left', fly: @fly, unit: @unit
+          )
         end
 
         def configure_sizes(fly)
@@ -109,10 +185,10 @@ class USPSFlags
           end
         end
 
-        def spec_header
+        def spec_header(no_measurements: false)
           USPSFlags::Core::TridentSpecs::Header.new(
             fly: @fly, fly_fraction: @fly_fraction, hoist: @hoist, hoist_fraction: @hoist_fraction,
-            unit_text: @unit_text, scaled_border: @scaled_border
+            unit_text: @unit_text, scaled_border: @scaled_border, no_measurements: no_measurements
           ).p
         end
 

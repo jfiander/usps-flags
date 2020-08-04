@@ -103,6 +103,22 @@ class USPSFlags
         USPSFlags::Helpers.output(svg, outfile: outfile)
       end
 
+      # Generate trident spec sheet for National Bridge intersections as an SVG image.
+      #
+      # @param [String] outfile The path to save the SVG file to. If not set, prints to console.
+      # @param [Integer] fly The nominal fly length of an appropriate flag field for the generated tridents.
+      # @param [String] outfile The unit to append to all trident measurements.
+      # @param [String] scale The image scale divisor factor.
+      # @return [String] Returns the SVG data.
+      def intersection_spec(outfile: nil, fly: USPSFlags::Config::BASE_FLY, unit: nil, scale: nil, scaled_border: false)
+        svg = +''
+        svg << USPSFlags::Core.headers(scale: scale, title: 'USPS Trident Specifications')
+        svg << USPSFlags::Core.intersection_spec(fly: fly, unit: unit, scaled_border: scaled_border)
+        svg << USPSFlags::Core.footer
+
+        USPSFlags::Helpers.output(svg, outfile: outfile)
+      end
+
     private
 
       def special_flag(flag, outfile, scale)

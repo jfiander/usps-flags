@@ -10,6 +10,10 @@ class USPSFlags
       USPSFlags::Core::TridentSpecs::Build.new(fly: fly, unit: unit, scaled_border: scaled_border).svg
     end
 
+    def self.intersection_spec(fly: 24, unit: 'in', scaled_border: false)
+      USPSFlags::Core::TridentSpecs::Build.new(fly: fly, unit: unit, scaled_border: scaled_border).intersections
+    end
+
     def self.headers(width: nil, height: nil, pennant: false, scale: nil, title: 'USPS Flag')
       USPSFlags::Core::Headers.new(width: width, height: height, pennant: pennant, scale: scale, title: title).svg
     end
