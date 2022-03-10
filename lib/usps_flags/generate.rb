@@ -110,10 +110,10 @@ class USPSFlags
       # @param [String] outfile The unit to append to all trident measurements.
       # @param [String] scale The image scale divisor factor.
       # @return [String] Returns the SVG data.
-      def intersection_spec(outfile: nil, scale: nil, scaled_border: false)
+      def intersection_spec(outfile: nil, fly: 2048, scale: nil, scaled_border: false)
         svg = +''
         svg << USPSFlags::Core.headers(scale: scale, title: 'USPS Trident Specifications')
-        svg << USPSFlags::Core.intersection_spec(scaled_border: scaled_border)
+        svg << USPSFlags::Core.intersection_spec(fly: fly, scaled_border: scaled_border)
         svg << USPSFlags::Core.footer
 
         USPSFlags::Helpers.output(svg, outfile: outfile)

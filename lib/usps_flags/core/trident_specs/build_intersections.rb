@@ -8,9 +8,9 @@ class USPSFlags
   class Core
     module TridentSpecs
       class BuildIntersections
-        def initialize(scaled_border: false)
+        def initialize(fly: 2048, scaled_border: false)
           @scaled_border = scaled_border
-          configure_sizes(Rational(2048, 5))
+          configure_sizes(fly)
           configure_labels('')
         end
 
