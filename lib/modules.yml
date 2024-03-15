@@ -4,6 +4,7 @@ usps_flags:
   - configuration
   - helpers
   - core
+  - trident
   - generate
   - errors
 usps_flags/helpers:
