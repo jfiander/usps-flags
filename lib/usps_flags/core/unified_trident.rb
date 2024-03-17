@@ -6,6 +6,7 @@
 # @private
 class USPSFlags
   class Core
+    # TODO: Update the numbers contained in this class to respect the fly/hoist math
     class UnifiedTrident
       class << self
         def long
