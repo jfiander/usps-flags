@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe USPSFlags::Trident do
+describe USPSFlags::Core::UnifiedTrident do
   it 'generates the correct Long trident' do
     expect(described_class.long).to eq(
       'M 1536 256 l 80 184 l -40 -24 l 0 368 l 120 0 l 0 -296 l -40 0 l 120 -168 l 0 544 l -200 0' \
@@ -13,10 +13,12 @@ describe USPSFlags::Trident do
 
   it 'generates the correct Circle trident' do
     expect(described_class.circle).to eq(
-      'M 1536 256 l 80 184 l -40 -24 l 0 368 l 120 0 l 0 -296 l -40 0 l 120 -168 l 0 544 l -240 0' \
-      ' m 0 -2 a 240,240 0 1,1 0,480 m 0 -80 a 160,-160 0 1,0 0,-320 a -160,160 0 1,0 0,320 ' \
-      'm 40 62 l 0 468 l -80 0 l 0 -468 m 40 18 a -240,-240 0 1,1 0,-480 m 0 2 l -240 0 l 0 -544 ' \
-      'l 120 168 l -40 0 l 0 296 l 120 0 l 0 -368 l -40 24 l 80 -184 '
+      'M 1536 256 l 80 184 l -40 -24 l 0 368 l 120 0 l 0 -296 l -40 0 l 120 -168 l 0 544' \
+      ' l -240 0' \
+      ' m 40 470 l 0 458 l -80 0 l 0 -458 m 40 -470' \
+      ' l -240 0 l 0 -544 l 120 168 l -40 0 l 0 296 l 120 0 l 0 -368 l -40 24 l 80 -184 z' \
+      ' M 1536 862 a 240,240 0 1,1 0,480 a -240,-240 0 1,1 0,-480 m 0 80 a -160,160 0 1,0 0,320 ' \
+      'a 160,-160 0 1,0 0,-320 m 0 -80 z '
     )
   end
 

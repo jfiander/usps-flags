@@ -126,13 +126,13 @@ describe USPSFlags::Core do
 
   describe 'anchor' do
     it 'correctlies generate an anchor' do
-      expect(described_class.anchor).to include('<mask id="anchor-mask">')
+      expect(described_class.anchor).to include('c0,-11.254,-57.048,-75.512,-130,-83')
     end
   end
 
   describe 'lighthouse' do
     it 'correctlies generate a lighthouse' do
-      expect(described_class.lighthouse).to include('<mask id="lighthouse-mask">')
+      expect(described_class.lighthouse).to include('m 100 -260 l 0 140 l 80 0 l 0 -140 l -80 0')
     end
   end
 end
