@@ -34,7 +34,7 @@ class USPSFlags
       # @param [String] outfile Path to the output file.
       # @param [String] size Actual size to output as.
       # @param [String] size_key Size suffix to attach to the file name.
-      def resize_png(png_file, file: nil, outfile: nil, size:, size_key: nil)
+      def resize_png(png_file, size:, file: nil, outfile: nil, size_key: nil)
         raise USPSFlags::Errors::PNGConversionError if outfile.nil? && file.nil?
         raise USPSFlags::Errors::PNGConversionError if outfile.nil? && size_key.nil?
 
@@ -97,7 +97,7 @@ class USPSFlags
       # @private
       def log(*messages)
         ::FileUtils.mkdir_p(USPSFlags.configuration.log_path)
-        outputs = [STDOUT]
+        outputs = [$stdout]
 
         log_file = File.open("#{USPSFlags.configuration.log_path}/flag.log", 'a')
         outputs << log_file

@@ -8,7 +8,8 @@ class USPSFlags
   class Core
     module TridentSpecs
       class Header < USPSFlags::Core::TridentSpecs::Base
-        def initialize(options = {})
+        def initialize(**options)
+          super(**options)
           @fly = options[:fly]
           @fly_fraction = options[:fly_fraction]
           @hoist = options[:hoist]

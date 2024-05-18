@@ -116,7 +116,7 @@ describe USPSFlags::Generate do
 
   describe 'without an outfile set' do
     it 'prints SVG data to the console' do
-      expect(STDOUT).to receive(:puts).with(described_class.svg('Lt', outfile: ''), "\n")
+      expect($stdout).to receive(:puts).with(described_class.svg('Lt', outfile: ''), "\n")
       described_class.svg('Lt')
     end
   end

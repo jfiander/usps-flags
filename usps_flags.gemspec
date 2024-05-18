@@ -2,8 +2,8 @@
 
 Gem::Specification.new do |s|
   s.name          = 'usps_flags'
-  s.version       = '0.6.4'
-  s.date          = '2023-03-13'
+  s.version       = '0.7.0'
+  s.date          = '2024-05-17'
   s.summary       = 'Flag generator for United States Power Squadrons'
   s.description   = 'A flag image (PNG, SVG) generator for United States Power Squadrons.'
   s.homepage      = 'http://rubygems.org/gems/usps_flags'
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
 
-  s.required_ruby_version = '>= 2.5'
+  s.required_ruby_version = '>= 3.0'
 
   s.add_runtime_dependency 'file_utils',    '~> 1.1',  '>= 1.1.2'
   s.add_runtime_dependency 'mini_magick',   '~> 4.9',  '>= 4.9.4'

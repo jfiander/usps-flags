@@ -1,10 +1,11 @@
 require: rubocop-rspec
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.0
   Exclude:
     - lib/output/*
     - tmp/**/*
     - vendor/**/*
+  NewCops: enable
 
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
@@ -33,6 +34,8 @@ Lint/UnusedMethodArgument:
   Enabled: true
 Lint/UselessAssignment:
   Enabled: true
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
 
 Metrics/BlockLength:
   Exclude:

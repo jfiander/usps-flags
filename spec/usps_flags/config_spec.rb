@@ -9,7 +9,7 @@ describe USPSFlags::Config do
     end
 
     it 'returns the current log directory' do
-      default_log_path = $tmp_flags_dir + '/log'
+      default_log_path = "#{$tmp_flags_dir}/log"
       expect(USPSFlags.configuration.log_path).to eql(default_log_path)
     end
 
