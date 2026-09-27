@@ -35,7 +35,7 @@ class USPSFlags
       end
 
       def write_zip_file(zip, type)
-        ::Zip::File.open(zip, ::Zip::File::CREATE) do |z|
+        ::Zip::File.open(zip, create: true) do |z|
           ::Dir.glob("#{USPSFlags.configuration.flags_dir}/#{type.upcase}/**/*").each do |f|
             add_to_zip(z, f)
           end
